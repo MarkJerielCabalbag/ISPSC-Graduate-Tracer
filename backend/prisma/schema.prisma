@@ -39,7 +39,6 @@ model Department {
 model Program{
   id Int @id @default(autoincrement())
   program String
-  type String
   relatedToDepartment Department @relation(fields: [departmentId], references: [id])
   departmentId Int
   listOfMajor Major[]

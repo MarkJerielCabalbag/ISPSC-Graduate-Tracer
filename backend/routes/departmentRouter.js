@@ -12,4 +12,7 @@ departmentRouter.post("/edit/:id", departmentController.editDepartment);
 //remove department
 departmentRouter.post("/remove/:id", departmentController.removeDepartment);
 
+//list department
+departmentRouter.get("/list", departmentController.departmentList);
+
 export default departmentRouter;

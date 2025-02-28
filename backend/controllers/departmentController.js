@@ -106,8 +106,20 @@ const removeDepartment = asyncHandler(async (req, res, next) => {
 //@DESC     list all department
 //@ROUTE    /api/graduateTracer/department/
 //@ACCESS   GET public
+const departmentList = asyncHandler(async (req, res, next) => {
+  const departments = await prisma.department.findMany();
+
+  return res
+    .status(200)
+    .send(
+      departments.length !== 0
+        ? departments
+        : "There are no Departments exist yet"
+    );
+});
 export default {
   addDepartment,
   editDepartment,
   removeDepartment,
+  departmentList,
 };
