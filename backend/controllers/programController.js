@@ -57,19 +57,19 @@ const addProgram = asyncHandler(async (req, res, next) => {
 });
 
 //@DESC     edit program
-//@ROUTE
+//@ROUTE    /api/graduateTracer/program/edit/:programId
 //@ACCESS
 const editProgram = asyncHandler(async (req, res, next) => {
-  const { departmentId } = req.params;
+  const { programId } = req.params;
   const { program } = req.body;
 
   if (!program) {
     return res.status(200).json({ message: "Please fill all fields" });
   }
 
-  const isDepartmentExist = await prisma.department.findUnique({
+  const isDepartmentExist = await prisma.program.findUnique({
     where: {
-      id: parseInt(departmentId),
+      id: parseInt(programId),
     },
   });
 
@@ -90,34 +90,72 @@ const editProgram = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const newProgram = await prisma.program.create({
+    const newProgram = await prisma.program.update({
+      where: {
+        id: parseInt(programId),
+      },
       data: {
-        program: program,
-        relatedToDepartment: {
-          connect: {
-            id: parseInt(departmentId),
-          },
-        },
+        program: req.body.program || undefined,
       },
     });
 
     return res
       .status(200)
-      .json({ message: `${newProgram.program} is successfully created` });
+      .json({ message: `${newProgram.program} is successfully updated` });
   } catch (error) {
     return res.status(400).json({ message: `An error occured: ${error}` });
   }
 });
 
 //@DESC     remove program
-//@ROUTE
-//@ACCESS
+//@ROUTE    /api/graduateTracer/program/add/:departmentId
+//@ACCESS   public
 const removeProgram = asyncHandler(async (req, res, next) => {
-  console.log("remove department");
+  const { programId } = req.params;
+
+  const isProgramExist = await prisma.program.findUnique({
+    where: {
+      id: parseInt(programId),
+    },
+  });
+
+  if (!isProgramExist) {
+    return res
+      .status(400)
+      .json({ message: "The Department ID does not exist" });
+  }
+
+  try {
+    const deleteProgram = await prisma.program.delete({
+      where: {
+        id: parseInt(programId),
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: `${deleteProgram.program} is successfully deleted` });
+  } catch (error) {
+    return res.status(400).json({ message: `An error occured: ${error}` });
+  }
+});
+
+//@DESC     list of programs
+//@ROUTE    /api/graduateTracer/program/list
+//@ACCESS   public
+const listProgram = asyncHandler(async (req, res, next) => {
+  const programs = await prisma.program.findMany();
+
+  return res
+    .status(200)
+    .send(
+      programs.length !== 0 ? programs : "There are no programs created yet"
+    );
 });
 
 export default {
   addProgram,
   editProgram,
   removeProgram,
+  listProgram,
 };
