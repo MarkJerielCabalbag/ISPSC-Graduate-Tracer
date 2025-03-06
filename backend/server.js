@@ -4,6 +4,7 @@ import "dotenv/config";
 import departmentRouter from "./routes/departmentRouter.js";
 import programRouter from "./routes/programRouter.js";
 import majorRouter from "./routes/majorRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ const url = "/api/graduateTracer";
 app.use(`${url}/department`, departmentRouter);
 app.use(`${url}/program`, programRouter);
 app.use(`${url}/major`, majorRouter);
+app.use(`${url}/user`, userRouter);
 
 app.listen(process.env.PORT || 7000, () => {
   console.log(`App is running on port: ${process.env.PORT}`);

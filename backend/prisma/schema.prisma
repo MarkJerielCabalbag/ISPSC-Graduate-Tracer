@@ -15,19 +15,19 @@ datasource db {
 
 model Responses {
   id Int @id @default(autoincrement())
-  yearOfSurver String
-  fullName String
-  yearOfGraduation Int
-  yearOfSurvey Int
-  collegeDepartment String
-  underGraduateProgram String
-  graduateProgram String
-  currentlyEmployed String
-  isJobAligned String
-  isSelfEmployed String
-  isFurtherStudies String
-  typeOfOrganization String
-  currentJobLocated String
+  email String?
+  fullName String?
+  yearOfGraduation Int?
+  yearOfSurvey Int?
+  department String?
+  program String?
+  major String?
+  currentlyEmployed String?
+  isJobAligned String?
+  isSelfEmployed String?
+  isFurtherStudies String?
+  typeOfOrganization String?
+  currentJobLocated String?
 }
 
 model Department {
