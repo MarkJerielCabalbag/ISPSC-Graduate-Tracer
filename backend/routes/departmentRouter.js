@@ -15,4 +15,10 @@ departmentRouter.post("/remove/:id", departmentController.removeDepartment);
 //list department
 departmentRouter.get("/list", departmentController.departmentList);
 
+//get related program from department
+departmentRouter.post(
+  "/program/:departmentId",
+  departmentController.getRelatedProgram
+);
+
 export default departmentRouter;

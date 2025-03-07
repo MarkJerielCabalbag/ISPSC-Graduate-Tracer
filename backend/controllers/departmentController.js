@@ -117,9 +117,37 @@ const departmentList = asyncHandler(async (req, res, next) => {
         : "There are no Departments exist yet"
     );
 });
+
+//@DESC     view programs related to department / college
+//@ROUTE    /api/graduateTracer/department/program/:departmentId
+//@ACCESS   POST public
+const getRelatedProgram = asyncHandler(async (req, res, next) => {
+  const { departmentId } = req.params;
+
+  const isDepartmentExist = await prisma.department.findMany();
+
+  for (let department of isDepartmentExist) {
+    if (!department.id) {
+      return res
+        .status(400)
+        .json({ message: `The ID ${departmentId} does not exist` });
+    }
+  }
+
+  try {
+    const isProgramRelated = await prisma.program.findMany();
+
+    for (let program of isProgramRelated) {
+      return res.status(200).send([program]);
+    }
+  } catch (error) {
+    return res.status(400).json({ message: `An error occured: ${error}` });
+  }
+});
 export default {
   addDepartment,
   editDepartment,
   removeDepartment,
   departmentList,
+  getRelatedProgram,
 };
