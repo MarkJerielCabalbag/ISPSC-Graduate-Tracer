@@ -31,4 +31,20 @@ export const client = {
       return response;
     });
   },
+
+  //get major related to program
+  async getRelatedMajor(id: number) {
+    return await fetch(`${baseUrl}/department/program/major/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

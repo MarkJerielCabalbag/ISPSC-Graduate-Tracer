@@ -58,7 +58,7 @@ const Form = () => {
           </Select>
         </div>
 
-        {/* <GeneralInformation /> */}
+        <GeneralInformation />
         <GraduateEmploymentInformation />
       </form>
     </div>

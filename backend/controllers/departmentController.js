@@ -138,7 +138,9 @@ const getRelatedProgram = asyncHandler(async (req, res, next) => {
     const isProgramRelated = await prisma.program.findMany();
 
     for (let program of isProgramRelated) {
-      return res.status(200).send([program]);
+      if (program.departmentId === departmentId) {
+        return res.status(200).send([program]);
+      }
     }
   } catch (error) {
     return res.status(400).json({ message: `An error occured: ${error}` });

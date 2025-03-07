@@ -11,7 +11,6 @@ import {
 
 import { displayYears } from "../../utils/utils";
 import { useState } from "react";
-import { Button } from "../ui/button";
 import { Loader2Icon } from "lucide-react";
 
 const years = displayYears(2020, 2080);
@@ -19,10 +18,19 @@ const years = displayYears(2020, 2080);
 const GraduateEmploymentInformation = () => {
   const [departmentId, setDepartmentId] = useState<number | null>(null);
   const [isProgramOpen, setOpenProgram] = useState(false);
-  const { data: department, isLoading } = hooks.useGetCollegeDepartment();
+  const [isMajorOpen, setOpenMajor] = useState(false);
+  const { data: department, isLoading: isDepartmentLoading } =
+    hooks.useGetCollegeDepartment();
   const { mutateAsync, data: programs } = hooks.useGetRelatedProgram(
-    Number(departmentId)
+    departmentId || 0
   );
+
+  const handleDepartmentChange = async (value: string) => {
+    const id = Number(value);
+    setDepartmentId(id);
+    setOpenProgram(true);
+    await mutateAsync();
+  };
 
   return (
     <div>
@@ -33,30 +41,28 @@ const GraduateEmploymentInformation = () => {
       <div className="flex items-center gap-5">
         <div className="w-1/2 my-5">
           <h1>College / Department</h1>
-          <Select>
+          <Select onValueChange={handleDepartmentChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select College / Department" />
             </SelectTrigger>
             <SelectContent>
-              {department?.map((emInfo: EmploymentInformation) => (
-                <Button
-                  className="bg-transparent hover:bg-transparent text-primary w-full"
-                  key={emInfo.id}
-                  value={String(emInfo.id)}
-                  onClick={async () => {
-                    await mutateAsync();
-                    console.log(emInfo.id);
-                    setOpenProgram(true);
-                    setDepartmentId(Number(emInfo.id));
-                  }}
-                >
-                  {emInfo.department}
-                </Button>
-              ))}
+              {isDepartmentLoading ? (
+                <div className="flex justify-center items-center my-3 text-primary">
+                  <Loader2Icon className="animate-spin" /> Loading
+                  Departments...
+                </div>
+              ) : (
+                department?.map((emInfo: EmploymentInformation) => (
+                  <SelectItem key={emInfo.id} value={String(emInfo.id)}>
+                    {emInfo.department}
+                  </SelectItem>
+                ))
+              )}
             </SelectContent>
           </Select>
         </div>
 
+        {/* Year of Graduation */}
         <div className="w-1/2 my-5">
           <h1>Year of Graduation</h1>
           <Select>
@@ -82,18 +88,41 @@ const GraduateEmploymentInformation = () => {
               <SelectValue placeholder="Select Program" />
             </SelectTrigger>
             <SelectContent>
-              {programs?.map((program: EmploymentInformation) => (
-                <SelectItem key={program.id} value={String(program.id)}>
-                  {isLoading ? (
-                    <div className="my-3 text-primary">
-                      <Loader2Icon className="animate-spin" /> Program is
-                      loading.....
-                    </div>
-                  ) : (
-                    program.program
-                  )}
-                </SelectItem>
-              ))}
+              {isDepartmentLoading ? (
+                <div className="flex justify-center items-center my-3 text-primary">
+                  <Loader2Icon className="animate-spin" /> Loading Programs...
+                </div>
+              ) : (
+                programs?.map((program: EmploymentInformation) => (
+                  <SelectItem key={program.id} value={String(program.id)}>
+                    {program.program}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {isMajorOpen && (
+        <div className="w-full mb-5">
+          <h1>Program</h1>
+          <Select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select Major" />
+            </SelectTrigger>
+            <SelectContent>
+              {isDepartmentLoading ? (
+                <div className="flex justify-center items-center my-3 text-primary">
+                  <Loader2Icon className="animate-spin" /> Loading Programs...
+                </div>
+              ) : (
+                programs?.map((program: EmploymentInformation) => (
+                  <SelectItem key={program.id} value={String(program.id)}>
+                    {program.program}
+                  </SelectItem>
+                ))
+              )}
             </SelectContent>
           </Select>
         </div>

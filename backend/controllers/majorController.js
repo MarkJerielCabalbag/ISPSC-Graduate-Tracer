@@ -154,6 +154,35 @@ const listMajor = asyncHandler(async (req, res, next) => {
 
   return res.status(200).send(majorList.reverse());
 });
+
+//@DESC     get related major related to program
+//@ROUTE    /api/graduateTracer/major/:programId
+//@ACCESS   POST public
+const getRelatedMajor = asyncHandler(async (req, res, next) => {
+  const { programId } = req.params;
+
+  const isProgramExist = await prisma.program.findMany();
+
+  for (let program of isProgramExist) {
+    if (!program.id) {
+      return res
+        .status(400)
+        .json({ message: `The ID ${programId} does not exist` });
+    }
+  }
+
+  try {
+    const isMajorRelated = await prisma.major.findMany();
+
+    for (let major of isMajorRelated) {
+      if (major.programId === programId) {
+        return res.status(200).send([major]);
+      }
+    }
+  } catch (error) {
+    return res.status(400).json({ message: `An error occured: ${error}` });
+  }
+});
 export default {
   addMajor,
   editMajor,
