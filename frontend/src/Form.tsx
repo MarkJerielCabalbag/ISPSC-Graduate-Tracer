@@ -11,10 +11,18 @@ import {
 import { displayYears } from "./utils/utils";
 import GeneralInformation from "./components/form/GeneralInformation";
 import GraduateEmploymentInformation from "./components/form/GraduateEmploymentInformation";
+import { useFormStore } from "./hooks/store";
+import { useEffect, useState } from "react";
 
 const years = displayYears(2020, 2080);
 
 const Form = () => {
+  const [email, setEmail] = useState("");
+  const { handleEmailChange, handleSurveyChange } = useFormStore();
+
+  useEffect(() => {
+    handleEmailChange(email);
+  }, [email]);
   return (
     <div>
       <div className="bg-primary p-10 rounded-md flex items-center gap-5">
@@ -36,31 +44,35 @@ const Form = () => {
           </p>
         </div>
       </div>
-      <form>
-        <div className="my-5">
-          <h1>Email</h1>
-          <Input type="email" />
-        </div>
 
-        <div className="my-5">
-          <h1>Year of Survey</h1>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Year of Survey" />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year: number) => (
-                <SelectItem key={year} value={String(year)}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="my-5">
+        <h1>Email</h1>
+        <Input
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
 
-        <GeneralInformation />
-        <GraduateEmploymentInformation />
-      </form>
+      <div className="my-5">
+        <h1>Year of Survey</h1>
+        <Select onValueChange={(value) => handleSurveyChange(value)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Year of Survey" />
+          </SelectTrigger>
+          <SelectContent>
+            {years.map((year: number) => (
+              <SelectItem key={year} value={String(year)}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <GeneralInformation />
+      <GraduateEmploymentInformation />
     </div>
   );
 };

@@ -1,15 +1,14 @@
 export type Response = {
-  yearOfSurvey?: string;
+  yearOfSurvey?: number;
   email?: string;
   fullName?: string;
-  yearOfGraduation?: string;
-  department?: string;
-  program?: string;
-  major?: string;
-  currentlyEmployed?: string;
-  isJobAligned?: string;
-  isSelfEmployed?: string;
-  isFurtherStudies?: string;
+  yearOfGraduation?: number;
+  departmentId?: number;
+  programId?: number;
+  majorId?: number;
+  isJobAligned?: boolean;
+  isSelfEmployed?: boolean;
+  isFurtherStudies?: boolean;
   typeOfOrganization?: string;
   currentJobLocated?: string;
 };

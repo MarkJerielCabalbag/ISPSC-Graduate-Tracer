@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Response } from "../../types/type";
 import { Input } from "../ui/input";
 import { Select } from "@radix-ui/react-select";
 import {
@@ -9,10 +7,18 @@ import {
   SelectValue,
 } from "../ui/select";
 import { displayYears } from "../../utils/utils";
+import { useFormStore } from "../../hooks/store";
+import { useEffect, useState } from "react";
 
 const years = displayYears(2020, 2080);
 
-const GeneralInformation = ({ fullName, yearOfGraduation }: Response) => {
+const GeneralInformation = () => {
+  const [name, setName] = useState("");
+  const { handleNameChange, handleGraduationChange } = useFormStore();
+  useEffect(() => {
+    handleNameChange(name);
+  }, [name]);
+
   return (
     <div>
       <h1 className="bg-primary p-3 main-font rounded-md">
@@ -22,11 +28,17 @@ const GeneralInformation = ({ fullName, yearOfGraduation }: Response) => {
       <div className="flex items-center gap-5">
         <div className="w-1/2 my-5">
           <h1>Full Name</h1>
-          <Input value={fullName} placeholder="Ex (Juan D. Cruz)" />
+          <Input
+            placeholder="Ex (Juan D. Cruz)"
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
         <div className="w-1/2 my-5">
           <h1>Year of Graduation</h1>
-          <Select>
+          <Select onValueChange={(value) => handleGraduationChange(value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Year of Survey" />
             </SelectTrigger>

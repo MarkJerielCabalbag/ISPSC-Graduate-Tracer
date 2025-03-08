@@ -1,4 +1,5 @@
 const baseUrl = "http://localhost:3000/api/graduateTracer";
+import { Response } from "../types/type";
 export const client = {
   //get list of departments
   async getDepartment() {
@@ -37,6 +38,49 @@ export const client = {
     return await fetch(`${baseUrl}/major/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  //user add response
+  async addResponse({
+    yearOfSurvey,
+    email,
+    fullName,
+    yearOfGraduation,
+    departmentId,
+    programId,
+    majorId,
+    isJobAligned,
+    isSelfEmployed,
+    isFurtherStudies,
+    typeOfOrganization,
+    currentJobLocated,
+  }: Response) {
+    return await fetch(`${baseUrl}/user/add/response`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        yearOfSurvey,
+        email,
+        fullName,
+        yearOfGraduation,
+        departmentId,
+        programId,
+        majorId,
+        isJobAligned,
+        isSelfEmployed,
+        isFurtherStudies,
+        typeOfOrganization,
+        currentJobLocated,
+      }),
     }).then(async (res) => {
       const response = await res.json();
 

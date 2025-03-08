@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { client } from "../api/client";
-
+import { Response } from "../types/type";
 const useGetCollegeDepartment = () => {
   return useQuery({
     queryKey: ["department"],
@@ -21,8 +21,14 @@ const useGetRelatedMajor = (id: number) => {
   });
 };
 
+const useAddResponse = () => {
+  return useMutation({
+    mutationFn: (response: Response) => client.addResponse(response),
+  });
+};
 export const hooks = {
   useGetCollegeDepartment,
   useGetRelatedProgram,
   useGetRelatedMajor,
+  useAddResponse,
 };

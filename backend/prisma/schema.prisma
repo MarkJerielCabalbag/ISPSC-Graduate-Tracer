@@ -22,7 +22,6 @@ model Responses {
   department String?
   program String?
   major String?
-  currentlyEmployed String?
   isJobAligned String?
   isSelfEmployed String?
   isFurtherStudies String?

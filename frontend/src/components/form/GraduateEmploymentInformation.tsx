@@ -11,23 +11,38 @@ import {
   SelectValue,
 } from "../ui/select";
 
-import { displayYears } from "../../utils/utils";
-import { useState } from "react";
-import { Loader2Icon, Send } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { Button } from "../ui/button";
 import RelevanceOfEmployment from "./RelevanceOfEmployment";
 import EmployementSector from "./EmployementSector";
 import LocationOfEmployment from "./LocationOfEmployment";
-
-const years = displayYears(2020, 2080);
+import { useFormStore } from "../../hooks/store";
 
 const GraduateEmploymentInformation = () => {
-  const [departmentId, setDepartmentId] = useState<number | null>(null);
-  const [programId, setProgramId] = useState<number | null>(null);
-  const [isContinueFillOut, setIsContinueFillOut] = useState<boolean>(true);
-  const [isProgramOpen, setOpenProgram] = useState(false);
-  const [isMajorOpen, setOpenMajor] = useState(false);
   const { data: department } = hooks.useGetCollegeDepartment();
+
+  const {
+    isProgramOpen,
+    isMajorOpen,
+
+    yearOfSurvey,
+    email,
+    fullName,
+    yearOfGraduation,
+    departmentId,
+    programId,
+    majorId,
+    isJobAligned,
+    isSelfEmployed,
+    isFurtherStudies,
+    typeOfOrganization,
+    currentJobLocated,
+    isContinueFillOut,
+    handleMajorSelect,
+    handleDepartmentChange,
+    handleMajorChange,
+    handleContinueFillOutChange,
+  } = useFormStore();
 
   const {
     mutateAsync: getDepartment,
@@ -41,19 +56,7 @@ const GraduateEmploymentInformation = () => {
     isPending: isMajorPending,
   } = hooks.useGetRelatedMajor(programId as number);
 
-  const handleDepartmentChange = async (value: string) => {
-    const id = Number(value);
-    setDepartmentId(id);
-    setOpenProgram(true);
-    await getDepartment();
-  };
-
-  const handleMajorChange = async (value: string) => {
-    const id = Number(value);
-    setProgramId(id);
-    setOpenMajor(true);
-    await getMajor();
-  };
+  const { mutateAsync: addResponse } = hooks.useAddResponse();
 
   return (
     <div>
@@ -64,7 +67,11 @@ const GraduateEmploymentInformation = () => {
       <div className="flex items-center gap-5">
         <div className="w-1/2 my-5">
           <h1>College / Department</h1>
-          <Select onValueChange={handleDepartmentChange}>
+          <Select
+            onValueChange={(value) =>
+              handleDepartmentChange(value, getDepartment)
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select College / Department" />
             </SelectTrigger>
@@ -72,23 +79,6 @@ const GraduateEmploymentInformation = () => {
               {department?.map((emInfo: EmploymentInformation) => (
                 <SelectItem key={emInfo.id} value={String(emInfo.id)}>
                   {emInfo.department}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Year of Graduation */}
-        <div className="w-1/2 my-5">
-          <h1>Year of Graduation</h1>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Year Of Graduation" />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year: number) => (
-                <SelectItem key={year} value={String(year)}>
-                  {year}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -104,7 +94,7 @@ const GraduateEmploymentInformation = () => {
       ) : (
         <div className={`w-full mb-5 ${isProgramOpen ? "" : "hidden"}`}>
           <h1>Program</h1>
-          <Select onValueChange={handleMajorChange}>
+          <Select onValueChange={(value) => handleMajorChange(value, getMajor)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Program" />
             </SelectTrigger>
@@ -127,7 +117,7 @@ const GraduateEmploymentInformation = () => {
       ) : (
         <div className={`w-full mb-5 ${isMajorOpen ? "" : "hidden"}`}>
           <h1>Major</h1>
-          <Select>
+          <Select onValueChange={(value) => handleMajorSelect(value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Major" />
             </SelectTrigger>
@@ -146,21 +136,15 @@ const GraduateEmploymentInformation = () => {
         <h1 className="text-lg text-primary mb-3 italic">
           Are you currently employed?
         </h1>
-        <RadioGroup defaultValue="yes">
+        <RadioGroup
+          onValueChange={(value) => handleContinueFillOutChange(value)}
+        >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="yes"
-              id="yes"
-              onClick={() => setIsContinueFillOut(true)}
-            />
+            <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="no"
-              id="no"
-              onClick={() => setIsContinueFillOut(false)}
-            />
+            <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>
@@ -175,7 +159,41 @@ const GraduateEmploymentInformation = () => {
               <Button className="bg-white text-primary shadow-md hover:text-white">
                 Clear
               </Button>
-              <Button>Submit</Button>
+              <Button
+                onClick={async () => {
+                  console.log({
+                    yearOfSurvey: yearOfSurvey,
+                    email: email,
+                    fullName: fullName,
+                    yearOfGraduation: yearOfGraduation,
+                    departmentId: departmentId,
+                    programId: programId,
+                    majorId: majorId,
+                    isJobAligned: isJobAligned,
+                    isSelfEmployed: isSelfEmployed,
+                    isFurtherStudies: isFurtherStudies,
+                    typeOfOrganization: typeOfOrganization,
+                    currentJobLocated: currentJobLocated,
+                  });
+
+                  await addResponse({
+                    yearOfSurvey: parseInt(yearOfSurvey),
+                    email: email,
+                    fullName: fullName,
+                    yearOfGraduation: parseInt(yearOfGraduation),
+                    departmentId: departmentId,
+                    programId: programId,
+                    majorId: majorId,
+                    isJobAligned: isJobAligned,
+                    isSelfEmployed: isSelfEmployed,
+                    isFurtherStudies: isFurtherStudies,
+                    typeOfOrganization: typeOfOrganization,
+                    currentJobLocated: currentJobLocated,
+                  });
+                }}
+              >
+                Submit
+              </Button>
             </div>
           </>
         ) : (
