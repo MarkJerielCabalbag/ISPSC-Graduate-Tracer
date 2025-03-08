@@ -172,13 +172,15 @@ const getRelatedMajor = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const isMajorRelated = await prisma.major.findMany();
+    const isMajorRelated = await prisma.major.findMany({
+      where: {
+        programId: parseInt(programId),
+      },
+    });
 
-    for (let major of isMajorRelated) {
-      if (major.programId === programId) {
-        return res.status(200).send([major]);
-      }
-    }
+    console.log(isMajorRelated);
+
+    return res.status(200).send(isMajorRelated);
   } catch (error) {
     return res.status(400).json({ message: `An error occured: ${error}` });
   }
@@ -188,4 +190,5 @@ export default {
   editMajor,
   removeMajor,
   listMajor,
+  getRelatedMajor,
 };

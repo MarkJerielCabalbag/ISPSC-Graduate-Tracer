@@ -34,7 +34,7 @@ export const client = {
 
   //get major related to program
   async getRelatedMajor(id: number) {
-    return await fetch(`${baseUrl}/department/program/major/${id}`, {
+    return await fetch(`${baseUrl}/major/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then(async (res) => {

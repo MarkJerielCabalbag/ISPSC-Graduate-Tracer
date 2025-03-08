@@ -1,5 +1,7 @@
 import { hooks } from "../../hooks/hooks";
 import { EmploymentInformation } from "../../types/type";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 import {
   Select,
@@ -11,25 +13,46 @@ import {
 
 import { displayYears } from "../../utils/utils";
 import { useState } from "react";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Send } from "lucide-react";
+import { Button } from "../ui/button";
+import RelevanceOfEmployment from "./RelevanceOfEmployment";
+import EmployementSector from "./EmployementSector";
+import LocationOfEmployment from "./LocationOfEmployment";
 
 const years = displayYears(2020, 2080);
 
 const GraduateEmploymentInformation = () => {
   const [departmentId, setDepartmentId] = useState<number | null>(null);
+  const [programId, setProgramId] = useState<number | null>(null);
+  const [isContinueFillOut, setIsContinueFillOut] = useState<boolean>(true);
   const [isProgramOpen, setOpenProgram] = useState(false);
   const [isMajorOpen, setOpenMajor] = useState(false);
-  const { data: department, isLoading: isDepartmentLoading } =
-    hooks.useGetCollegeDepartment();
-  const { mutateAsync, data: programs } = hooks.useGetRelatedProgram(
-    departmentId || 0
-  );
+  const { data: department } = hooks.useGetCollegeDepartment();
+
+  const {
+    mutateAsync: getDepartment,
+    data: programs,
+    isPending: isProgramPending,
+  } = hooks.useGetRelatedProgram(departmentId || 0);
+
+  const {
+    mutateAsync: getMajor,
+    data: majors,
+    isPending: isMajorPending,
+  } = hooks.useGetRelatedMajor(programId as number);
 
   const handleDepartmentChange = async (value: string) => {
     const id = Number(value);
     setDepartmentId(id);
     setOpenProgram(true);
-    await mutateAsync();
+    await getDepartment();
+  };
+
+  const handleMajorChange = async (value: string) => {
+    const id = Number(value);
+    setProgramId(id);
+    setOpenMajor(true);
+    await getMajor();
   };
 
   return (
@@ -46,18 +69,11 @@ const GraduateEmploymentInformation = () => {
               <SelectValue placeholder="Select College / Department" />
             </SelectTrigger>
             <SelectContent>
-              {isDepartmentLoading ? (
-                <div className="flex justify-center items-center my-3 text-primary">
-                  <Loader2Icon className="animate-spin" /> Loading
-                  Departments...
-                </div>
-              ) : (
-                department?.map((emInfo: EmploymentInformation) => (
-                  <SelectItem key={emInfo.id} value={String(emInfo.id)}>
-                    {emInfo.department}
-                  </SelectItem>
-                ))
-              )}
+              {department?.map((emInfo: EmploymentInformation) => (
+                <SelectItem key={emInfo.id} value={String(emInfo.id)}>
+                  {emInfo.department}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -80,53 +96,99 @@ const GraduateEmploymentInformation = () => {
         </div>
       </div>
 
-      {isProgramOpen && (
-        <div className="w-full mb-5">
+      {isProgramPending ? (
+        <div className="my-5 flex gap-2 items-center text-primary">
+          <Loader2Icon className="animate-spin" />
+          Program is loading...
+        </div>
+      ) : (
+        <div className={`w-full mb-5 ${isProgramOpen ? "" : "hidden"}`}>
           <h1>Program</h1>
-          <Select>
+          <Select onValueChange={handleMajorChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Program" />
             </SelectTrigger>
             <SelectContent>
-              {isDepartmentLoading ? (
-                <div className="flex justify-center items-center my-3 text-primary">
-                  <Loader2Icon className="animate-spin" /> Loading Programs...
-                </div>
-              ) : (
-                programs?.map((program: EmploymentInformation) => (
-                  <SelectItem key={program.id} value={String(program.id)}>
-                    {program.program}
-                  </SelectItem>
-                ))
-              )}
+              {programs?.map((program: EmploymentInformation) => (
+                <SelectItem key={program.id} value={String(program.id)}>
+                  {program.program}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
       )}
 
-      {isMajorOpen && (
-        <div className="w-full mb-5">
-          <h1>Program</h1>
+      {isMajorPending ? (
+        <div className="my-5 flex gap-2 items-center text-primary collapse">
+          <Loader2Icon className="animate-spin" />
+          Major is loading...
+        </div>
+      ) : (
+        <div className={`w-full mb-5 ${isMajorOpen ? "" : "hidden"}`}>
+          <h1>Major</h1>
           <Select>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Major" />
             </SelectTrigger>
             <SelectContent>
-              {isDepartmentLoading ? (
-                <div className="flex justify-center items-center my-3 text-primary">
-                  <Loader2Icon className="animate-spin" /> Loading Programs...
-                </div>
-              ) : (
-                programs?.map((program: EmploymentInformation) => (
-                  <SelectItem key={program.id} value={String(program.id)}>
-                    {program.program}
-                  </SelectItem>
-                ))
-              )}
+              {majors?.map((major: EmploymentInformation) => (
+                <SelectItem key={major.id} value={String(major.id)}>
+                  {major.major}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
       )}
+
+      <div>
+        <h1 className="text-lg text-primary mb-3 italic">
+          Are you currently employed?
+        </h1>
+        <RadioGroup defaultValue="yes">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="yes"
+              id="yes"
+              onClick={() => setIsContinueFillOut(true)}
+            />
+            <Label htmlFor="yes">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="no"
+              id="no"
+              onClick={() => setIsContinueFillOut(false)}
+            />
+            <Label htmlFor="no">No</Label>
+          </div>
+        </RadioGroup>
+
+        {isContinueFillOut ? (
+          <>
+            <RelevanceOfEmployment />
+            <EmployementSector />
+            <LocationOfEmployment />
+
+            <div className="my-5 flex justify-end items-center gap-5">
+              <Button className="bg-white text-primary shadow-md hover:text-white">
+                Clear
+              </Button>
+              <Button>Submit</Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="my-5 flex justify-end items-center gap-5">
+              <Button className="bg-white text-primary shadow-md hover:text-white">
+                Clear
+              </Button>
+              <Button>Submit</Button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

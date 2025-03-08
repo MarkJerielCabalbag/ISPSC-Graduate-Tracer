@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
+import { send } from "process";
 
 const prisma = new PrismaClient();
 
@@ -135,13 +136,15 @@ const getRelatedProgram = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const isProgramRelated = await prisma.program.findMany();
+    const isProgramRelated = await prisma.program.findMany({
+      where: {
+        departmentId: parseInt(departmentId),
+      },
+    });
 
-    for (let program of isProgramRelated) {
-      if (program.departmentId === departmentId) {
-        return res.status(200).send([program]);
-      }
-    }
+    console.log(isProgramRelated);
+
+    return res.status(200).send(isProgramRelated);
   } catch (error) {
     return res.status(400).json({ message: `An error occured: ${error}` });
   }

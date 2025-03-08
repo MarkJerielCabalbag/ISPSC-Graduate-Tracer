@@ -18,4 +18,5 @@ export type EmploymentInformation = {
   id?: number | undefined;
   department?: string;
   program?: string;
+  major?: string;
 };

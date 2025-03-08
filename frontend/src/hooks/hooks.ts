@@ -11,10 +11,18 @@ const useGetCollegeDepartment = () => {
 const useGetRelatedProgram = (id: number) => {
   return useMutation({
     mutationFn: () => client.getRelatedProgram(id),
+    onSuccess: () => {},
+  });
+};
+
+const useGetRelatedMajor = (id: number) => {
+  return useMutation({
+    mutationFn: () => client.getRelatedMajor(id),
   });
 };
 
 export const hooks = {
   useGetCollegeDepartment,
   useGetRelatedProgram,
+  useGetRelatedMajor,
 };

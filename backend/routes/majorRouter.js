@@ -15,4 +15,7 @@ majorRouter.post("/edit/:majorId", majorController.editMajor);
 //list major
 majorRouter.get("/list", majorController.listMajor);
 
+//get related major from program
+majorRouter.post("/:programId", majorController.getRelatedMajor);
+
 export default majorRouter;
