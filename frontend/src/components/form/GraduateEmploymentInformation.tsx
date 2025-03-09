@@ -55,7 +55,8 @@ const GraduateEmploymentInformation = () => {
     isPending: isMajorPending,
   } = hooks.useGetRelatedMajor(programId as number);
 
-  const { mutateAsync: addResponse } = hooks.useAddResponse();
+  const { mutateAsync: addResponse, isPending: isAddResponsePending } =
+    hooks.useAddResponse();
 
   return (
     <div>
@@ -156,41 +157,48 @@ const GraduateEmploymentInformation = () => {
               <Button className="bg-white text-primary shadow-md hover:text-white">
                 Clear
               </Button>
-              <Button
-                onClick={async () => {
-                  console.log({
-                    yearOfSurvey: yearOfSurvey,
-                    email: email,
-                    fullName: fullName,
-                    yearOfGraduation: yearOfGraduation,
-                    departmentId: departmentId,
-                    programId: programId,
-                    majorId: majorId,
-                    isJobAligned: isJobAligned,
-                    isSelfEmployed: isSelfEmployed,
-                    isFurtherStudies: isFurtherStudies,
-                    typeOfOrganization: typeOfOrganization,
-                    currentJobLocated: currentJobLocated,
-                  });
 
-                  await addResponse({
-                    yearOfSurvey: parseInt(yearOfSurvey),
-                    email: email,
-                    fullName: fullName,
-                    yearOfGraduation: parseInt(yearOfGraduation),
-                    departmentId: departmentId,
-                    programId: programId,
-                    majorId: majorId,
-                    isJobAligned: isJobAligned,
-                    isSelfEmployed: isSelfEmployed,
-                    isFurtherStudies: isFurtherStudies,
-                    typeOfOrganization: typeOfOrganization,
-                    currentJobLocated: currentJobLocated,
-                  });
-                }}
-              >
-                Submit
-              </Button>
+              {isAddResponsePending ? (
+                <Button className="bg-primary text-white">
+                  <Loader2Icon className="animate-spin" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={async () => {
+                    console.log({
+                      yearOfSurvey: yearOfSurvey,
+                      email: email,
+                      fullName: fullName,
+                      yearOfGraduation: yearOfGraduation,
+                      departmentId: departmentId,
+                      programId: programId,
+                      majorId: majorId,
+                      isJobAligned: isJobAligned,
+                      isSelfEmployed: isSelfEmployed,
+                      isFurtherStudies: isFurtherStudies,
+                      typeOfOrganization: typeOfOrganization,
+                      currentJobLocated: currentJobLocated,
+                    });
+
+                    await addResponse({
+                      yearOfSurvey: parseInt(yearOfSurvey),
+                      email: email,
+                      fullName: fullName,
+                      yearOfGraduation: parseInt(yearOfGraduation),
+                      departmentId: departmentId,
+                      programId: programId,
+                      majorId: majorId,
+                      isJobAligned: isJobAligned,
+                      isSelfEmployed: isSelfEmployed,
+                      isFurtherStudies: isFurtherStudies,
+                      typeOfOrganization: typeOfOrganization,
+                      currentJobLocated: currentJobLocated,
+                    });
+                  }}
+                >
+                  Submit
+                </Button>
+              )}
             </div>
           </>
         ) : (

@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3000/api/graduateTracer";
+const baseUrl = "https://ispsc-graduate-tracer.onrender.com/api/graduateTracer";
 import { Response } from "../types/type";
 export const client = {
   //get list of departments
