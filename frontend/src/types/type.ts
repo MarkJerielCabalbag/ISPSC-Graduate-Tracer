@@ -6,9 +6,9 @@ export type Response = {
   departmentId?: number;
   programId?: number;
   majorId?: number;
-  isJobAligned?: boolean;
-  isSelfEmployed?: boolean;
-  isFurtherStudies?: boolean;
+  isJobAligned?: string;
+  isSelfEmployed?: string;
+  isFurtherStudies?: string;
   typeOfOrganization?: string;
   currentJobLocated?: string;
 };
