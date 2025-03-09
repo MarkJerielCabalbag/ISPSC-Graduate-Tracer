@@ -24,7 +24,6 @@ const GraduateEmploymentInformation = () => {
   const {
     isProgramOpen,
     isMajorOpen,
-
     yearOfSurvey,
     email,
     fullName,
@@ -64,26 +63,24 @@ const GraduateEmploymentInformation = () => {
         II. Graduate Employment Information
       </h1>
 
-      <div className="flex items-center gap-5">
-        <div className="w-1/2 my-5">
-          <h1>College / Department</h1>
-          <Select
-            onValueChange={(value) =>
-              handleDepartmentChange(value, getDepartment)
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select College / Department" />
-            </SelectTrigger>
-            <SelectContent>
-              {department?.map((emInfo: EmploymentInformation) => (
-                <SelectItem key={emInfo.id} value={String(emInfo.id)}>
-                  {emInfo.department}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="my-5">
+        <h1>College / Department</h1>
+        <Select
+          onValueChange={(value) =>
+            handleDepartmentChange(value, getDepartment)
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select College / Department" />
+          </SelectTrigger>
+          <SelectContent>
+            {department?.map((emInfo: EmploymentInformation) => (
+              <SelectItem key={emInfo.id} value={String(emInfo.id)}>
+                {emInfo.department}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {isProgramPending ? (

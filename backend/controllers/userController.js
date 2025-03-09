@@ -1,8 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
 import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const nodemailer = require("nodemailer");
+import { sendGraduateTracerEmail } from "../utils/sendGraduateTracerEmail.js";
+
 const prisma = new PrismaClient();
 
 //@DESC     add response
@@ -70,49 +70,27 @@ const addResponse = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const newResponse = await prisma.responses.create({
-      data: {
-        fullName: fullName,
-        yearOfGraduation: parseInt(yearOfGraduation),
-        yearOfSurvey: parseInt(yearOfSurvey),
+    const [newResponse, emailResult] = await Promise.all([
+      prisma.responses.create({
+        data: {
+          fullName,
+          yearOfGraduation: parseInt(yearOfGraduation),
+          yearOfSurvey: parseInt(yearOfSurvey),
+          isJobAligned,
+          isSelfEmployed,
+          isFurtherStudies,
+          typeOfOrganization,
+          currentJobLocated,
+          email,
+          department: department?.department,
+          program: program?.program,
+          major: major?.major,
+        },
+      }),
+      sendGraduateTracerEmail(email, fullName),
+    ]);
 
-        isJobAligned: isJobAligned,
-        isSelfEmployed: isSelfEmployed,
-        isFurtherStudies: isFurtherStudies,
-        typeOfOrganization: typeOfOrganization,
-        currentJobLocated: currentJobLocated,
-        email: email,
-        department: department.department,
-        program: program.program,
-        major: major.major,
-      },
-    });
-    const nodemailer = (await import("nodemailer")).default;
-    const transporter = nodemailer.createTransport({
-      host: "live.smtp.mailtrap.io",
-      port: 587,
-      secure: false, // use SSL
-      auth: {
-        user: "1a2b3c4d5e6f7g",
-        pass: "1a2b3c4d5e6f7g",
-      },
-    });
-
-    const mailOptions = {
-      from: "cabalbagmarkg@gmail.com",
-      to: "silverignite23@gmail.com",
-      subject: "Sending Email using Node.js",
-      text: "That was easy!",
-    };
-
-    // Send the email
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    console.log("Email sent: ", emailResult.response);
 
     return res.status(200).json({
       message: `Thank you ${newResponse.fullName} for being part of this tracing!`,

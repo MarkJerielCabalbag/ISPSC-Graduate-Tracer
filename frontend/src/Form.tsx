@@ -25,19 +25,21 @@ const Form = () => {
   }, [email]);
   return (
     <div>
-      <div className="bg-primary p-10 rounded-md flex items-center gap-5">
-        <img src={logo} alt="ispsc logo" className="w-20 h-20" />
-        <img
-          src={bagongPilipinas}
-          alt="bagong-pilipinas"
-          className="w-20 h-20 "
-        />
-        <div>
-          <h1 className="main-font text-xl">
+      <div className="bg-primary p-10 rounded-md flex flex-col items-center text-center gap-3">
+        <div className="flex gap-2 items-center">
+          <img src={logo} alt="ispsc logo" className="w-20 h-20" />
+          <img
+            src={bagongPilipinas}
+            alt="bagong-pilipinas"
+            className="w-20 h-20 "
+          />
+        </div>
+        <div className="">
+          <h1 className="main-font sm:text-lg md:text-2xl">
             Ilocos Sur Polytechnic State College
           </h1>
           <p
-            className="main-font
+            className="main-font sm:text-sm md:text-xl
           "
           >
             Sta. Maria Campus
