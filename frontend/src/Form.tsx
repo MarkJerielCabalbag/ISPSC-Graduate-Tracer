@@ -54,6 +54,7 @@ const Form = () => {
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
         />
       </div>
 

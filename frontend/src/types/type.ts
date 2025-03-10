@@ -6,6 +6,7 @@ export type Response = {
   departmentId?: number;
   programId?: number;
   majorId?: number;
+  isEmployed?: string;
   isJobAligned?: string;
   isSelfEmployed?: string;
   isFurtherStudies?: string;

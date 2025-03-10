@@ -23,6 +23,7 @@ model Responses {
   department String?
   program String?
   major String?
+  isEmployed String?
   isJobAligned String?
   isSelfEmployed String?
   isFurtherStudies String?

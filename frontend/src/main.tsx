@@ -13,9 +13,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
+import Dashboard from "./admin/components/Dashboard";
 
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path="/" element={<App />}></Route>)
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route path="/admin" element={<Dashboard />} />
+    </Route>
+  )
 );
 
 createRoot(document.getElementById("root")!).render(

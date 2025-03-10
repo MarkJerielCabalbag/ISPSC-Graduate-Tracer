@@ -17,6 +17,7 @@ const addResponse = asyncHandler(async (req, res, next) => {
     departmentId,
     programId,
     majorId,
+    isEmployed,
     isJobAligned,
     isSelfEmployed,
     isFurtherStudies,
@@ -30,13 +31,8 @@ const addResponse = asyncHandler(async (req, res, next) => {
   //   !fullName ||
   //   !yearOfGraduation ||
   //   !departmentId ||
-  //   !program ||
-  //   !currentlyEmployed ||
-  //   !isJobAligned ||
-  //   !isSelfEmployed ||
-  //   !isFurtherStudies ||
-  //   !typeOfOrganization ||
-  //   !currentJobLocated
+  //   !programId ||
+  //   !isEmployed
   // ) {
   //   return res.status(400).json({ message: "Please fill all fields" });
   // }
@@ -76,6 +72,7 @@ const addResponse = asyncHandler(async (req, res, next) => {
           fullName,
           yearOfGraduation: parseInt(yearOfGraduation),
           yearOfSurvey: parseInt(yearOfSurvey),
+          isEmployed,
           isJobAligned,
           isSelfEmployed,
           isFurtherStudies,

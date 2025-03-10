@@ -17,6 +17,7 @@ import RelevanceOfEmployment from "./RelevanceOfEmployment";
 import EmployementSector from "./EmployementSector";
 import LocationOfEmployment from "./LocationOfEmployment";
 import { useFormStore } from "../../hooks/store";
+import toast from "react-hot-toast";
 
 const GraduateEmploymentInformation = () => {
   const { data: department } = hooks.useGetCollegeDepartment();
@@ -165,35 +166,22 @@ const GraduateEmploymentInformation = () => {
               ) : (
                 <Button
                   onClick={async () => {
-                    console.log({
-                      yearOfSurvey: yearOfSurvey,
-                      email: email,
-                      fullName: fullName,
-                      yearOfGraduation: yearOfGraduation,
-                      departmentId: departmentId,
-                      programId: programId,
-                      majorId: majorId,
-                      isJobAligned: isJobAligned,
-                      isSelfEmployed: isSelfEmployed,
-                      isFurtherStudies: isFurtherStudies,
-                      typeOfOrganization: typeOfOrganization,
-                      currentJobLocated: currentJobLocated,
-                    });
-
-                    await addResponse({
-                      yearOfSurvey: parseInt(yearOfSurvey),
-                      email: email,
-                      fullName: fullName,
-                      yearOfGraduation: parseInt(yearOfGraduation),
-                      departmentId: departmentId,
-                      programId: programId,
-                      majorId: majorId,
-                      isJobAligned: isJobAligned,
-                      isSelfEmployed: isSelfEmployed,
-                      isFurtherStudies: isFurtherStudies,
-                      typeOfOrganization: typeOfOrganization,
-                      currentJobLocated: currentJobLocated,
-                    });
+                    try {
+                      await addResponse({
+                        yearOfSurvey: parseInt(yearOfSurvey),
+                        email: email,
+                        fullName: fullName,
+                        yearOfGraduation: parseInt(yearOfGraduation),
+                        departmentId: departmentId,
+                        programId: programId,
+                        majorId: majorId,
+                        isJobAligned: isJobAligned,
+                        isSelfEmployed: isSelfEmployed,
+                        isFurtherStudies: isFurtherStudies,
+                        typeOfOrganization: typeOfOrganization,
+                        currentJobLocated: currentJobLocated,
+                      });
+                    } catch (e) {}
                   }}
                 >
                   Submit

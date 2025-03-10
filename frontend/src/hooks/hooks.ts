@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { client } from "../api/client";
 import { Response } from "../types/type";
+import toast from "react-hot-toast";
 const useGetCollegeDepartment = () => {
   return useQuery({
     queryKey: ["department"],
@@ -21,9 +22,13 @@ const useGetRelatedMajor = (id: number) => {
   });
 };
 
-const useAddResponse = () => {
+const useAddResponse = (onSuccess?: () => void) => {
   return useMutation({
     mutationFn: (response: Response) => client.addResponse(response),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      onSuccess?.();
+    },
   });
 };
 export const hooks = {

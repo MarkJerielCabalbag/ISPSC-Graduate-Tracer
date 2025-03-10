@@ -64,7 +64,7 @@ export const useFormStore = create<FormState>((set) => ({
   isContinueFillOut: false,
 
   //the questions
-  isEmployed: "yes",
+  isEmployed: "",
 
   handleDepartmentChange: async (value, getDepartment) => {
     const id = Number(value);
