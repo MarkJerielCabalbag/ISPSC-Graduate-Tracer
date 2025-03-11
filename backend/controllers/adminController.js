@@ -14,117 +14,139 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
     distinct: ["yearOfGraduation"],
   });
 
-  // Get the totals for each year
+  // Get the totals for each year and program
   const summary = await Promise.all(
     years.map(async (graduate) => {
-      const totalGraduates = await prisma.responses.count({
+      const programs = await prisma.responses.findMany({
         where: {
           yearOfGraduation: graduate.yearOfGraduation,
         },
-      });
-
-      // const totalTracedStudents = await prisma.responses.count({
-      //   where: {
-      //     yearOfGraduation: graduate.yearOfGraduation,
-      //     traced: true,
-      //   },
-      // });
-
-      const totalEmployedStudents = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          isEmployed: true,
+        select: {
+          program: true,
         },
+        distinct: ["program"],
       });
 
-      const totalEmployedGraduatesAlignedToTheirProgram =
-        await prisma.responses.count({
-          where: {
-            yearOfGraduation: graduate.yearOfGraduation,
-            isJobAligned: true,
-          },
-        });
+      const programData = await Promise.all(
+        programs.map(async (program) => {
+          const totalGraduates = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+            },
+          });
 
-      const totalEmployedGraduatesNotAlignedToTheirProgram =
-        await prisma.responses.count({
-          where: {
-            yearOfGraduation: graduate.yearOfGraduation,
-            isJobAligned: "no",
-          },
-        });
+          const totalEmployedStudents = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+              isEmployed: "yes",
+            },
+          });
 
-      const totalOfSelfEmployed = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          isSelfEmployed: true,
-        },
-      });
+          const totalEmployedGraduatesAlignedToTheirProgram =
+            await prisma.responses.count({
+              where: {
+                yearOfGraduation: graduate.yearOfGraduation,
+                program: program.program,
+                isJobAligned: "yes",
+              },
+            });
 
-      const totalOfGraduatesEnrolledInFurtherStudies =
-        await prisma.responses.count({
-          where: {
-            yearOfGraduation: graduate.yearOfGraduation,
-            isFurtherStudies: true,
-          },
-        });
+          const totalEmployedGraduatesNotAlignedToTheirProgram =
+            await prisma.responses.count({
+              where: {
+                yearOfGraduation: graduate.yearOfGraduation,
+                program: program.program,
+                isJobAligned: "no",
+              },
+            });
 
-      const totalOfGraduatesEmployedInGovernment = await prisma.responses.count(
-        {
-          where: {
-            yearOfGraduation: graduate.yearOfGraduation,
-            typeOforganization: "government",
-          },
-        }
+          const totalOfSelfEmployed = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+              isSelfEmployed: "yes",
+            },
+          });
+
+          const totalOfGraduatesEnrolledInFurtherStudies =
+            await prisma.responses.count({
+              where: {
+                yearOfGraduation: graduate.yearOfGraduation,
+                program: program.program,
+                isFurtherStudies: "yes",
+              },
+            });
+
+          const totalOfGraduatesEmployedInGovernment =
+            await prisma.responses.count({
+              where: {
+                yearOfGraduation: graduate.yearOfGraduation,
+                program: program.program,
+                typeOfOrganization: "government",
+              },
+            });
+
+          const totalOfGraduatesEmployedInPrivate =
+            await prisma.responses.count({
+              where: {
+                yearOfGraduation: graduate.yearOfGraduation,
+                program: program.program,
+                typeOfOrganization: "private institution",
+              },
+            });
+
+          const totalOfGraduatesFreelance = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+              typeOfOrganization: "entrepreneurial / freelance",
+            },
+          });
+
+          const totalOfGraduatesEmployedLocally = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+              currentJobLocated: "locally",
+            },
+          });
+
+          const totalOfGraduatesEmployedAbroad = await prisma.responses.count({
+            where: {
+              yearOfGraduation: graduate.yearOfGraduation,
+              program: program.program,
+              currentJobLocated: "abroad",
+            },
+          });
+
+          return {
+            program: program.program,
+            totalGraduates,
+            totalEmployedStudents,
+            totalEmployedGraduatesAlignedToTheirProgram,
+            totalEmployedGraduatesNotAlignedToTheirProgram,
+            totalOfSelfEmployed,
+            totalOfGraduatesEnrolledInFurtherStudies,
+            totalOfGraduatesEmployedInGovernment,
+            totalOfGraduatesEmployedInPrivate,
+            totalOfGraduatesFreelance,
+            totalOfGraduatesEmployedLocally,
+            totalOfGraduatesEmployedAbroad,
+          };
+        })
       );
-
-      const totalOfGraduatesEmployedInPrivate = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          typeOfOrganization: "private institution",
-        },
-      });
-
-      const totalOfGraduatesFreelance = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          typeOforganization: "entreprenueral / freelance",
-        },
-      });
-
-      const totalOfGraduatesEmployedLocally = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          currentJobLocated: "locally",
-        },
-      });
-
-      const totalOfGraduatesEmployedAbroad = await prisma.responses.count({
-        where: {
-          yearOfGraduation: graduate.yearOfGraduation,
-          currentJobLocated: "abroad",
-        },
-      });
 
       return {
         yearOfGraduation: graduate.yearOfGraduation,
-        totalGraduates,
-        totalTracedStudents,
-        totalEmployedStudents,
-        totalEmployedGraduatesAlignedToTheirProgram,
-        totalEmployedGraduatesNotAlignedToTheirProgram,
-        totalOfSelfEmployed,
-        totalOfGraduatesEnrolledInFurtherStudies,
-        totalOfGraduatesEmployedInGovernment,
-        totalOfGraduatesEmployedInPrivate,
-        totalOfGraduatesFreelance,
-        totalOfGraduatesEmployedLocally,
-        totalOfGraduatesEmployedAbroad,
+        programData,
       };
     })
   );
 
   console.log(summary);
-  return res.status(200).json(summary);
+  return res.status(200).send(summary);
 });
 
 export default {

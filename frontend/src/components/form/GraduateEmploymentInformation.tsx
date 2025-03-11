@@ -26,6 +26,7 @@ const GraduateEmploymentInformation = () => {
     isProgramOpen,
     isMajorOpen,
     yearOfSurvey,
+    isEmployed,
     email,
     fullName,
     yearOfGraduation,
@@ -180,6 +181,7 @@ const GraduateEmploymentInformation = () => {
                         isFurtherStudies: isFurtherStudies,
                         typeOfOrganization: typeOfOrganization,
                         currentJobLocated: currentJobLocated,
+                        isEmployed: isEmployed,
                       });
                     } catch (e) {}
                   }}
