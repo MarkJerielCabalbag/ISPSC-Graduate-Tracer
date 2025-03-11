@@ -13,13 +13,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
-import Dashboard from "./admin/components/Dashboard";
+import Dashboard from "./admin/Dashboard.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <>
+      <Route path="/" element={<App />} />
       <Route path="/admin" element={<Dashboard />} />
-    </Route>
+    </>
   )
 );
 

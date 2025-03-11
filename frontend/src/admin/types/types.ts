@@ -1,11 +1,10 @@
-export type TableProps<T> = {
-  tableHeader?: React.ReactNode;
-  tableBody?: React.ReactNode;
-  tableFooter?: React.ReactNode;
-  to?: string;
-  data?: T[];
-  column?: AccessorKeyColumnDef<T>[];
+export type ModalType = {
+  isOpen: boolean;
+  handleIsOpen: (value: boolean) => void;
+};
 
-  setPagination: (prev: PaginationProps) => void;
-  rowLength: number;
+export type collegeDepartment = {
+  id?: number;
+  program?: string;
+  department?: string;
 };

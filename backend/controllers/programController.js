@@ -11,7 +11,7 @@ const addProgram = asyncHandler(async (req, res, next) => {
   const { program } = req.body;
 
   if (!program) {
-    return res.status(200).json({ message: "Please fill all fields" });
+    return res.status(400).json({ message: "Please fill all fields" });
   }
 
   const isDepartmentExist = await prisma.department.findUnique({
@@ -64,7 +64,7 @@ const editProgram = asyncHandler(async (req, res, next) => {
   const { program } = req.body;
 
   if (!program) {
-    return res.status(200).json({ message: "Please fill all fields" });
+    return res.status(400).json({ message: "Please fill all fields" });
   }
 
   const isDepartmentExist = await prisma.program.findUnique({
