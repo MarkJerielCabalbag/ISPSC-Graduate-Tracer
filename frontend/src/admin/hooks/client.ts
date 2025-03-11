@@ -51,3 +51,10 @@ export const useCreateMajor = (major: string, programId: number) => {
     },
   });
 };
+
+export const useGetSummaryData = () => {
+  return useQuery({
+    queryKey: ["summaryData"],
+    queryFn: () => client.getSummaryData(),
+  });
+};

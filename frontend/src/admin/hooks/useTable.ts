@@ -1,10 +1,13 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import {
+  createColumnHelper,
+  AccessorKeyColumnDef,
+} from "@tanstack/react-table";
 
-const columnHelper = createColumnHelper();
+const columnHelper: AccessorKeyColumnDef<unknown>[] = createColumnHelper();
 
-export const adminColumns = [
-  columnHelper.accessor("yearOfGraduates", {
-    id: "yearOfGraduates",
+export const adminColumns: AccessorKeyColumnDef<unknown>[] = [
+  columnHelper.accessor("yearOfGraduation", {
+    id: "yearOfGraduation",
     header: "Year of Graduates",
     cell: (info) => info.getValue(),
   }),
