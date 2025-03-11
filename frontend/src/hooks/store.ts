@@ -82,8 +82,8 @@ export const useFormStore = create<FormState>((set) => ({
 
   handleContinueFillOutChange: (value: string) => {
     value === "yes"
-      ? set({ isContinueFillOut: true, isEmployed: value })
-      : set({ isContinueFillOut: false, isEmployed: value });
+      ? set({ isContinueFillOut: true, isEmployed: "yes" })
+      : set({ isContinueFillOut: false, isEmployed: "no" });
   },
 
   handleAlignedJob: (value: string) => set({ isJobAligned: value }),

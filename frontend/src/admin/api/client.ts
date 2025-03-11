@@ -1,3 +1,5 @@
+import { get } from "http";
+
 const baseUrl = "http://localhost:3000/api/graduateTracer";
 export const client = {
   async createDepartmentCollege(department: string) {
@@ -36,6 +38,37 @@ export const client = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ program }),
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async getPrograms() {
+    return await fetch(`${baseUrl}/program/list`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async createMajor(major: string, programId: number) {
+    return await fetch(`${baseUrl}/major/add/${programId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ major }),
     }).then(async (res) => {
       const response = await res.json();
 

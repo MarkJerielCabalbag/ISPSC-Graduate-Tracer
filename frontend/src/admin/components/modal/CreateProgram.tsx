@@ -1,7 +1,5 @@
-import { Loader2 } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -56,7 +54,7 @@ const CreateProgram = ({ isOpen, handleIsOpen }: ModalType) => {
                 <SelectTrigger
                   className={`w-full ${isError ? "border-red-500" : ""}`}
                 >
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Select a college / department that is related to this new program" />
                 </SelectTrigger>
                 <SelectContent>
                   {department?.map((program: collegeDepartment) => (
@@ -84,7 +82,12 @@ const CreateProgram = ({ isOpen, handleIsOpen }: ModalType) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => handleIsOpen(false)}>
+          <AlertDialogCancel
+            onClick={() => {
+              handleIsOpen(!isOpen);
+              setProgramDepartment("", 0);
+            }}
+          >
             Cancel
           </AlertDialogCancel>
           <Button

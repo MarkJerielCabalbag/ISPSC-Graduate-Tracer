@@ -21,9 +21,28 @@ export const useGetCollegeDepartment = () => {
   });
 };
 
+export const useGetPrograms = () => {
+  return useQuery({
+    queryKey: ["programs"],
+    queryFn: () => client.getPrograms(),
+  });
+};
+
 export const useCreateProgram = (program: string, departmentId: number) => {
   return useMutation({
     mutationFn: () => client.createProgram(program, departmentId),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
+
+export const useCreateMajor = (major: string, programId: number) => {
+  return useMutation({
+    mutationFn: () => client.createMajor(major, programId),
     onSuccess: (data) => {
       toast.success(data?.message as string);
     },
