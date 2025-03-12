@@ -40,7 +40,7 @@ const addMajor = asyncHandler(async (req, res, next) => {
   try {
     const newMajor = await prisma.major.create({
       data: {
-        major,
+        major: major.toUpperCase(),
         relatedToProgram: {
           connect: {
             id: parseInt(programId),

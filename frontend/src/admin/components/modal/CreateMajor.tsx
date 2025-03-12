@@ -72,7 +72,7 @@ const CreateMajor = ({ isOpen, handleIsOpen }: ModalType) => {
                 <Label className="my-3">Major Name</Label>
                 <Input
                   type="text"
-                  value={major}
+                  value={major.toUpperCase()}
                   onChange={(e) => setMajorProgram(e.target.value, programId)}
                 />
               </>

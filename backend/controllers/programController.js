@@ -95,7 +95,7 @@ const editProgram = asyncHandler(async (req, res, next) => {
         id: parseInt(programId),
       },
       data: {
-        program: req.body.program || undefined,
+        program: req.body.program.toUpperCase() || undefined,
       },
     });
 

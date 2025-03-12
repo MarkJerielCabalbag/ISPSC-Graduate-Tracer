@@ -94,4 +94,20 @@ export const client = {
       return response;
     });
   },
+
+  //get overview
+  async getOverviewTracedGraduates() {
+    return await fetch(`${baseUrl}/admin/overviewTracedGraduates`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

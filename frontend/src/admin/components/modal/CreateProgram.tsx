@@ -72,7 +72,7 @@ const CreateProgram = ({ isOpen, handleIsOpen }: ModalType) => {
                 <Input
                   placeholder="Please enter the program name"
                   type="text"
-                  value={program}
+                  value={program.toUpperCase()}
                   onChange={(e) =>
                     setProgramDepartment(e.target.value, departmentId)
                   }

@@ -21,3 +21,14 @@ export type TableProps<T> = {
 
   rowLength: number;
 };
+
+export type FormatData<T, U> = {
+  yearData?: T;
+  programData?: U;
+};
+
+export type OverviewTracedGraduates = {
+  id: string;
+  department: string;
+  totalTracedGraduates: number;
+};

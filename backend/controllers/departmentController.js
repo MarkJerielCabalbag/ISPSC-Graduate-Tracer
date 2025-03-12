@@ -26,7 +26,7 @@ const addDepartment = asyncHandler(async (req, res, next) => {
   try {
     const newDepartment = await prisma.department.create({
       data: {
-        department: department,
+        department: department.toUpperCase(),
       },
     });
 

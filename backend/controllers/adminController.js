@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
-
+import { uid } from "uid";
 const prisma = new PrismaClient();
 
 //@DESC     add department
@@ -149,6 +149,37 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
   return res.status(200).send(summary);
 });
 
+//@DESC     overview traced students
+//@ROUTE    /api/graduateTracer/admin/overviewStudents
+//@ACCESS   Get
+const overviewTracedStudents = asyncHandler(async (req, res, next) => {
+  const departments = await prisma.department.findMany({
+    select: {
+      department: true,
+    },
+    distinct: ["department"],
+  });
+
+  const overviewTraced = await Promise.all(
+    departments.map(async (department) => {
+      const countTracedStudents = await prisma.responses.count({
+        where: {
+          department: department.department,
+        },
+      });
+
+      return {
+        id: uid(),
+        department: department.department,
+        totalTracedGraduates: countTracedStudents,
+      };
+    })
+  );
+
+  return res.status(200).send(overviewTraced);
+});
+
 export default {
   getSummaryData,
+  overviewTracedStudents,
 };

@@ -58,3 +58,10 @@ export const useGetSummaryData = () => {
     queryFn: () => client.getSummaryData(),
   });
 };
+
+export const useGetOverviewTracedGraduates = () => {
+  return useQuery({
+    queryKey: ["overviewTracedGraduates"],
+    queryFn: () => client.getOverviewTracedGraduates(),
+  });
+};

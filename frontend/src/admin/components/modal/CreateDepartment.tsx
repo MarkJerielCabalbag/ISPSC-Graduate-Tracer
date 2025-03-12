@@ -36,7 +36,7 @@ const CreateDepartment = ({ isOpen, handleIsOpen }: ModalType) => {
               className={`${isError ? "border-red-500" : ""}`}
               type="text"
               placeholder="Please enter college / department name"
-              value={department}
+              value={department.toUpperCase()}
               onChange={(e) => setCollegeDepartment(e.target.value)}
             />
           </AlertDialogDescription>
