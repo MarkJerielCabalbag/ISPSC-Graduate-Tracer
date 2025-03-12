@@ -110,4 +110,20 @@ export const client = {
       return response;
     });
   },
+
+  //list of programs
+  async listOfPrograms() {
+    return await fetch(`${baseUrl}/admin/listOfPrograms`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

@@ -9,4 +9,6 @@ adminRouter.get(
   adminController.overviewTracedStudents
 );
 
+adminRouter.get("/listOfPrograms", adminController.listOfPrograms);
+
 export default adminRouter;

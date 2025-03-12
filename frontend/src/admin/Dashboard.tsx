@@ -31,7 +31,6 @@ const Dashboard = () => {
       }))
   );
 
-  console.log(formattedData);
   return (
     <div>
       <Header />

@@ -65,3 +65,10 @@ export const useGetOverviewTracedGraduates = () => {
     queryFn: () => client.getOverviewTracedGraduates(),
   });
 };
+
+export const useGetListPrograms = () => {
+  return useQuery({
+    queryKey: ["listOfPrograms"],
+    queryFn: () => client.listOfPrograms(),
+  });
+};

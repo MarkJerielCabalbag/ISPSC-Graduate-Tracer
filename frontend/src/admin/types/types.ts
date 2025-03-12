@@ -32,3 +32,10 @@ export type OverviewTracedGraduates = {
   department: string;
   totalTracedGraduates: number;
 };
+
+export type FilterType<T> = {
+  table: () => void;
+  setColumnFilters: () => void;
+  columnFilters: () => void;
+  statuses: T[];
+};

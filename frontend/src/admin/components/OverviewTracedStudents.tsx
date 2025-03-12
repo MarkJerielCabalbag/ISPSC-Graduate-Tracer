@@ -1,13 +1,7 @@
 import { useGetOverviewTracedGraduates } from "../hooks/client";
 import { OverviewTracedGraduates } from "../types/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
+import { Card } from "../../components/ui/card";
+
 const OverviewTracedStudents = () => {
   const { data, isLoading } = useGetOverviewTracedGraduates();
   console.log(data);
@@ -15,9 +9,7 @@ const OverviewTracedStudents = () => {
     <div className="w-[90%] mx-auto my-5">
       <div className="my-5">
         <h1 className="font-bold text-primary text-2xl">Traced Graduates</h1>
-        <h2 className="text-md">
-          Overview of all traced Graduate of Sta. maria Campus
-        </h2>
+        <h2 className="text-md">Graduates of Sta. Maria Campus</h2>
       </div>
       {isLoading ? (
         <div>loading.....</div>

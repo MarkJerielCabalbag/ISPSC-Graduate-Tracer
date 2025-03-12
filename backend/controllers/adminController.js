@@ -179,7 +179,21 @@ const overviewTracedStudents = asyncHandler(async (req, res, next) => {
   return res.status(200).send(overviewTraced);
 });
 
+//@DESC     list of programs
+//@ROUTE    /api/graduateTracer/admin/listOfPrograms
+//@ACCESS   Get
+const listOfPrograms = asyncHandler(async (req, res, next) => {
+  const programs = await prisma.program.findMany({
+    omit: {
+      departmentId: true,
+    },
+  });
+
+  return res.status(200).send(programs);
+});
+
 export default {
   getSummaryData,
   overviewTracedStudents,
+  listOfPrograms,
 };
