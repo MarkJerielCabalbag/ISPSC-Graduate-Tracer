@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import {
   useReactTable,
@@ -6,6 +6,9 @@ import {
   getSortedRowModel,
   flexRender,
   getPaginationRowModel,
+  TableOptions,
+  getFilteredRowModel,
+  ColumnFiltersState,
 } from "@tanstack/react-table";
 
 import {
@@ -16,36 +19,51 @@ import {
 } from "../../../components/ui/card";
 
 import { LucideArrowUpDown } from "lucide-react";
+import { useAdminStore } from "../../hooks/store";
 import { TableProps } from "../../types/types";
+// import Filter from "./Filter";
 
 const DataTable = <T,>({ data, column, tableHeader }: TableProps<T>) => {
   const memoData = useMemo(() => data || [], [data]);
 
   const columns = useMemo(() => column || [], [column]);
 
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const { pagination, setTable } = useAdminStore();
 
   const table = useReactTable({
     data: memoData,
     columns,
     initialState: {
       pagination,
+      columnFilters,
     },
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     rowCount: memoData.length,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
   });
 
-  const [_, setSelectSize] = useState(table.getState().pagination.pageSize);
+  // const [_, setSelectSize] = useState(table.getState().pagination.pageSize);
+
+  useEffect(() => {
+    setTable(table as unknown as TableOptions<unknown>);
+  }, [table]);
 
   return (
     <div className="w-[100%] ">
       <Card className="rounded-md">
-        <CardHeader>{tableHeader}</CardHeader>
+        <CardHeader>
+          {tableHeader}
+
+          <Filter
+            setColumnFilters={setColumnFilters}
+            columnFilters={columnFilters}
+          />
+        </CardHeader>
         <CardContent>
           <Card className="overflow-auto">
             <table className="w-full min-w-max table-auto text-left">
