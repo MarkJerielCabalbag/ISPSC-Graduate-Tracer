@@ -1,15 +1,4 @@
-import type {
-  AccessorKeyColumnDef,
-  AccessorKeyColumnDefBase,
-  Column,
-  ColumnDef,
-  ColumnFiltersColumnDef,
-  IdIdentifier,
-  PartialKeys,
-  Row,
-  useReactTable,
-} from "@tanstack/react-table";
-import { AdminColumnDef } from "../hooks/useTable";
+import type { Column, Row, useReactTable } from "@tanstack/react-table";
 
 export type ModalType = {
   isOpen: boolean;

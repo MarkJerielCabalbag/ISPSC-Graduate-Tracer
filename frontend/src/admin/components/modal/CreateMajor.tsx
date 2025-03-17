@@ -26,11 +26,10 @@ const CreateMajor = ({ isOpen, handleIsOpen }: ModalType) => {
   const { data: programs, isLoading } = useGetPrograms();
 
   const { programId, setMajorProgram, major } = useAdminStore();
-  const {
-    mutateAsync: createMajor,
-    isError,
-    isPending,
-  } = useCreateMajor(major, programId);
+  const { mutateAsync: createMajor, isError } = useCreateMajor(
+    major,
+    programId
+  );
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleIsOpen}>
