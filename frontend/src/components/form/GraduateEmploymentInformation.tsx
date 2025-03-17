@@ -17,7 +17,6 @@ import RelevanceOfEmployment from "./RelevanceOfEmployment";
 import EmployementSector from "./EmployementSector";
 import LocationOfEmployment from "./LocationOfEmployment";
 import { useFormStore } from "../../hooks/store";
-import toast from "react-hot-toast";
 
 const GraduateEmploymentInformation = () => {
   const { data: department } = hooks.useGetCollegeDepartment();
