@@ -145,8 +145,13 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
     })
   );
 
-  console.log(summary);
-  return res.status(200).send(summary);
+  const formattedData = summary.flatMap((yearData) =>
+    yearData.programData.map((programData) => ({
+      yearOfGraduation: yearData.yearOfGraduation,
+      ...programData,
+    }))
+  );
+  return res.status(200).send(formattedData);
 });
 
 //@DESC     overview traced students
@@ -175,6 +180,8 @@ const overviewTracedStudents = asyncHandler(async (req, res, next) => {
       };
     })
   );
+
+  console.log(overviewTraced);
 
   return res.status(200).send(overviewTraced);
 });

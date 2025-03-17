@@ -10,7 +10,7 @@ import { displayYears } from "../../utils/utils";
 import { useFormStore } from "../../hooks/store";
 import { useEffect, useState } from "react";
 
-const years = displayYears(2020, 2080);
+const years = displayYears(2020, 2030);
 
 const GeneralInformation = () => {
   const [name, setName] = useState("");

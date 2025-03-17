@@ -1,6 +1,7 @@
-import { get } from "http";
+// https://ispsc-graduate-tracer.onrender.com/api/graduateTracer - production
+// http://localhost:5000/api/graduateTracer - development
 
-const baseUrl = "http://localhost:3000/api/graduateTracer";
+const baseUrl = "https://ispsc-graduate-tracer.onrender.com/api/graduateTracer";
 export const client = {
   async createDepartmentCollege(department: string) {
     return await fetch(`${baseUrl}/department/add`, {

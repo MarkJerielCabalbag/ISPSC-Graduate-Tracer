@@ -1,6 +1,7 @@
 import type {
   AccessorKeyColumnDef,
   AccessorKeyColumnDefBase,
+  Column,
   ColumnDef,
   ColumnFiltersColumnDef,
   IdIdentifier,
@@ -26,14 +27,13 @@ export interface ColumnFilter {
   value: unknown;
 }
 
-export type TableProps<T> = {
+export type TableProps<TData> = {
   tableHeader?: React.ReactNode;
   tableBody?: React.ReactNode;
   tableFooter?: React.ReactNode;
   to?: string;
-  data?: AdminColumnDef[];
-  column?: AccessorKeyColumnDefBase<AdminColumnDef, string> &
-    Partial<IdIdentifier<AdminColumnDef, string>>[];
+  data?: TData[];
+  column?: Column<any, unknown>[] | undefined;
   rowLength?: number;
 };
 
