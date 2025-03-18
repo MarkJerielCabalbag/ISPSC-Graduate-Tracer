@@ -1,9 +1,10 @@
 import asyncHandler from "express-async-handler";
-import { PrismaClient } from "@prisma/client";
-import { createRequire } from "module";
 import { sendGraduateTracerEmail } from "../utils/sendGraduateTracerEmail.js";
 
-const prisma = new PrismaClient();
+import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
+
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 //@DESC     add response
 //@ROUTE    /api/graduateTracer/user/add/response

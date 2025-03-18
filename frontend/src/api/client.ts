@@ -1,7 +1,7 @@
 // https://ispsc-graduate-tracer.onrender.com/api/graduateTracer - production
 // http://localhost:5000/api/graduateTracer - development
 
-const baseUrl = "https://ispsc-graduate-tracer.onrender.com/api/graduateTracer";
+const baseUrl = "http://localhost:3000/api/graduateTracer";
 import { Response } from "../types/type";
 export const client = {
   //get list of departments

@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { withAccelerate } from "@prisma/extension-accelerate";
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 //@DESC     add program related to department
 //@ROUTE    /api/graduateTracer/program/add/:departmentId
