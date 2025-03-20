@@ -19,7 +19,7 @@ type FormState = {
 
   isProgramOpen: boolean;
   isMajorOpen: boolean;
-  isContinueFillOut: boolean;
+
   handleDepartmentChange: (
     value: string,
     getDepartment: () => Promise<void>
@@ -32,7 +32,7 @@ type FormState = {
 
   handleMajorSelect: (value: string) => void;
 
-  handleContinueFillOutChange: (value: string) => void;
+  handleEmployedChange: (value: string) => void;
   handleEmailChange: (value: string) => void;
   handleNameChange: (value: string) => void;
   handleGraduationChange: (value: string) => void;
@@ -80,10 +80,8 @@ export const useFormStore = create<FormState>((set) => ({
 
   handleMajorSelect: (value: string) => set({ majorId: Number(value) }),
 
-  handleContinueFillOutChange: (value: string) => {
-    value === "yes"
-      ? set({ isContinueFillOut: true, isEmployed: "yes" })
-      : set({ isContinueFillOut: false, isEmployed: "no" });
+  handleEmployedChange: (value: string) => {
+    value === "yes" ? set({ isEmployed: "yes" }) : set({ isEmployed: "no" });
   },
 
   handleAlignedJob: (value: string) => set({ isJobAligned: value }),

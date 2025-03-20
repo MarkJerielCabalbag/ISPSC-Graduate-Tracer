@@ -37,11 +37,10 @@ const GraduateEmploymentInformation = () => {
     isFurtherStudies,
     typeOfOrganization,
     currentJobLocated,
-    isContinueFillOut,
     handleMajorSelect,
     handleDepartmentChange,
     handleMajorChange,
-    handleContinueFillOutChange,
+    handleEmployedChange,
   } = useFormStore();
 
   const {
@@ -56,8 +55,11 @@ const GraduateEmploymentInformation = () => {
     isPending: isMajorPending,
   } = hooks.useGetRelatedMajor(programId as number);
 
-  const { mutateAsync: addResponse, isPending: isAddResponsePending } =
-    hooks.useAddResponse();
+  const {
+    mutateAsync: addResponse,
+    isPending: isAddResponsePending,
+    isError: isAddResponseError,
+  } = hooks.useAddResponse();
 
   return (
     <div>
@@ -72,7 +74,9 @@ const GraduateEmploymentInformation = () => {
             handleDepartmentChange(value, getDepartment)
           }
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger
+            className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
+          >
             <SelectValue placeholder="Select College / Department" />
           </SelectTrigger>
           <SelectContent>
@@ -94,7 +98,9 @@ const GraduateEmploymentInformation = () => {
         <div className={`w-full mb-5 ${isProgramOpen ? "" : "hidden"}`}>
           <h1>Program</h1>
           <Select onValueChange={(value) => handleMajorChange(value, getMajor)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger
+              className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
+            >
               <SelectValue placeholder="Select Program" />
             </SelectTrigger>
             <SelectContent>
@@ -117,7 +123,9 @@ const GraduateEmploymentInformation = () => {
         <div className={`w-full mb-5 ${isMajorOpen ? "" : "hidden"}`}>
           <h1>Major</h1>
           <Select onValueChange={(value) => handleMajorSelect(value)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger
+              className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
+            >
               <SelectValue placeholder="Select Major" />
             </SelectTrigger>
             <SelectContent>
@@ -135,71 +143,68 @@ const GraduateEmploymentInformation = () => {
         <h1 className="text-lg text-primary mb-3 italic">
           Are you currently employed?
         </h1>
-        <RadioGroup
-          onValueChange={(value) => handleContinueFillOutChange(value)}
-        >
+        <RadioGroup onValueChange={(value) => handleEmployedChange(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="yes" />
+            <RadioGroupItem
+              value="yes"
+              id="yes"
+              className={` ${isAddResponseError ? "border-red-500" : ""}`}
+            />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="no" />
+            <RadioGroupItem
+              value="no"
+              id="no"
+              className={` ${isAddResponseError ? "border-red-500" : ""}`}
+            />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>
 
-        {isContinueFillOut ? (
-          <>
-            <RelevanceOfEmployment />
-            <EmployementSector />
-            <LocationOfEmployment />
+        <>
+          <RelevanceOfEmployment isError={isAddResponseError} />
+          <EmployementSector isError={isAddResponseError} />
+          <LocationOfEmployment isError={isAddResponseError} />
 
-            <div className="my-5 flex justify-end items-center gap-5">
-              <Button className="bg-white text-primary shadow-md hover:text-white">
-                Clear
-              </Button>
+          <div className="my-5 flex justify-end items-center gap-5">
+            <Button className="bg-white text-primary shadow-md hover:text-white">
+              Clear
+            </Button>
 
-              {isAddResponsePending ? (
-                <Button className="bg-primary text-white">
-                  <Loader2Icon className="animate-spin" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={async () => {
-                    try {
-                      await addResponse({
-                        yearOfSurvey: parseInt(yearOfSurvey),
-                        email: email,
-                        fullName: fullName,
-                        yearOfGraduation: parseInt(yearOfGraduation),
-                        departmentId: departmentId,
-                        programId: programId,
-                        majorId: majorId,
-                        isJobAligned: isJobAligned,
-                        isSelfEmployed: isSelfEmployed,
-                        isFurtherStudies: isFurtherStudies,
-                        typeOfOrganization: typeOfOrganization,
-                        currentJobLocated: currentJobLocated,
-                        isEmployed: isEmployed,
-                      });
-                    } catch (e) {}
-                  }}
-                >
-                  Submit
-                </Button>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="my-5 flex justify-end items-center gap-5">
-              <Button className="bg-white text-primary shadow-md hover:text-white">
-                Clear
+            {isAddResponsePending ? (
+              <Button className="bg-primary text-white">
+                <Loader2Icon className="animate-spin" />
               </Button>
-              <Button>Submit</Button>
-            </div>
-          </>
-        )}
+            ) : (
+              <Button
+                onClick={async () => {
+                  try {
+                    await addResponse({
+                      yearOfSurvey: parseInt(yearOfSurvey),
+                      email: email,
+                      fullName: fullName,
+                      yearOfGraduation: parseInt(yearOfGraduation),
+                      departmentId: departmentId,
+                      programId: programId,
+                      majorId: majorId,
+                      isJobAligned: isJobAligned,
+                      isSelfEmployed: isSelfEmployed,
+                      isFurtherStudies: isFurtherStudies,
+                      typeOfOrganization: typeOfOrganization,
+                      currentJobLocated: currentJobLocated,
+                      isEmployed: isEmployed,
+                    });
+                  } catch (e) {
+                    console.log("An error occured:", e);
+                  }
+                }}
+              >
+                Submit
+              </Button>
+            )}
+          </div>
+        </>
       </div>
     </div>
   );

@@ -26,17 +26,23 @@ const addResponse = asyncHandler(async (req, res, next) => {
     currentJobLocated,
   } = req.body;
 
-  // if (
-  //   !yearOfSurvey ||
-  //   !email ||
-  //   !fullName ||
-  //   !yearOfGraduation ||
-  //   !departmentId ||
-  //   !programId ||
-  //   !isEmployed
-  // ) {
-  //   return res.status(400).json({ message: "Please fill all fields" });
-  // }
+  if (
+    !yearOfSurvey ||
+    !email ||
+    !fullName ||
+    !yearOfGraduation ||
+    !departmentId ||
+    !programId ||
+    !majorId ||
+    !isEmployed ||
+    !isJobAligned ||
+    !isSelfEmployed ||
+    !isFurtherStudies ||
+    !typeOfOrganization ||
+    !currentJobLocated
+  ) {
+    return res.status(400).json({ message: "Please fill all fields" });
+  }
 
   const listOfUser = await prisma.responses.findMany();
 
