@@ -1,12 +1,10 @@
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { useFormStore } from "../../hooks/store";
-type ErrorType = {
-  isError: boolean;
-};
 
-const EmployementSector = (isError: ErrorType) => {
+const EmployementSector = () => {
   const { handleTypeOfOrganization } = useFormStore();
+
   return (
     <div className="my-5">
       <h1 className="bg-primary p-3 main-font rounded-md">
@@ -19,18 +17,13 @@ const EmployementSector = (isError: ErrorType) => {
         </h1>
         <RadioGroup onValueChange={(value) => handleTypeOfOrganization(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="government"
-              id="government"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="government" id="government" />
             <Label htmlFor="government">Government</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="private institution"
               id="private institution"
-              className={` ${isError ? "border-red-500" : ""}`}
             />
             <Label htmlFor="private institution">Private Institution</Label>
           </div>
@@ -39,7 +32,6 @@ const EmployementSector = (isError: ErrorType) => {
             <RadioGroupItem
               value="entreprenueral / freelance"
               id="entreprenueral / freelance"
-              className={` ${isError ? "border-red-500" : ""}`}
             />
             <Label htmlFor="entreprenueral / freelance">
               Entreprenueral / Freelance

@@ -30,14 +30,9 @@ export const columns = [
     header: () => "Program",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("totalGraduates", {
-    id: "totalGraduates",
-    header: () => "Total Graduates",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("totalTracedStudents", {
-    id: "totalTracedStudents",
-    header: () => "Total Traced Students",
+  columnHelper.accessor("totalTracedGraduates", {
+    id: "totalTracedGraduates",
+    header: () => "Total Traced Graduates",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("totalEmployedStudents", {

@@ -2,13 +2,10 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { useFormStore } from "../../hooks/store";
 
-type ErrorType = {
-  isError: boolean;
-};
-
-const RelevanceOfEmployment = (isError: ErrorType) => {
+const RelevanceOfEmployment = () => {
   const { handleAlignedJob, handleSelfEmployed, handleFurtherStudies } =
     useFormStore();
+
   return (
     <div className="my-5">
       <h1 className="bg-primary p-3 main-font rounded-md">
@@ -21,19 +18,11 @@ const RelevanceOfEmployment = (isError: ErrorType) => {
         </h1>
         <RadioGroup onValueChange={(value) => handleAlignedJob(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="yes"
-              id="yes"
-              className={`${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="no"
-              id="no"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>
@@ -45,19 +34,11 @@ const RelevanceOfEmployment = (isError: ErrorType) => {
         </h1>
         <RadioGroup onValueChange={(value) => handleSelfEmployed(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="yes"
-              id="yes"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="no"
-              id="no"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>
@@ -69,19 +50,11 @@ const RelevanceOfEmployment = (isError: ErrorType) => {
         </h1>
         <RadioGroup onValueChange={(value) => handleFurtherStudies(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="yes"
-              id="yes"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="no"
-              id="no"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>

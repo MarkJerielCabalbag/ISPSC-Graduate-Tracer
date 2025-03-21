@@ -1,10 +1,6 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../../components/ui/popover";
+
 import { useState } from "react";
 import CreateDepartment from "../../modal/CreateDepartment";
 import CreateProgram from "../../modal/CreateProgram";
@@ -30,42 +26,35 @@ const OverallDashboardTheader = () => {
       {isOpenMajor && (
         <CreateMajor isOpen={isOpenMajor} handleIsOpen={setIsOpenMajor} />
       )}
-      <div className="flex justify-between items-center">
+      <div className="flex gap-5 items-center">
         <div>
           <h1 className="text-primary font-bold">Overall Dashboard</h1>
           <h2 className="text-black">Graduate Tracer</h2>
         </div>
-        <div className="flex justify-end">
-          <Popover>
-            <PopoverTrigger className="py-2 px-4 bg-primary text-white rounded-md">
-              Open
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="flex flex-col space-y-2">
-                <Button
-                  onClick={() => setIsOpenCollege(true)}
-                  className="bg-transparent text-black flex items-center justify-start gap-2 hover:bg-transparent"
-                >
-                  <PlusCircleIcon />
-                  Create College / Department
-                </Button>
-                <Button
-                  onClick={() => setIsOpenProgram(true)}
-                  className="bg-transparent text-black flex items-center justify-start gap-2 hover:bg-transparent"
-                >
-                  <PlusCircleIcon />
-                  Create Program
-                </Button>
-                <Button
-                  onClick={() => setIsOpenMajor(true)}
-                  className="bg-transparent text-black flex items-center justify-start gap-2 hover:bg-transparent"
-                >
-                  <PlusCircleIcon />
-                  Create Major
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
+        <div>
+          <div className="flex gap-2 items-center">
+            <Button
+              onClick={() => setIsOpenCollege(true)}
+              className="bg-primary text-white"
+            >
+              <PlusCircleIcon />
+              Create College / Department
+            </Button>
+            <Button
+              onClick={() => setIsOpenProgram(true)}
+              className="bg-primary text-white"
+            >
+              <PlusCircleIcon />
+              Create Program
+            </Button>
+            <Button
+              onClick={() => setIsOpenMajor(true)}
+              className="bg-primary text-white"
+            >
+              <PlusCircleIcon />
+              Create Major
+            </Button>
+          </div>
         </div>
       </div>
     </>

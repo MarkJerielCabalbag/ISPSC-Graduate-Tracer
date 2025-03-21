@@ -30,7 +30,7 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
 
       const programData = await Promise.all(
         programs.map(async (program) => {
-          const totalGraduates = await prisma.responses.count({
+          const totalTracedGraduates = await prisma.responses.count({
             where: {
               yearOfGraduation: graduate.yearOfGraduation,
               program: program.program,
@@ -124,7 +124,7 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
 
           return {
             program: program.program,
-            totalGraduates,
+            totalTracedGraduates,
             totalEmployedStudents,
             totalEmployedGraduatesAlignedToTheirProgram,
             totalEmployedGraduatesNotAlignedToTheirProgram,
@@ -140,7 +140,7 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
       );
 
       return {
-        yearOfGraduation: graduate.yearOfGraduation,
+        yearOfGraduation: String(graduate.yearOfGraduation),
         programData,
       };
     })
@@ -200,8 +200,33 @@ const listOfPrograms = asyncHandler(async (req, res, next) => {
   return res.status(200).send(programs);
 });
 
+//@DESC     Overview of row graduates
+//@ROUTE    /api/graduateTracer/admin/graduates/overviewRow
+//@ACCESS   POST
+const OverviewRowGaduates = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+
+  try {
+    const findGraduates = await prisma.responses.findMany({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+      },
+    });
+
+    return res.status(200).send(findGraduates);
+  } catch (e) {
+    return res.status(400).json({ message: `An error occured: ${e}` });
+  }
+});
+
 export default {
   getSummaryData,
   overviewTracedStudents,
   listOfPrograms,
+  OverviewRowGaduates,
 };

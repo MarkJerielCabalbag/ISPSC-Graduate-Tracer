@@ -1,12 +1,10 @@
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { useFormStore } from "../../hooks/store";
-type ErrorType = {
-  isError: boolean;
-};
 
-const LocationOfEmployment = (isError: ErrorType) => {
+const LocationOfEmployment = () => {
   const { handleCurrentJobLocation } = useFormStore();
+
   return (
     <div className="my-5">
       <h1 className="bg-primary p-3 main-font rounded-md">
@@ -19,19 +17,11 @@ const LocationOfEmployment = (isError: ErrorType) => {
         </h1>
         <RadioGroup onValueChange={(value) => handleCurrentJobLocation(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="locally"
-              id="locally"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="locally" id="locally" />
             <Label htmlFor="locally">Locally</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="abroad"
-              id="abroad"
-              className={` ${isError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="abroad" id="abroad" />
             <Label htmlFor="abroad">Abroad</Label>
           </div>
         </RadioGroup>

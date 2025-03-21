@@ -14,12 +14,17 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import Dashboard from "./admin/Dashboard.tsx";
+import OverviewRowGraduates from "./admin/components/OverviewRowGraduates.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<App />} />
       <Route path="/admin" element={<Dashboard />} />
+      <Route
+        path="/graduates/:year/:program"
+        element={<OverviewRowGraduates />}
+      />
     </>
   )
 );

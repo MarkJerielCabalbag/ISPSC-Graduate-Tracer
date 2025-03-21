@@ -14,6 +14,7 @@ const years = displayYears(2020, 2030);
 
 const GeneralInformation = () => {
   const [name, setName] = useState("");
+
   const { handleNameChange, handleGraduationChange } = useFormStore();
   useEffect(() => {
     handleNameChange(name);
@@ -39,7 +40,7 @@ const GeneralInformation = () => {
         <div className="w-1/2 my-5">
           <h1>Year of Graduation</h1>
           <Select onValueChange={(value) => handleGraduationChange(value)}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger>
               <SelectValue placeholder="Select Year of Survey" />
             </SelectTrigger>
             <SelectContent>

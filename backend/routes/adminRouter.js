@@ -11,4 +11,9 @@ adminRouter.get(
 
 adminRouter.get("/listOfPrograms", adminController.listOfPrograms);
 
+adminRouter.get(
+  "/graduates/:yearOfGraduation/:department",
+  adminController.OverviewRowGaduates
+);
+
 export default adminRouter;

@@ -58,7 +58,7 @@ const GraduateEmploymentInformation = () => {
   const {
     mutateAsync: addResponse,
     isPending: isAddResponsePending,
-    isError: isAddResponseError,
+    isError,
   } = hooks.useAddResponse();
 
   return (
@@ -74,9 +74,7 @@ const GraduateEmploymentInformation = () => {
             handleDepartmentChange(value, getDepartment)
           }
         >
-          <SelectTrigger
-            className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
-          >
+          <SelectTrigger>
             <SelectValue placeholder="Select College / Department" />
           </SelectTrigger>
           <SelectContent>
@@ -99,7 +97,7 @@ const GraduateEmploymentInformation = () => {
           <h1>Program</h1>
           <Select onValueChange={(value) => handleMajorChange(value, getMajor)}>
             <SelectTrigger
-              className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
+              className={`w-full ${isError ? "border-red-500" : ""}`}
             >
               <SelectValue placeholder="Select Program" />
             </SelectTrigger>
@@ -124,7 +122,7 @@ const GraduateEmploymentInformation = () => {
           <h1>Major</h1>
           <Select onValueChange={(value) => handleMajorSelect(value)}>
             <SelectTrigger
-              className={`w-full ${isAddResponseError ? "border-red-500" : ""}`}
+              className={`w-full ${isError ? "border-red-500" : ""}`}
             >
               <SelectValue placeholder="Select Major" />
             </SelectTrigger>
@@ -145,27 +143,19 @@ const GraduateEmploymentInformation = () => {
         </h1>
         <RadioGroup onValueChange={(value) => handleEmployedChange(value)}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="yes"
-              id="yes"
-              className={` ${isAddResponseError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="no"
-              id="no"
-              className={` ${isAddResponseError ? "border-red-500" : ""}`}
-            />
+            <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">No</Label>
           </div>
         </RadioGroup>
 
         <>
-          <RelevanceOfEmployment isError={isAddResponseError} />
-          <EmployementSector isError={isAddResponseError} />
-          <LocationOfEmployment isError={isAddResponseError} />
+          <RelevanceOfEmployment />
+          <EmployementSector />
+          <LocationOfEmployment />
 
           <div className="my-5 flex justify-end items-center gap-5">
             <Button className="bg-white text-primary shadow-md hover:text-white">
