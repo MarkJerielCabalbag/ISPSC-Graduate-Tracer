@@ -128,9 +128,29 @@ export const client = {
     });
   },
 
+  //get graduates per row
   async graduatesPerRow(yearOfGraduation: string, program: string) {
     return await fetch(
       `${baseUrl}/admin/graduates/${yearOfGraduation}/${program}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    ).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  //get total graduates
+  async getTotalGraduates(yearOfGraduation: string, program: string) {
+    return await fetch(
+      `${baseUrl}/admin/graduates/total/${yearOfGraduation}/${program}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },

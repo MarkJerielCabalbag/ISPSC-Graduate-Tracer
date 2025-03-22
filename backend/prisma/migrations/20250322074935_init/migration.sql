@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Total" ALTER COLUMN "yearOfGraduation" DROP NOT NULL,
+ALTER COLUMN "program" DROP NOT NULL,
+ALTER COLUMN "department" DROP NOT NULL,
+ALTER COLUMN "totalGraduates" DROP NOT NULL;

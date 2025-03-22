@@ -34,10 +34,10 @@ model Responses {
 
 model Total {
   id Int @id @default(autoincrement())
-  yearOfGraduation Int
-  program String
-  department String
-  totalGraduates Int @default(0)
+  yearOfGraduation Int?
+  program String?
+  department String?
+  totalGraduates Int? @default(0)
 }
 
 model Department {

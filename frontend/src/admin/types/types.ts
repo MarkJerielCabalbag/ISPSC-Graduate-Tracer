@@ -54,3 +54,11 @@ export type FilterFn = (
   filterValue: any,
   addMeta: (meta: any) => void
 ) => boolean;
+
+export type TotalGraduates = {
+  id?: number;
+  program?: string;
+  department?: string;
+  totalGraduates?: number;
+  yearOfGraduation?: number;
+};

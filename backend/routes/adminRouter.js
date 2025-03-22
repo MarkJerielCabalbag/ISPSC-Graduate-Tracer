@@ -16,4 +16,9 @@ adminRouter.get(
   adminController.OverviewRowGaduates
 );
 
+adminRouter.get(
+  "/graduates/total/:yearOfGraduation/:program",
+  adminController.getTotalGraduates
+);
+
 export default adminRouter;

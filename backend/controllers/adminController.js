@@ -224,9 +224,26 @@ const OverviewRowGaduates = asyncHandler(async (req, res, next) => {
   }
 });
 
+//@DESC     get total graduates based on year of graduation and program
+//@ROUTE    /api/graduateTracer/admin/graduates/total/:yearOfGraduation/:program
+//@ACCESS   GET
+const getTotalGraduates = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  const findYearAndProgram = await prisma.total.findMany({
+    where: {
+      program: program,
+      yearOfGraduation: parseInt(yearOfGraduation),
+    },
+  });
+
+  return res.status(200).send(findYearAndProgram);
+});
+
 export default {
   getSummaryData,
   overviewTracedStudents,
   listOfPrograms,
   OverviewRowGaduates,
+  getTotalGraduates,
 };
