@@ -94,6 +94,54 @@ const addResponse = asyncHandler(async (req, res, next) => {
       sendGraduateTracerEmail(email, fullName),
     ]);
 
+    const findTotalGraduates = await prisma.total.findUnique({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program.program,
+      },
+    });
+
+    if (findTotalGraduates.totalGraduates === 0) {
+      const total = await prisma.total.create({
+        data: {
+          yearOfGraduation: parseInt(yearOfGraduation),
+          program: program.program,
+          department: department.department,
+        },
+      });
+
+      console.log(total);
+    }
+
+    // const total = await prisma.total.findUnique({
+    //   where: {
+    //     yearOfGraduation: parseInt(yearOfGraduation),
+    //     program: program,
+    //     department: department,
+    //   },
+    // });
+
+    // if (total.totalGraduates === 0) {
+    //   await prisma.total.create({
+    //     data: {
+    //       yearOfGraduation: parseInt(yearOfGraduation),
+    //       program: program,
+    //       department: department,
+    //       totalGraduates: 0,
+    //     },
+    //   });
+    // } else {
+    //   await prisma.total.update({
+    //     where: {
+    //       yearOfGraduation: parseInt(yearOfGraduation),
+    //       program: program,
+    //       department: department,
+    //     },
+    //     data: {
+    //       totalGraduates: totalGraduates
+    //     }
+    //   });
+
     console.log("Email sent: ", emailResult.response);
 
     return res.status(200).json({

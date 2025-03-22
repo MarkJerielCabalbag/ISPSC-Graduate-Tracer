@@ -86,3 +86,83 @@ export const columns = [
     cell: (info) => info.getValue(),
   }),
 ];
+
+export const graduatesRowColumnDef = [
+  columnHelper.accessor("fullName", {
+    id: "fullName",
+    header: () => "Full Name",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("email", {
+    id: "email",
+    header: () => "Email",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("yearOfGraduation", {
+    id: "yearOfGraduation",
+    header: () => "Year of Graduation",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("yearOfSurvey", {
+    id: "yearOfSurvey",
+    header: () => "Year of Survey",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("department", {
+    id: "department",
+    header: () => "Department",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("program", {
+    id: "program",
+    header: () => "Program",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("major", {
+    id: "major",
+    header: () => "Major",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("isEmployed", {
+    id: "isEmployed",
+    header: () => "Are you currently employed?",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("isJobAligned", {
+    id: "isJobAligned",
+    header: () => "Is your job aligned with your program?",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("isSelfEmployed", {
+    id: "isSelfEmployed",
+    header: () => "Are you self-employed?",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("isFurtherStudies", {
+    id: "isFurtherStudies",
+    header: () => "Are you currently enrolled in further studies?",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("typeOfOrganization", {
+    id: "typeOfOrganization",
+    header: () => "What type of organization do you work for?",
+    cell: (info) => info.getValue(),
+  }),
+
+  columnHelper.accessor("currentJobLocated", {
+    id: "currentJobLocated",
+    header: () => "Where is your current job located?",
+    cell: (info) => info.getValue(),
+  }),
+];

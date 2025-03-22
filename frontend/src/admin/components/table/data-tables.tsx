@@ -13,9 +13,8 @@ import { LucideArrowUpDown } from "lucide-react";
 import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 import React from "react";
 import { Input } from "../../../components/ui/input";
-import Header from "../Header";
+
 import Headers from "./headers";
-import OverviewTracedStudents from "../OverviewTracedStudents";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

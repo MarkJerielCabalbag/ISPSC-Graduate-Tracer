@@ -201,7 +201,7 @@ const listOfPrograms = asyncHandler(async (req, res, next) => {
 });
 
 //@DESC     Overview of row graduates
-//@ROUTE    /api/graduateTracer/admin/graduates/overviewRow
+//@ROUTE    /api/graduateTracer/admin/graduates/:yearOfGraduation/:program
 //@ACCESS   POST
 const OverviewRowGaduates = asyncHandler(async (req, res, next) => {
   const { yearOfGraduation, program } = req.params;

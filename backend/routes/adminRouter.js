@@ -12,7 +12,7 @@ adminRouter.get(
 adminRouter.get("/listOfPrograms", adminController.listOfPrograms);
 
 adminRouter.get(
-  "/graduates/:yearOfGraduation/:department",
+  "/graduates/:yearOfGraduation/:program",
   adminController.OverviewRowGaduates
 );
 

@@ -127,4 +127,22 @@ export const client = {
       return response;
     });
   },
+
+  async graduatesPerRow(yearOfGraduation: string, program: string) {
+    return await fetch(
+      `${baseUrl}/admin/graduates/${yearOfGraduation}/${program}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    ).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

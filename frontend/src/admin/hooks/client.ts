@@ -72,3 +72,13 @@ export const useGetListPrograms = () => {
     queryFn: () => client.listOfPrograms(),
   });
 };
+
+export const useGetGraduatesPerRow = (
+  yearOfGraduation: string,
+  program: string
+) => {
+  return useQuery({
+    queryKey: ["graduatesPerRow"],
+    queryFn: () => client.graduatesPerRow(yearOfGraduation, program),
+  });
+};

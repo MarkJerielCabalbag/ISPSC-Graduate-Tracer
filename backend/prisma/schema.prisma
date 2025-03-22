@@ -32,6 +32,14 @@ model Responses {
   currentJobLocated String?
 }
 
+model Total {
+  id Int @id @default(autoincrement())
+  yearOfGraduation Int
+  program String
+  department String
+  totalGraduates Int @default(0)
+}
+
 model Department {
   id Int @id @default(autoincrement())
   department String
