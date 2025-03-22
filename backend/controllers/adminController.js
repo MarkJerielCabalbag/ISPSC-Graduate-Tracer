@@ -240,10 +240,38 @@ const getTotalGraduates = asyncHandler(async (req, res, next) => {
   return res.status(200).send(findYearAndProgram);
 });
 
+//@DESC     add total graduates based on year of graduation and program
+//@ROUTE    /api/graduateTracer/admin/graduates/total/:yearOfGraduation/:program
+//@ACCESS   POST
+const editTotalGraduates = asyncHandler(async (req, res, next) => {
+  const { id, totalGraduates } = req.body;
+
+  if (!id || !totalGraduates) {
+    return res.status(400).json({ message: "Please fill all fields" });
+  }
+
+  try {
+    const findTotalGraduatesExist = await prisma.total.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        totalGraduates: parseInt(totalGraduates),
+      },
+    });
+
+    return res.status(200).json({
+      message: `Successfully added total graduates: ${findTotalGraduatesExist.totalGraduates}`,
+    });
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
   listOfPrograms,
   OverviewRowGaduates,
   getTotalGraduates,
+  editTotalGraduates,
 };

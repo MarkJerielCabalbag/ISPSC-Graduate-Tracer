@@ -165,4 +165,21 @@ export const client = {
       return response;
     });
   },
+
+  //add total graduates base on year and program
+  async addTotalGraduates(id: number, totalGraduates: number) {
+    return await fetch(`${baseUrl}/admin/graduates/total`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, totalGraduates }),
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

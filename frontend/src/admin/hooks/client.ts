@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { client } from "../api/client";
 import toast from "react-hot-toast";
 
@@ -90,5 +90,26 @@ export const useGetTotalGraduates = (
   return useQuery({
     queryKey: ["totalGraduates"],
     queryFn: () => client.getTotalGraduates(yearOfGraduation, program),
+  });
+};
+
+export const useAddTotalGraduates = (
+  id: number,
+  totalGraduates: number,
+  onSuccess?: () => void,
+  onError?: () => void
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.addTotalGraduates(id, totalGraduates),
+    onSuccess: (data) => {
+      toast.success(data.message as string);
+      queryClient.invalidateQueries({ queryKey: ["totalGraduates"] });
+      onSuccess?.();
+    },
+    onError: (error) => {
+      toast.error(error.message as string);
+      onError?.();
+    },
   });
 };

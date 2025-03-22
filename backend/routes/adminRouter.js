@@ -21,4 +21,6 @@ adminRouter.get(
   adminController.getTotalGraduates
 );
 
+adminRouter.post("/graduates/total", adminController.editTotalGraduates);
+
 export default adminRouter;
