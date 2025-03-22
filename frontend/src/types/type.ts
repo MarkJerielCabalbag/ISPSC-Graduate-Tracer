@@ -1,3 +1,5 @@
+import { ChartConfig } from "../components/ui/chart";
+
 export type Response = {
   yearOfSurvey?: number;
   email?: string;
@@ -19,4 +21,9 @@ export type EmploymentInformation = {
   department?: string;
   program?: string;
   major?: string;
+};
+
+export type ChartTypes = {
+  chartData: any[];
+  chartConfig: ChartConfig;
 };

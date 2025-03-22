@@ -30,11 +30,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -66,11 +62,7 @@
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -130,6 +122,19 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --chart-1: 350, 80%, 40%; /* Deep Maroon */
+    --chart-2: 350, 75%, 45%; /* Dark Ruby */
+    --chart-3: 350, 70%, 50%; /* Crimson */
+    --chart-4: 350, 65%, 55%; /* Warm Rose */
+    --chart-5: 350, 60%, 60%; /* Soft Burgundy */
+    --chart-6: 350, 55%, 50%; /* Dusty Maroon */
+    --chart-7: 350, 50%, 45%; /* Mahogany */
+    --chart-8: 350, 45%, 40%; /* Vintage Wine */
+    --chart-9: 350, 40%, 35%; /* Ox Blood */
+    --chart-10: 350, 35%, 30%; /* Deep Plum */
+    --chart-11: 350, 30%, 25%; /* Chocolate Maroon */
+    --chart-12: 350, 25%, 20%; /* Dark Merlot */
   }
 
   .dark {
@@ -141,6 +146,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
   * {
     @apply border-border outline-ring/50;

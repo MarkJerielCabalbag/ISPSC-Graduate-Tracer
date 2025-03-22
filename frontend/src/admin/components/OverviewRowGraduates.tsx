@@ -1,6 +1,10 @@
 import Header from "./Header";
 import { useParams } from "react-router-dom";
-import { useGetGraduatesPerRow, useGetTotalGraduates } from "../hooks/client";
+import {
+  useGetEmploymentStatistics,
+  useGetGraduatesPerRow,
+  useGetTotalGraduates,
+} from "../hooks/client";
 import { DataTable } from "./table/data-tables";
 import { graduatesRowColumnDef } from "./table/columns";
 import GraduatesPerRow from "./table/TableHeaders/GraduatesPerRow";
@@ -9,6 +13,9 @@ import { TotalGraduatesType } from "../types/types";
 import { CirclePlus, Edit3 } from "lucide-react";
 import { useState } from "react";
 import TotalGraduates from "./modal/TotalGraduates";
+import { Toaster } from "react-hot-toast";
+import { ChartBar } from "../../components/charts/ChartBar";
+import { ChartConfig } from "../../components/ui/chart";
 
 const OverviewRowGraduates = () => {
   const { year, program } = useParams();
@@ -22,13 +29,49 @@ const OverviewRowGraduates = () => {
     program ?? ""
   );
 
+  const { data: employmentStatistics } = useGetEmploymentStatistics(
+    year ?? "",
+    program ?? ""
+  );
+
+  console.log(employmentStatistics);
+
+  const chartConfig = {
+    totalEmployed: {
+      label: "Employed",
+      color: "hsl(var(--chart-1))",
+    },
+    totalNotEmployed: {
+      label: "Not Employed",
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig;
+  // const chartData = [
+  //   {
+  //     year: "2025",
+  //     employed: 1,
+  //     furtherStudies: 1,
+  //     jobAligned: 1,
+  //     selfEmployed: 1,
+  //     government: 1,
+  //   },
+  //   {
+  //     year: "2030",
+  //     employed: 1,
+  //     furtherStudies: 1,
+  //     jobAligned: 1,
+  //     selfEmployed: 1,
+  //     government: 1,
+  //   },
+  // ];
+
   const [openAddTotalGraduates, setOpenAddTotalGraduates] = useState(false);
   const [openEditTotalGraduates, setOpenEditTotalGraduates] = useState(false);
 
   return (
     <div>
       <Header />
-
+      {<Toaster />}
       {openAddTotalGraduates && (
         <TotalGraduates
           titleModal="Add Total Graduates"
@@ -101,11 +144,18 @@ const OverviewRowGraduates = () => {
         <div>
           {totalGraduates?.map((total: TotalGraduatesType) =>
             total.totalGraduates === 0 ? (
-              <>
-                <Button>Add Total Graduates</Button>
-              </>
+              <Button onClick={() => setOpenAddTotalGraduates(true)}>
+                Add Total Graduates
+              </Button>
             ) : (
-              <h1>Advance functionality</h1>
+              <>
+                <div className="my-5 w-[50%] h-[50%]">
+                  <ChartBar
+                    chartData={employmentStatistics}
+                    chartConfig={chartConfig}
+                  />
+                </div>
+              </>
             )
           )}
         </div>

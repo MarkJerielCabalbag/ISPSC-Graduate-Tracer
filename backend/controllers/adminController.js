@@ -267,10 +267,78 @@ const editTotalGraduates = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ message: error });
   }
 });
+
+//@DESC     get employment statistics
+//@ROUTE    /api/graduateTracer/admin/employmentStatistics/:yearOfGraduation/:program
+//@ACCESS   GET
+const getEmploymentStatistics = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+
+  try {
+    const majors = await prisma.responses.findMany({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+      },
+      select: {
+        major: true,
+      },
+      distinct: ["major"],
+    });
+
+    const majorStatistics = await Promise.all(
+      majors.map(async (major) => {
+        const totalCount = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            major: major.major,
+          },
+        });
+
+        const totalEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            major: major.major,
+            isEmployed: "yes",
+          },
+        });
+
+        const totalNotEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            major: major.major,
+            isEmployed: "no",
+          },
+        });
+
+        return {
+          major: major.major,
+          totalCount,
+          totalEmployed,
+          totalNotEmployed,
+        };
+      })
+    );
+
+    return res.status(200).send(majorStatistics);
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: `An error occurred: ${error.message}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
   listOfPrograms,
+  getEmploymentStatistics,
   OverviewRowGaduates,
   getTotalGraduates,
   editTotalGraduates,

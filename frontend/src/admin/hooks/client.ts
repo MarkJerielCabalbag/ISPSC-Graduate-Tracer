@@ -93,23 +93,26 @@ export const useGetTotalGraduates = (
   });
 };
 
-export const useAddTotalGraduates = (
-  id: number,
-  totalGraduates: number,
-  onSuccess?: () => void,
-  onError?: () => void
-) => {
+export const useAddTotalGraduates = (id: number, totalGraduates: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => client.addTotalGraduates(id, totalGraduates),
     onSuccess: (data) => {
-      toast.success(data.message as string);
+      toast.success(data?.message as string);
       queryClient.invalidateQueries({ queryKey: ["totalGraduates"] });
-      onSuccess?.();
     },
     onError: (error) => {
-      toast.error(error.message as string);
-      onError?.();
+      toast.error(error?.message as string);
     },
+  });
+};
+
+export const useGetEmploymentStatistics = (
+  yearOfGraduation: string,
+  program: string
+) => {
+  return useQuery({
+    queryKey: ["employmentStatistics"],
+    queryFn: () => client.getEmploymentStatistics(yearOfGraduation, program),
   });
 };

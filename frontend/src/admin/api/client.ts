@@ -182,4 +182,23 @@ export const client = {
       return response;
     });
   },
+
+  //get employment statistics
+  async getEmploymentStatistics(yearOfGraduation: string, program: string) {
+    return await fetch(
+      `${baseUrl}/admin/employmentStatistics/${yearOfGraduation}/${program}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    ).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

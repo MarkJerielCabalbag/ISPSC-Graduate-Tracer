@@ -23,4 +23,9 @@ adminRouter.get(
 
 adminRouter.post("/graduates/total", adminController.editTotalGraduates);
 
+adminRouter.get(
+  "/employmentStatistics/:yearOfGraduation/:program",
+  adminController.getEmploymentStatistics
+);
+
 export default adminRouter;
