@@ -1,4 +1,5 @@
 import type { Column, Row, useReactTable } from "@tanstack/react-table";
+import { ChartConfig } from "../../components/ui/chart";
 
 export type ModalType = {
   isOpen: boolean;
@@ -62,3 +63,40 @@ export type TotalGraduatesType = {
   totalGraduates?: number;
   yearOfGraduation?: number;
 };
+
+export type Graduates = {
+  major: string;
+  totalCount: number;
+  totalEmployed: number;
+  totalNotEmployed: number;
+};
+
+export type PercenatgeType = {
+  major: string;
+  totalPercentageTraced: number;
+  totalPercentageUntraced: number;
+  fill: string;
+};
+
+export const maroonPalette = [
+  "#800000", // Maroon
+  "#FFD700", // Gold
+  "#D4AF37", // Metallic Gold
+  "#8B4513", // Saddle Brown
+  "#C0C0C0", // Silver
+  "#A52A2A", // Brown
+  "#FAEBD7", // Antique White
+  "#4682B4", // Steel Blue
+  "#556B2F", // Dark Olive Green
+];
+
+export const chartConfigBar = {
+  totalEmployed: {
+    label: "Employed",
+    color: "hsl(var(--chart-1))",
+  },
+  totalNotEmployed: {
+    label: "Not Employed",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;

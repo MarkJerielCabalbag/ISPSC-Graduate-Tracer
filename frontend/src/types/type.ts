@@ -26,4 +26,6 @@ export type EmploymentInformation = {
 export type ChartTypes = {
   chartData: any[];
   chartConfig: ChartConfig;
+  dataKey: string;
+  nameKey?: string;
 };

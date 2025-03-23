@@ -19,14 +19,12 @@ import {
 } from "../ui/card";
 import {
   ChartContainer,
-  ChartLegend,
   ChartLegendContent,
-  ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
 import { ChartTypes } from "../../types/type";
 
-export function ChartBar({ chartData, chartConfig }: ChartTypes) {
+export function ChartBar({ chartData, chartConfig, dataKey }: ChartTypes) {
   return (
     <Card>
       <CardHeader>
@@ -37,7 +35,7 @@ export function ChartBar({ chartData, chartConfig }: ChartTypes) {
         <ChartContainer config={chartConfig}>
           <BarChart width={600} height={400} data={chartData}>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <XAxis dataKey="major" tickLine={false} axisLine={false} />
+            <XAxis dataKey={dataKey} tickLine={false} axisLine={false} />
             <YAxis allowDecimals={false} />
             <Tooltip content={<ChartTooltipContent hideLabel />} />
             <Legend content={<ChartLegendContent />} />

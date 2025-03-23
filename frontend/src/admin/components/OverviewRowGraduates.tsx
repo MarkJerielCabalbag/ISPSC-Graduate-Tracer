@@ -9,14 +9,18 @@ import { DataTable } from "./table/data-tables";
 import { graduatesRowColumnDef } from "./table/columns";
 import GraduatesPerRow from "./table/TableHeaders/GraduatesPerRow";
 import { Button } from "../../components/ui/button";
-import { TotalGraduatesType } from "../types/types";
+import {
+  chartConfigBar,
+  Graduates,
+  maroonPalette,
+  TotalGraduatesType,
+} from "../types/types";
 import { CirclePlus, Edit3 } from "lucide-react";
 import { useState } from "react";
 import TotalGraduates from "./modal/TotalGraduates";
 import { Toaster } from "react-hot-toast";
 import { ChartBar } from "../../components/charts/ChartBar";
-import { ChartConfig } from "../../components/ui/chart";
-
+import { ChartPie } from "../../components/charts/ChartPie";
 const OverviewRowGraduates = () => {
   const { year, program } = useParams();
   const { data, isLoading, isFetching } = useGetGraduatesPerRow(
@@ -34,36 +38,30 @@ const OverviewRowGraduates = () => {
     program ?? ""
   );
 
-  console.log(employmentStatistics);
+  const tracedPercentage = employmentStatistics?.map((major: Graduates) => {
+    const percentage =
+      (major.totalCount / totalGraduates?.[0]?.totalGraduates) * 100;
 
-  const chartConfig = {
-    totalEmployed: {
-      label: "Employed",
-      color: "hsl(var(--chart-1))",
+    return {
+      major: major?.major,
+      totalPercentageTraced: Number(percentage.toFixed(2)),
+      totalPercentageUntraced: Number((100 - percentage).toFixed(2)),
+      fill: `var(--color-${major?.major})`,
+    };
+  });
+
+  console.log(tracedPercentage);
+
+  const chartPieConfig = tracedPercentage?.reduce(
+    (config: any, total: any, index: number) => {
+      config[total.major] = {
+        label: `PERCENTAGE TRACED IN ${total.major} `,
+        color: maroonPalette[index % maroonPalette.length],
+      };
+      return config;
     },
-    totalNotEmployed: {
-      label: "Not Employed",
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig;
-  // const chartData = [
-  //   {
-  //     year: "2025",
-  //     employed: 1,
-  //     furtherStudies: 1,
-  //     jobAligned: 1,
-  //     selfEmployed: 1,
-  //     government: 1,
-  //   },
-  //   {
-  //     year: "2030",
-  //     employed: 1,
-  //     furtherStudies: 1,
-  //     jobAligned: 1,
-  //     selfEmployed: 1,
-  //     government: 1,
-  //   },
-  // ];
+    {} as Record<string, { label: string; color: string }>
+  );
 
   const [openAddTotalGraduates, setOpenAddTotalGraduates] = useState(false);
   const [openEditTotalGraduates, setOpenEditTotalGraduates] = useState(false);
@@ -148,14 +146,28 @@ const OverviewRowGraduates = () => {
                 Add Total Graduates
               </Button>
             ) : (
-              <>
-                <div className="my-5 w-[50%] h-[50%]">
+              <div className="my-5 flex gap-2 w-[50%] h-[50%]">
+                <div className="h-full">
                   <ChartBar
                     chartData={employmentStatistics}
-                    chartConfig={chartConfig}
+                    chartConfig={chartConfigBar}
+                    dataKey="major"
                   />
                 </div>
-              </>
+                <div className="h-full">
+                  {tracedPercentage &&
+                  Object.keys(chartPieConfig).length > 0 ? (
+                    <ChartPie
+                      chartData={tracedPercentage}
+                      chartConfig={chartPieConfig}
+                      dataKey="totalPercentageTraced"
+                      nameKey="major"
+                    />
+                  ) : (
+                    <p>Loading chart data...</p>
+                  )}
+                </div>
+              </div>
             )
           )}
         </div>
