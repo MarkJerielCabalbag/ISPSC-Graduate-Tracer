@@ -79,15 +79,15 @@ export type PercenatgeType = {
 };
 
 export const maroonPalette = [
-  "#800000", // Maroon
-  "#FFD700", // Gold
-  "#D4AF37", // Metallic Gold
-  "#8B4513", // Saddle Brown
-  "#C0C0C0", // Silver
-  "#A52A2A", // Brown
-  "#FAEBD7", // Antique White
-  "#4682B4", // Steel Blue
-  "#556B2F", // Dark Olive Green
+  "hsl(0, 100%, 25%)", // Maroon
+  "hsl(51, 100%, 50%)", // Gold
+  "hsl(46, 65%, 53%)", // Metallic Gold
+  "hsl(25, 76%, 30%)", // Saddle Brown
+  "hsl(0, 0%, 75%)", // Silver
+  "hsl(0, 59%, 41%)", // Brown
+  "hsl(34, 78%, 91%)", // Antique White
+  "hsl(207, 44%, 49%)", // Steel Blue
+  "hsl(82, 39%, 30%)", // Dark Olive Green
 ];
 
 export const chartConfigBar = {
@@ -100,3 +100,19 @@ export const chartConfigBar = {
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
+
+export const chartConfigQuestions = {
+  yes: { label: "Yes" },
+  no: { label: "No" },
+};
+
+export const chartConfigPie = {
+  tracedPercentage: {
+    label: "Traced",
+    color: "hsl(var(--chart-1))",
+  },
+  untracedPercentage: {
+    label: "Untraced",
+    color: "hsl(var(--chart-2))",
+  },
+};

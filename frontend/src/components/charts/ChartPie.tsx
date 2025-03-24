@@ -24,10 +24,7 @@ export function ChartPie({
         <CardDescription>Traced Graduates by Major</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[220px]"
-        >
+        <ChartContainer config={chartConfig}>
           <PieChart>
             <ChartTooltip
               cursor={false}

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import {
   useGetEmploymentStatistics,
   useGetGraduatesPerRow,
+  useGetPercentageTraced,
+  useGetQuestions,
   useGetTotalGraduates,
 } from "../hooks/client";
 import { DataTable } from "./table/data-tables";
@@ -11,8 +13,8 @@ import GraduatesPerRow from "./table/TableHeaders/GraduatesPerRow";
 import { Button } from "../../components/ui/button";
 import {
   chartConfigBar,
-  Graduates,
-  maroonPalette,
+  chartConfigPie,
+  chartConfigQuestions,
   TotalGraduatesType,
 } from "../types/types";
 import { CirclePlus, Edit3 } from "lucide-react";
@@ -21,6 +23,8 @@ import TotalGraduates from "./modal/TotalGraduates";
 import { Toaster } from "react-hot-toast";
 import { ChartBar } from "../../components/charts/ChartBar";
 import { ChartPie } from "../../components/charts/ChartPie";
+
+import { ChartMultipleBar } from "../../components/charts/ChartMultipleBar";
 const OverviewRowGraduates = () => {
   const { year, program } = useParams();
   const { data, isLoading, isFetching } = useGetGraduatesPerRow(
@@ -38,30 +42,14 @@ const OverviewRowGraduates = () => {
     program ?? ""
   );
 
-  const tracedPercentage = employmentStatistics?.map((major: Graduates) => {
-    const percentage =
-      (major.totalCount / totalGraduates?.[0]?.totalGraduates) * 100;
+  const { data: questions } = useGetQuestions(year ?? "", program ?? "");
 
-    return {
-      major: major?.major,
-      totalPercentageTraced: Number(percentage.toFixed(2)),
-      totalPercentageUntraced: Number((100 - percentage).toFixed(2)),
-      fill: `var(--color-${major?.major})`,
-    };
-  });
-
-  console.log(tracedPercentage);
-
-  const chartPieConfig = tracedPercentage?.reduce(
-    (config: any, total: any, index: number) => {
-      config[total.major] = {
-        label: `PERCENTAGE TRACED IN ${total.major} `,
-        color: maroonPalette[index % maroonPalette.length],
-      };
-      return config;
-    },
-    {} as Record<string, { label: string; color: string }>
+  const { data: tracedPercentage } = useGetPercentageTraced(
+    year ?? "",
+    program ?? ""
   );
+
+  console.log("tracedPercentage", tracedPercentage);
 
   const [openAddTotalGraduates, setOpenAddTotalGraduates] = useState(false);
   const [openEditTotalGraduates, setOpenEditTotalGraduates] = useState(false);
@@ -146,28 +134,32 @@ const OverviewRowGraduates = () => {
                 Add Total Graduates
               </Button>
             ) : (
-              <div className="my-5 flex gap-2 w-[50%] h-[50%]">
-                <div className="h-full">
-                  <ChartBar
-                    chartData={employmentStatistics}
-                    chartConfig={chartConfigBar}
-                    dataKey="major"
-                  />
-                </div>
-                <div className="h-full">
-                  {tracedPercentage &&
-                  Object.keys(chartPieConfig).length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-5 my-5">
+                  <div>
+                    <ChartBar
+                      chartData={employmentStatistics}
+                      chartConfig={chartConfigBar}
+                      dataKey="major"
+                    />
+                  </div>
+                  <div>
+                    <ChartMultipleBar
+                      chartConfig={chartConfigQuestions}
+                      chartData={questions}
+                      dataKey="question"
+                    />
+                  </div>
+                  <div>
                     <ChartPie
                       chartData={tracedPercentage}
-                      chartConfig={chartPieConfig}
-                      dataKey="totalPercentageTraced"
+                      chartConfig={chartConfigPie}
+                      dataKey="tracedPercentage"
                       nameKey="major"
                     />
-                  ) : (
-                    <p>Loading chart data...</p>
-                  )}
+                  </div>
                 </div>
-              </div>
+              </>
             )
           )}
         </div>

@@ -28,4 +28,14 @@ adminRouter.get(
   adminController.getEmploymentStatistics
 );
 
+adminRouter.get(
+  "/questions/:yearOfGraduation/:program",
+  adminController.getQuestions
+);
+
+adminRouter.get(
+  "/percentage/:yearOfGraduation/:program",
+  adminController.tracedPercentage
+);
+
 export default adminRouter;

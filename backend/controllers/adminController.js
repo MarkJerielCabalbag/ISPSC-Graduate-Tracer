@@ -334,6 +334,222 @@ const getEmploymentStatistics = asyncHandler(async (req, res, next) => {
       .json({ message: `An error occurred: ${error.message}` });
   }
 });
+
+//@DESC     get questions
+//@ROUTE    /api/graduateTracer/admin/questions/:yearOfGraduation/:program
+//@ACCESS   GET
+const getQuestions = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+
+  try {
+    const majors = await prisma.responses.findMany({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+      },
+      select: {
+        major: true,
+      },
+    });
+
+    const findQuestions = await Promise.all(
+      majors.map(async (major) => {
+        const totalCurrentEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isEmployed: "yes",
+          },
+        });
+
+        const totalCurrentNotEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isEmployed: "no",
+          },
+        });
+
+        const totalJobAligned = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isJobAligned: "yes",
+          },
+        });
+
+        const totalJobNotAligned = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isJobAligned: "no",
+          },
+        });
+
+        const totalSelfEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isSelfEmployed: "yes",
+          },
+        });
+
+        const totalNotSelfEmployed = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isSelfEmployed: "no",
+          },
+        });
+
+        const totalFurtherStudies = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isFurtherStudies: "yes",
+          },
+        });
+
+        const totalNotFurtherStudies = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            isFurtherStudies: "no",
+          },
+        });
+
+        const totalEmployedGovernment = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            typeOfOrganization: "government",
+          },
+        });
+
+        const totalEmployedFreelance = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            typeOfOrganization: "entrepreneural / freelance",
+          },
+        });
+
+        const totalEmployedPrivate = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            typeOfOrganization: "private",
+          },
+        });
+
+        const totalEmployedLocally = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            currentJobLocated: "locally",
+          },
+        });
+
+        const totalEmployedAbroad = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+            currentJobLocated: "abroad",
+          },
+        });
+
+        const structureQuestions = [
+          {
+            question: "Are you currently employed?",
+            yes: totalCurrentEmployed,
+            no: totalCurrentNotEmployed,
+          },
+          {
+            question: "Is your job aligned with your program?",
+            yes: totalJobAligned,
+            no: totalJobNotAligned,
+          },
+          {
+            question: "Are you self-employed?",
+            yes: totalSelfEmployed,
+            no: totalNotSelfEmployed,
+          },
+          {
+            question: "Are you currently enrolled in further studies?",
+            yes: totalFurtherStudies,
+            no: totalNotFurtherStudies,
+          },
+        ];
+
+        return structureQuestions;
+      })
+    );
+
+    return res.status(200).json(findQuestions.flatMap((data) => data));
+  } catch (e) {
+    return res.status(400).json({ message: `An error occured: ${e}` });
+  }
+});
+
+//@DESC     get traced percentage
+//@ROUTE    /api/graduateTracer/admin/percentage/:yearOfGraduation/:program
+//@ACCESS   GET
+const tracedPercentage = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+
+  try {
+    const majors = await prisma.responses.findMany({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+      },
+      select: {
+        major: true,
+      },
+      distinct: ["major"],
+    });
+
+    const totalGraduate = await prisma.total.findMany({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+      },
+    });
+
+    const majorStatistics = await Promise.all(
+      majors.map(async (major) => {
+        const totalCount = await prisma.responses.count({
+          where: {
+            yearOfGraduation: parseInt(yearOfGraduation),
+            program: program,
+          },
+        });
+
+        const flatenTotalGraduate = totalGraduate.map(
+          (data) => data.totalGraduates
+        );
+
+        return {
+          major: `PERCENTAGE TRACED IN MAJOR ${major.major}: `,
+          tracedPercentage: (totalCount / flatenTotalGraduate) * 100,
+          untTracedPercentage: 100 - (totalCount / flatenTotalGraduate) * 100,
+        };
+      })
+    );
+
+    return res.status(200).send(majorStatistics);
+  } catch (error) {
+    return res.status(400).json({ message: `An error occurred: ${error}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
@@ -342,4 +558,6 @@ export default {
   OverviewRowGaduates,
   getTotalGraduates,
   editTotalGraduates,
+  getQuestions,
+  tracedPercentage,
 };

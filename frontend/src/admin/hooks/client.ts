@@ -116,3 +116,20 @@ export const useGetEmploymentStatistics = (
     queryFn: () => client.getEmploymentStatistics(yearOfGraduation, program),
   });
 };
+
+export const useGetQuestions = (yearOfGraduation: string, program: string) => {
+  return useQuery({
+    queryKey: ["questions"],
+    queryFn: () => client.getQuestions(yearOfGraduation, program),
+  });
+};
+
+export const useGetPercentageTraced = (
+  yearOfGraduation: string,
+  program: string
+) => {
+  return useQuery({
+    queryKey: ["tracedPercentage"],
+    queryFn: () => client.getPercentage(yearOfGraduation, program),
+  });
+};
