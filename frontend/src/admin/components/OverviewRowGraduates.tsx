@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   useGetEmploymentStatistics,
   useGetGraduatesPerRow,
+  useGetOrganization,
   useGetPercentageTraced,
   useGetQuestions,
   useGetTotalGraduates,
@@ -13,6 +14,7 @@ import GraduatesPerRow from "./table/TableHeaders/GraduatesPerRow";
 import { Button } from "../../components/ui/button";
 import {
   chartConfigBar,
+  chartConfigBarHorizontal,
   chartConfigPie,
   chartConfigQuestions,
   TotalGraduatesType,
@@ -25,6 +27,7 @@ import { ChartBar } from "../../components/charts/ChartBar";
 import { ChartPie } from "../../components/charts/ChartPie";
 
 import { ChartMultipleBar } from "../../components/charts/ChartMultipleBar";
+
 const OverviewRowGraduates = () => {
   const { year, program } = useParams();
   const { data, isLoading, isFetching } = useGetGraduatesPerRow(
@@ -49,7 +52,8 @@ const OverviewRowGraduates = () => {
     program ?? ""
   );
 
-  console.log("tracedPercentage", tracedPercentage);
+  const { data: organization } = useGetOrganization(year ?? "", program ?? "");
+  console.log("organization", organization);
 
   const [openAddTotalGraduates, setOpenAddTotalGraduates] = useState(false);
   const [openEditTotalGraduates, setOpenEditTotalGraduates] = useState(false);
@@ -141,6 +145,8 @@ const OverviewRowGraduates = () => {
                       chartData={employmentStatistics}
                       chartConfig={chartConfigBar}
                       dataKey="major"
+                      title="Employment Statistics"
+                      description="Graduate Outcomes by Major"
                     />
                   </div>
                   <div>
@@ -148,6 +154,8 @@ const OverviewRowGraduates = () => {
                       chartConfig={chartConfigQuestions}
                       chartData={questions}
                       dataKey="question"
+                      title="Sector-Based Employment"
+                      description="Who works where?"
                     />
                   </div>
                   <div>
@@ -156,6 +164,19 @@ const OverviewRowGraduates = () => {
                       chartConfig={chartConfigPie}
                       dataKey="tracedPercentage"
                       nameKey="major"
+                      title="Percentage Traced Graduates"
+                      description="Traced Graduates by Major"
+                    />
+                  </div>
+
+                  <div>
+                    <ChartBar
+                      chartData={organization}
+                      chartConfig={chartConfigBarHorizontal}
+                      dataKey="organization"
+                      valueKey="total"
+                      title="Sector-Based Employment"
+                      description="Who works where?"
                     />
                   </div>
                 </div>

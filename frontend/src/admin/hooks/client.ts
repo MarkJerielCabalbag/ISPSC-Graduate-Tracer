@@ -133,3 +133,13 @@ export const useGetPercentageTraced = (
     queryFn: () => client.getPercentage(yearOfGraduation, program),
   });
 };
+
+export const useGetOrganization = (
+  yearOfGraduation: string,
+  program: string
+) => {
+  return useQuery({
+    queryKey: ["organization"],
+    queryFn: () => client.getOrganization(yearOfGraduation, program),
+  });
+};

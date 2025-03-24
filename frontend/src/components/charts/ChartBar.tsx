@@ -1,4 +1,3 @@
-import { TrendingUp } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -13,7 +12,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -24,12 +22,18 @@ import {
 } from "../ui/chart";
 import { ChartTypes } from "../../types/type";
 
-export function ChartBar({ chartData, chartConfig, dataKey }: ChartTypes) {
+export function ChartBar({
+  chartData,
+  chartConfig,
+  dataKey,
+  title,
+  description,
+}: ChartTypes) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Employment Statistics</CardTitle>
-        <CardDescription>Graduate Outcomes by Major</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -51,14 +55,6 @@ export function ChartBar({ chartData, chartConfig, dataKey }: ChartTypes) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Employment trend improving <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Based on graduate employment data
-        </div>
-      </CardFooter>
     </Card>
   );
 }

@@ -38,4 +38,9 @@ adminRouter.get(
   adminController.tracedPercentage
 );
 
+adminRouter.get(
+  "/organization/:yearOfGraduation/:program",
+  adminController.getTypeOfOrganisation
+);
+
 export default adminRouter;

@@ -104,7 +104,7 @@ export const chartConfigBar = {
 export const chartConfigQuestions = {
   yes: { label: "Yes" },
   no: { label: "No" },
-};
+} satisfies ChartConfig;
 
 export const chartConfigPie = {
   tracedPercentage: {
@@ -115,4 +115,8 @@ export const chartConfigPie = {
     label: "Untraced",
     color: "hsl(var(--chart-2))",
   },
-};
+} satisfies ChartConfig;
+
+export const chartConfigBarHorizontal = {
+  total: { label: "Total", color: "hsl(var(--chart-1))" },
+} satisfies ChartConfig;

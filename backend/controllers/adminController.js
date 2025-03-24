@@ -550,6 +550,50 @@ const tracedPercentage = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ message: `An error occurred: ${error}` });
   }
 });
+
+//@DESC     get type of organization based on year of graduation and program
+//@ROUTE    /api/graduateTracer/admin/organization/:yearOfGraduation/:program
+//@ACCESS   GET
+const getTypeOfOrganisation = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+  try {
+    const totalGovernment = await prisma.responses.count({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+        typeOfOrganization: "government",
+      },
+    });
+
+    const totalPrivate = await prisma.responses.count({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+        typeOfOrganization: "private",
+      },
+    });
+
+    const totalFreelance = await prisma.responses.count({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+        typeOfOrganization: "entreprenueral / freelance",
+      },
+    });
+
+    return res.status(200).send([
+      { organization: "Government", total: totalGovernment },
+      { organization: "Private", total: totalPrivate },
+      { organization: "Entrepreneural", total: totalFreelance },
+    ]);
+  } catch (error) {
+    return res.status(400).json({ message: `An error occurred: ${error}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
@@ -560,4 +604,5 @@ export default {
   editTotalGraduates,
   getQuestions,
   tracedPercentage,
+  getTypeOfOrganisation,
 };

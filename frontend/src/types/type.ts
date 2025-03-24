@@ -28,4 +28,7 @@ export type ChartTypes = {
   chartConfig: ChartConfig;
   dataKey: string;
   nameKey?: string;
+  valueKey?: any;
+  title: string;
+  description: string;
 };

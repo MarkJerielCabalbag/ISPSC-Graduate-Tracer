@@ -16,12 +16,14 @@ export function ChartPie({
   chartConfig,
   dataKey,
   nameKey,
+  title,
+  description,
 }: ChartTypes) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="justify-start pb-0">
-        <CardTitle>Percentage Traced Graduates</CardTitle>
-        <CardDescription>Traced Graduates by Major</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig}>
