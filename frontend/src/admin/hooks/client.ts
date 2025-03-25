@@ -143,3 +143,13 @@ export const useGetOrganization = (
     queryFn: () => client.getOrganization(yearOfGraduation, program),
   });
 };
+
+export const useGetCurrentJobLocation = (
+  yearOfGraduation: string,
+  program: string
+) => {
+  return useQuery({
+    queryKey: ["jobLocation"],
+    queryFn: () => client.getCurrentJobLocation(yearOfGraduation, program),
+  });
+};

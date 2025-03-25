@@ -98,12 +98,14 @@ export const graduatesRowColumnDef = [
     id: "email",
     header: () => "Email",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("yearOfGraduation", {
     id: "yearOfGraduation",
     header: () => "Year of Graduation",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("yearOfSurvey", {
@@ -116,53 +118,62 @@ export const graduatesRowColumnDef = [
     id: "department",
     header: () => "Department",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("program", {
     id: "program",
     header: () => "Program",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("major", {
     id: "major",
     header: () => "Major",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("isEmployed", {
     id: "isEmployed",
     header: () => "Are you currently employed?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("isJobAligned", {
     id: "isJobAligned",
     header: () => "Is your job aligned with your program?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("isSelfEmployed", {
     id: "isSelfEmployed",
     header: () => "Are you self-employed?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("isFurtherStudies", {
     id: "isFurtherStudies",
     header: () => "Are you currently enrolled in further studies?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("typeOfOrganization", {
     id: "typeOfOrganization",
     header: () => "What type of organization do you work for?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 
   columnHelper.accessor("currentJobLocated", {
     id: "currentJobLocated",
     header: () => "Where is your current job located?",
     cell: (info) => info.getValue(),
+    enableSorting: false,
   }),
 ];

@@ -9,7 +9,6 @@ import {
 } from "../ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 import { ChartTypes } from "../../types/type";
-import { Description } from "@radix-ui/react-dialog";
 
 const colorPalette = [
   "hsl(0, 100%, 50%)", // Red
@@ -35,21 +34,15 @@ export function ChartBarhorizontal({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{
-              left: -20,
-            }}
-          >
-            <XAxis type="number" dataKey={valueKey} hide />
+      <CardContent className="h-[500px]">
+        <ChartContainer config={chartConfig} className="h-full w-full">
+          <BarChart accessibilityLayer data={chartData} layout="vertical">
+            <XAxis type="number" dataKey={valueKey} allowDecimals={false} />
             <YAxis
               dataKey={dataKey}
               type="category"
-              tickFormatter={(value) => value.slice(0, 5)}
+              tickFormatter={(value) => value}
+              allowDecimals={false}
             />
 
             <ChartTooltip
@@ -62,6 +55,7 @@ export function ChartBarhorizontal({
                 dataKey={key}
                 fill={colorPalette[index % colorPalette.length]}
                 radius={[2, 2, 0, 0]}
+                barSize={100}
               />
             ))}
           </BarChart>

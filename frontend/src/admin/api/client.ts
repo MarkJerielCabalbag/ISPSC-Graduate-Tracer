@@ -258,4 +258,23 @@ export const client = {
       return response;
     });
   },
+
+  //get current job location
+  async getCurrentJobLocation(yearOfGraduation: string, program: string) {
+    return await fetch(
+      `${baseUrl}/admin/jobLocation/${yearOfGraduation}/${program}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    ).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

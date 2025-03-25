@@ -9,12 +9,31 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
-import { LucideArrowUpDown } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../../../components/ui/card";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  LucideArrowUpDown,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "../../../components/ui/card";
 import React from "react";
 import { Input } from "../../../components/ui/input";
 
 import Headers from "./headers";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
+import { Button } from "../../../components/ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,16 +55,37 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const table = useReactTable({
     data,
     columns,
+    rowCount: data.length,
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
+      pagination,
     },
   });
+  const [selectSize, setSelectSize] = React.useState(
+    table.getState().pagination.pageSize
+  );
+
+  const [rowCount, _] = React.useState(data.length);
+
+  const handlePageSizeChange = (value: any) => {
+    setSelectSize(Number(value));
+    setPagination((prev) => ({
+      ...prev,
+      pageSize: Number(value),
+    }));
+    table.setPageSize(Number(value));
+  };
 
   return (
     <div className="w-[100%] ">
@@ -135,6 +175,71 @@ export function DataTable<TData, TValue>({
             </tbody>
           </table>
         </CardContent>
+        <CardFooter>
+          <div className={`flex flex-col gap-2 md:flex-row`}>
+            <div className="flex flex-col gap-2 items-center md:flex-row">
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button
+                className="w-full md:w-auto"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </Button>
+
+              <p>
+                Page {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount()}
+              </p>
+            </div>
+            <div>
+              <Select
+                value={String(selectSize)}
+                onValueChange={handlePageSizeChange}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    { value: "10", label: "10" },
+                    { value: "20", label: "20" },
+                    { value: "30", label: "30" },
+                    { value: "40", label: "40" },
+                    { value: rowCount, label: "All" },
+                  ].map((sizeOption) => (
+                    <SelectItem
+                      key={sizeOption.value}
+                      value={sizeOption.value as string}
+                    >
+                      Show {sizeOption.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardFooter>
       </Card>
     </div>
   );

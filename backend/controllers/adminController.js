@@ -594,6 +594,41 @@ const getTypeOfOrganisation = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ message: `An error occurred: ${error}` });
   }
 });
+
+//@DESC     get current job location based on year of graduation and program
+//@ROUTE    /api/graduateTracer/admin/jobLocation/:yearOfGraduation/:program
+//@ACCESS   GET
+const getCurrentJobLocation = asyncHandler(async (req, res, next) => {
+  const { yearOfGraduation, program } = req.params;
+
+  if (!yearOfGraduation || !program) {
+    return res.status(400).json({ message: "Please fill those fields" });
+  }
+  try {
+    const totalLocally = await prisma.responses.count({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+        currentJobLocated: "locally",
+      },
+    });
+
+    const totalAbroad = await prisma.responses.count({
+      where: {
+        yearOfGraduation: parseInt(yearOfGraduation),
+        program: program,
+        currentJobLocated: "abroad",
+      },
+    });
+
+    return res.status(200).send([
+      { location: "Locally", total: totalLocally },
+      { location: "Abroad", total: totalAbroad },
+    ]);
+  } catch (error) {
+    return res.status(400).json({ message: `An error occurred: ${error}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
@@ -605,4 +640,5 @@ export default {
   getQuestions,
   tracedPercentage,
   getTypeOfOrganisation,
+  getCurrentJobLocation,
 };

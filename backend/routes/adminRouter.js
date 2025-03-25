@@ -43,4 +43,8 @@ adminRouter.get(
   adminController.getTypeOfOrganisation
 );
 
+adminRouter.get(
+  "/jobLocation/:yearOfGraduation/:program",
+  adminController.getCurrentJobLocation
+);
 export default adminRouter;
