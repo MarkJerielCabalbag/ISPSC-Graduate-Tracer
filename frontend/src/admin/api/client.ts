@@ -277,4 +277,20 @@ export const client = {
       return response;
     });
   },
+
+  //get department details
+  async getDepartmentDetails(departmentId: string) {
+    return await fetch(`${baseUrl}/admin/department/${departmentId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

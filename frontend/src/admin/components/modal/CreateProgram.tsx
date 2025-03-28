@@ -58,7 +58,11 @@ const CreateProgram = ({ isOpen, handleIsOpen }: ModalType) => {
                 </SelectTrigger>
                 <SelectContent>
                   {department?.map((program: collegeDepartment) => (
-                    <SelectItem key={program.id} value={String(program.id)}>
+                    <SelectItem
+                      key={program.id}
+                      value={String(program.id)}
+                      className="flex justify-between items-center"
+                    >
                       {program.department}
                     </SelectItem>
                   ))}

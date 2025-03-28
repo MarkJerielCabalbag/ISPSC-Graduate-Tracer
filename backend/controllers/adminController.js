@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { uid } from "uid";
+import { get } from "http";
 const prisma = new PrismaClient().$extends(withAccelerate());
 
 //@DESC     add department
@@ -159,12 +160,7 @@ const getSummaryData = asyncHandler(async (req, res, next) => {
 //@ROUTE    /api/graduateTracer/admin/overviewStudents
 //@ACCESS   Get
 const overviewTracedStudents = asyncHandler(async (req, res, next) => {
-  const departments = await prisma.department.findMany({
-    select: {
-      department: true,
-    },
-    distinct: ["department"],
-  });
+  const departments = await prisma.department.findMany({});
 
   const overviewTraced = await Promise.all(
     departments.map(async (department) => {
@@ -175,14 +171,12 @@ const overviewTracedStudents = asyncHandler(async (req, res, next) => {
       });
 
       return {
-        id: uid(),
+        id: department.id,
         department: department.department,
         totalTracedGraduates: countTracedStudents,
       };
     })
   );
-
-  console.log(overviewTraced);
 
   return res.status(200).send(overviewTraced);
 });
@@ -629,6 +623,50 @@ const getCurrentJobLocation = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ message: `An error occurred: ${error}` });
   }
 });
+
+//@DESC     get department details
+//@ROUTE    /api/graduateTracer/admin/department/:departmentId
+//@ACCESS   GET
+const getDepartmentDetails = asyncHandler(async (req, res, next) => {
+  const { departmentId } = req.params;
+
+  if (!departmentId) {
+    return res.status(400).send({ message: "Please provide a department ID" });
+  }
+
+  try {
+    const departmentDetails = await prisma.department.findUnique({
+      where: {
+        id: parseInt(departmentId),
+      },
+    });
+
+    if (!departmentDetails) {
+      return res.status(404).send({ message: "Department not found" });
+    }
+
+    const programsWithMajors = await prisma.program.findMany({
+      where: {
+        departmentId: parseInt(departmentId),
+      },
+      select: {
+        program: true,
+        listOfMajor: {
+          select: {
+            id: true,
+            major: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).send(programsWithMajors);
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: `An error occurred: ${error.message}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
@@ -641,4 +679,5 @@ export default {
   tracedPercentage,
   getTypeOfOrganisation,
   getCurrentJobLocation,
+  getDepartmentDetails,
 };

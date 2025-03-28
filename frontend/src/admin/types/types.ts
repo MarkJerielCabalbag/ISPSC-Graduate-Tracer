@@ -120,3 +120,13 @@ export const chartConfigPie = {
 export const chartConfigBarHorizontal = {
   total: { label: "Total", color: "hsl(var(--chart-1))" },
 } satisfies ChartConfig;
+
+export type Major = {
+  id: number;
+  major: string;
+};
+
+export type DepartmentDetails = {
+  program?: string;
+  listOfMajor?: Major[];
+};

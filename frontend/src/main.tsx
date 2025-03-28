@@ -15,6 +15,7 @@ import {
 import App from "./App";
 import Dashboard from "./admin/Dashboard.tsx";
 import OverviewRowGraduates from "./admin/components/OverviewRowGraduates.tsx";
+import OverviewDepartments from "./admin/components/OverviewDepartments.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,10 @@ const router = createBrowserRouter(
       <Route
         path="/graduates/:year/:program"
         element={<OverviewRowGraduates />}
+      />
+      <Route
+        path="/department/:departmentId"
+        element={<OverviewDepartments />}
       />
     </>
   )
