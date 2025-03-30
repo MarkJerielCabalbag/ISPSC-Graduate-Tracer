@@ -1,15 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetDepartmentDetails } from "../hooks/client";
 import Header from "./Header";
 import { DepartmentDetails, Major } from "../types/types";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BookCheck } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../components/ui/accordion";
 
 const OverviewDepartments = () => {
   const { departmentId } = useParams();
   const { data, isLoading, isFetching } = useGetDepartmentDetails(
     departmentId ?? ""
   );
-  console.log(data);
+
+  const navigate = useNavigate();
   return (
     <div>
       <Header />
@@ -19,24 +26,31 @@ const OverviewDepartments = () => {
         ) : (
           <>
             <h1 className="text-lg text-primary font-bold my-5 flex gap-2 items-center">
-              <ArrowLeft /> Programs
+              <ArrowLeft onClick={() => navigate("/admin")} /> Programs
             </h1>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="bg-primary/10 p-5 rounded-md">
               {data.map((department: DepartmentDetails) => (
-                <div
-                  key={department.program}
-                  className="p-5 bg-primary rounded-md"
-                >
-                  <div className="main-font mb-5">{department.program}</div>
-                  <p className="italic text-white text-md">List of Majors</p>
+                <div key={department.program}>
+                  <div className="text-primary font-semibold flex gap-2 items-center">
+                    <BookCheck /> {department.program}
+                  </div>
 
-                  {department?.listOfMajor?.map((major: Major) => (
-                    <div key={major.id}>
-                      <p className="text-sm italic text-white opacity-75">
-                        {major.major}
-                      </p>
-                    </div>
-                  ))}
+                  <Accordion type="single" collapsible>
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger className="text-primary">
+                        List of Majors
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {department?.listOfMajor?.map((major: Major) => (
+                          <div key={major.id}>
+                            <p className="text-sm italic text-primary opacity-75">
+                              {major.major}
+                            </p>
+                          </div>
+                        ))}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </div>
               ))}
             </div>

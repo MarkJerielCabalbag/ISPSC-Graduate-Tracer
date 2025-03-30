@@ -31,6 +31,8 @@ import { ChartMultipleBar } from "../../components/charts/ChartMultipleBar";
 import { ChartBarhorizontal } from "../../components/charts/ChartBarHorizontal";
 import frontCover from "../../assets/Front cover.png";
 import logo from "../../assets/ispsc.png";
+import { Card } from "../../components/ui/card";
+import { Skeleton } from "../../components/ui/skeleton";
 const OverviewRowGraduates = () => {
   const { year, program } = useParams();
   const { data, isLoading, isFetching } = useGetGraduatesPerRow(
@@ -38,10 +40,8 @@ const OverviewRowGraduates = () => {
     program ?? ""
   );
 
-  const { data: totalGraduates } = useGetTotalGraduates(
-    year ?? "",
-    program ?? ""
-  );
+  const { data: totalGraduates, isLoading: isLoadingTotalGraduates } =
+    useGetTotalGraduates(year ?? "", program ?? "");
 
   const { data: employmentStatistics } = useGetEmploymentStatistics(
     year ?? "",
@@ -88,41 +88,52 @@ const OverviewRowGraduates = () => {
       )}
 
       <div className="w-[90%] mx-auto my-5">
-        {totalGraduates?.map((total: TotalGraduatesType) => (
-          <div
-            key={total.id}
-            className="my-3 flex justify-between items-center bg-primary p-5 rounded-md"
-          >
-            <div>
-              <h1 className="main-font">{total.department}</h1>
-              <h2 className="text-white font-bold">{total.program}</h2>
-            </div>
-            <div className="">
-              <h1 className="main-font font-bold text-xl text-end">
-                {total.totalGraduates}
-              </h1>
-              <p className="italic text-end text-white">Total Graduates</p>
-              {total.totalGraduates === 0 ? (
-                <Button
-                  variant="outline"
-                  onClick={() => setOpenAddTotalGraduates(true)}
-                >
-                  <CirclePlus /> Add Total Graduates
-                </Button>
-              ) : (
-                <Button
-                  variant="outline"
-                  onClick={() => setOpenEditTotalGraduates(true)}
-                >
-                  <Edit3 /> Edit Total Graduates
-                </Button>
-              )}
-            </div>
-          </div>
-        ))}
+        {isLoadingTotalGraduates ? (
+          <Card className="bg-primary/75 rounded-md mb-5 p-5">
+            <Skeleton className="w-[20%] h-10 bg-primary/50" />
+            <Skeleton className="w-[30%] h-10 bg-primary/50" />
+          </Card>
+        ) : (
+          <>
+            {totalGraduates?.map((total: TotalGraduatesType) => (
+              <div
+                key={total.id}
+                className="my-3 flex justify-between items-center bg-primary p-5 rounded-md"
+              >
+                <div>
+                  <h1 className="main-font">{total.department}</h1>
+                  <h2 className="text-white font-bold">{total.program}</h2>
+                </div>
+                <div className="">
+                  <h1 className="main-font font-bold text-xl text-end">
+                    {total.totalGraduates}
+                  </h1>
+                  <p className="italic text-end text-white">Total Graduates</p>
+                  {total.totalGraduates === 0 ? (
+                    <Button
+                      variant="outline"
+                      onClick={() => setOpenAddTotalGraduates(true)}
+                    >
+                      <CirclePlus /> Add Total Graduates
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={() => setOpenEditTotalGraduates(true)}
+                    >
+                      <Edit3 /> Edit Total Graduates
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
 
         {isLoading || isFetching ? (
-          <p>loading</p>
+          <Card className="w-full h-[50vh] bg-primary/10 rounded-md flex items-center justify-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          </Card>
         ) : (
           <DataTable
             data={data}
@@ -138,94 +149,100 @@ const OverviewRowGraduates = () => {
           />
         )}
 
-        <div>
-          {totalGraduates?.map((total: TotalGraduatesType) =>
-            total.totalGraduates === 0 ? (
-              <div className="relative h-[50vh] w-full bg-primary my-5 rounded-md flex flex-col items-center justify-center overflow-hidden">
-                <img
-                  src={frontCover}
-                  alt="Background"
-                  className="absolute inset-0 w-full h-full object-cover opacity-40"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="relative z-10 flex flex-col items-center gap-2">
+        {isLoadingTotalGraduates ? (
+          <Card className="bg-primary/75 text-center p-5 rounded-md my-5 h-[20%]">
+            <h1 className="main-font">Charts are generating...</h1>
+          </Card>
+        ) : (
+          <div>
+            {totalGraduates?.map((total: TotalGraduatesType) =>
+              total.totalGraduates === 0 ? (
+                <div className="relative h-[50vh] w-full bg-primary my-5 rounded-md flex flex-col items-center justify-center overflow-hidden">
                   <img
-                    src={logo}
-                    alt="ISPSC Logo"
-                    className="w-16 h-16 object-contain"
+                    src={frontCover}
+                    alt="Background"
+                    className="absolute inset-0 w-full h-full object-cover opacity-40"
                   />
 
-                  <h1 className="main-font text-center text-white">
-                    There are no Total Graduates indicated yet
-                  </h1>
+                  <div className="absolute inset-0 bg-black/20"></div>
 
-                  <Button
-                    onClick={() => setOpenAddTotalGraduates(true)}
-                    className="bg-amber-300 text-primary hover:bg-amber-400"
-                  >
-                    Add Total Graduates
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-5 my-5">
-                  <div className="col-span-2 ">
-                    <ChartBarhorizontal
-                      chartData={jobLocation}
-                      chartConfig={chartConfigBarHorizontal}
-                      dataKey="location"
-                      valueKey="total"
-                      title="Location-Based Employment"
-                      description="Where do they work?"
+                  <div className="relative z-10 flex flex-col items-center gap-2">
+                    <img
+                      src={logo}
+                      alt="ISPSC Logo"
+                      className="w-16 h-16 object-contain"
                     />
-                  </div>
-                  <div>
-                    <ChartBar
-                      chartData={employmentStatistics}
-                      chartConfig={chartConfigBar}
-                      dataKey="major"
-                      title="Employment Statistics"
-                      description="Graduate Outcomes by Major"
-                    />
-                  </div>
-                  <div>
-                    <ChartMultipleBar
-                      chartConfig={chartConfigQuestions}
-                      chartData={questions}
-                      dataKey="question"
-                      title="Sector-Based Employment"
-                      description="Who works where?"
-                    />
-                  </div>
-                  <div>
-                    <ChartPie
-                      chartData={tracedPercentage}
-                      chartConfig={chartConfigPie}
-                      dataKey="tracedPercentage"
-                      nameKey="major"
-                      title="Percentage Traced Graduates"
-                      description="Traced Graduates by Major"
-                    />
-                  </div>
 
-                  <div>
-                    <ChartBar
-                      chartData={organization}
-                      chartConfig={chartConfigBarHorizontal}
-                      dataKey="organization"
-                      valueKey="total"
-                      title="Sector-Based Employment"
-                      description="Who works where?"
-                    />
+                    <h1 className="main-font text-center text-white">
+                      There are no Total Graduates indicated yet
+                    </h1>
+
+                    <Button
+                      onClick={() => setOpenAddTotalGraduates(true)}
+                      className="bg-amber-300 text-primary hover:bg-amber-400"
+                    >
+                      Add Total Graduates
+                    </Button>
                   </div>
                 </div>
-              </>
-            )
-          )}
-        </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-5 my-5">
+                    <div className="col-span-2 ">
+                      <ChartBarhorizontal
+                        chartData={jobLocation}
+                        chartConfig={chartConfigBarHorizontal}
+                        dataKey="location"
+                        valueKey="total"
+                        title="Location-Based Employment"
+                        description="Where do they work?"
+                      />
+                    </div>
+                    <div>
+                      <ChartBar
+                        chartData={employmentStatistics}
+                        chartConfig={chartConfigBar}
+                        dataKey="major"
+                        title="Employment Statistics"
+                        description="Graduate Outcomes by Major"
+                      />
+                    </div>
+                    <div>
+                      <ChartMultipleBar
+                        chartConfig={chartConfigQuestions}
+                        chartData={questions}
+                        dataKey="question"
+                        title="Sector-Based Employment"
+                        description="Who works where?"
+                      />
+                    </div>
+                    <div>
+                      <ChartPie
+                        chartData={tracedPercentage}
+                        chartConfig={chartConfigPie}
+                        dataKey="tracedPercentage"
+                        nameKey="major"
+                        title="Percentage Traced Graduates"
+                        description="Traced Graduates by Major"
+                      />
+                    </div>
+
+                    <div>
+                      <ChartBar
+                        chartData={organization}
+                        chartConfig={chartConfigBarHorizontal}
+                        dataKey="organization"
+                        valueKey="total"
+                        title="Sector-Based Employment"
+                        description="Who works where?"
+                      />
+                    </div>
+                  </div>
+                </>
+              )
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { DataTable } from "./components/table/data-tables";
 import { columns } from "./components/table/columns";
 import OverallDashboardTheader from "./components/table/TableHeaders/OverallDashboardTheader";
 import { useNavigate } from "react-router-dom";
+import { Card } from "../components/ui/card";
 
 const Dashboard = () => {
   const { data, isFetching } = useGetSummaryData();
@@ -20,7 +21,9 @@ const Dashboard = () => {
 
       <div className="w-[90%] mx-auto">
         {isFetching ? (
-          <p>loading...</p>
+          <Card className="w-[100%] h-[300px] flex justify-center items-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          </Card>
         ) : (
           <div className="w-[100%] ">
             <DataTable
