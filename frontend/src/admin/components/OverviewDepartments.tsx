@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetDepartmentDetails } from "../hooks/client";
 import Header from "./Header";
 import { DepartmentDetails, Major } from "../types/types";
-import { ArrowLeft, BookCheck } from "lucide-react";
+import { ArrowLeft, BookCheck, Edit2, Loader2, Trash2 } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -12,51 +12,101 @@ import {
 
 const OverviewDepartments = () => {
   const { departmentId } = useParams();
-  const { data, isLoading, isFetching } = useGetDepartmentDetails(
-    departmentId ?? ""
-  );
-
+  const {
+    data: departments = [],
+    isLoading,
+    isFetching,
+  } = useGetDepartmentDetails(departmentId ?? "");
   const navigate = useNavigate();
+
+  const handleBackClick = () => navigate("/admin");
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-[60vh]">
+          <Loader2 className="animate-spin h-8 w-8 text-primary" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="w-[90%] mx-auto">
-        {isLoading || isFetching ? (
-          <div>loading</div>
-        ) : (
-          <>
-            <h1 className="text-lg text-primary font-bold my-5 flex gap-2 items-center">
-              <ArrowLeft onClick={() => navigate("/admin")} /> Programs
-            </h1>
-            <div className="bg-primary/10 p-5 rounded-md">
-              {data.map((department: DepartmentDetails) => (
-                <div key={department.program}>
-                  <div className="text-primary font-semibold flex gap-2 items-center">
-                    <BookCheck /> {department.program}
+      <main className="w-[90%] mx-auto my-5">
+        <div className="">
+          <header className="flex items-center gap-4 mb-8">
+            <button
+              onClick={handleBackClick}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <ArrowLeft className="h-6 w-6 text-primary" />
+            </button>
+            <h1 className="text-2xl font-bold text-primary">Programs</h1>
+          </header>
+
+          <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
+            {departments.map((department: DepartmentDetails) => (
+              <div
+                key={department.program}
+                className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <BookCheck className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      {department.program}
+                    </h2>
                   </div>
 
-                  <Accordion type="single" collapsible>
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger className="text-primary">
-                        List of Majors
-                      </AccordionTrigger>
-                      <AccordionContent>
+                  <div className="flex gap-3">
+                    <button className="p-2 hover:bg-red-50 rounded-full text-red-500 transition-colors">
+                      <Trash2 className="h-5 w-5" />
+                    </button>
+                    <button className="p-2 hover:bg-primary/10 rounded-full text-primary transition-colors">
+                      <Edit2 className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="bg-gray-50 rounded-md"
+                >
+                  <AccordionItem value="majors">
+                    <AccordionTrigger className="px-4 py-3 text-primary hover:no-underline">
+                      List of Majors ({department.listOfMajor?.length ?? 0})
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 p-4">
                         {department?.listOfMajor?.map((major: Major) => (
-                          <div key={major.id}>
-                            <p className="text-sm italic text-primary opacity-75">
-                              {major.major}
-                            </p>
+                          <div
+                            key={major.id}
+                            className="bg-white p-3 rounded-md flex justify-between items-center hover:shadow-sm transition-shadow"
+                          >
+                            <p className="text-gray-700">{major.major}</p>
+                            <div className="flex gap-2">
+                              <button className="p-1.5 hover:bg-red-50 rounded-full text-red-500 transition-colors">
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                              <button className="p-1.5 hover:bg-primary/10 rounded-full text-primary transition-colors">
+                                <Edit2 className="h-4 w-4" />
+                              </button>
+                            </div>
                           </div>
                         ))}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
