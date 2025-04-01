@@ -9,6 +9,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../../components/ui/accordion";
+import { useState } from "react";
+import DeleteProgram from "./modal/DeleteProgram";
 
 const OverviewDepartments = () => {
   const { departmentId } = useParams();
@@ -19,7 +21,13 @@ const OverviewDepartments = () => {
   } = useGetDepartmentDetails(departmentId ?? "");
   const navigate = useNavigate();
 
+  const [openDeleteProgram, setOpenDeleteProgram] = useState(false);
+  const [majorId, setMajorId] = useState(0);
+
+  console.log(departments, "departments");
+
   const handleBackClick = () => navigate("/admin");
+  const handleDeleteProgram = () => setOpenDeleteProgram(!openDeleteProgram);
 
   if (isLoading || isFetching) {
     return (
@@ -35,6 +43,7 @@ const OverviewDepartments = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+
       <main className="w-[90%] mx-auto my-5">
         <div className="">
           <header className="flex items-center gap-4 mb-8">
@@ -53,6 +62,13 @@ const OverviewDepartments = () => {
                 key={department.program}
                 className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0"
               >
+                {openDeleteProgram && (
+                  <DeleteProgram
+                    isOpen={openDeleteProgram}
+                    handleIsOpen={setOpenDeleteProgram}
+                    majorId={0}
+                  />
+                )}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <BookCheck className="h-5 w-5 text-primary" />
@@ -63,7 +79,10 @@ const OverviewDepartments = () => {
 
                   <div className="flex gap-3">
                     <button className="p-2 hover:bg-red-50 rounded-full text-red-500 transition-colors">
-                      <Trash2 className="h-5 w-5" />
+                      <Trash2
+                        className="h-5 w-5"
+                        onClick={handleDeleteProgram}
+                      />
                     </button>
                     <button className="p-2 hover:bg-primary/10 rounded-full text-primary transition-colors">
                       <Edit2 className="h-5 w-5" />
@@ -82,22 +101,24 @@ const OverviewDepartments = () => {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-2 p-4">
-                        {department?.listOfMajor?.map((major: Major) => (
-                          <div
-                            key={major.id}
-                            className="bg-white p-3 rounded-md flex justify-between items-center hover:shadow-sm transition-shadow"
-                          >
-                            <p className="text-gray-700">{major.major}</p>
-                            <div className="flex gap-2">
-                              <button className="p-1.5 hover:bg-red-50 rounded-full text-red-500 transition-colors">
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                              <button className="p-1.5 hover:bg-primary/10 rounded-full text-primary transition-colors">
-                                <Edit2 className="h-4 w-4" />
-                              </button>
+                        {department?.listOfMajor?.map((major: Major) => {
+                          return (
+                            <div
+                              key={major.id}
+                              className="bg-white p-3 rounded-md flex justify-between items-center hover:shadow-sm transition-shadow"
+                            >
+                              <p className="text-gray-700">{major.major}</p>
+                              <div className="flex gap-2">
+                                <button className="p-1.5 hover:bg-red-50 rounded-full text-red-500 transition-colors">
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                                <button className="p-1.5 hover:bg-primary/10 rounded-full text-primary transition-colors">
+                                  <Edit2 className="h-4 w-4" />
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </AccordionContent>
                   </AccordionItem>

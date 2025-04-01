@@ -160,3 +160,17 @@ export const useGetDepartmentDetails = (departmentId: string) => {
     queryFn: () => client.getDepartmentDetails(departmentId),
   });
 };
+
+export const useRemoveProgram = (programId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.removeProgram(programId),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["programs"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};

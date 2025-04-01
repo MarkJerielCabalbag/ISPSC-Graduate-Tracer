@@ -16,10 +16,12 @@ import App from "./App";
 import Dashboard from "./admin/Dashboard.tsx";
 import OverviewRowGraduates from "./admin/components/OverviewRowGraduates.tsx";
 import OverviewDepartments from "./admin/components/OverviewDepartments.tsx";
+import Home from "./components/Home.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route path="/home" element={<Home />} />
       <Route path="/" element={<App />} />
       <Route path="/admin" element={<Dashboard />} />
       <Route

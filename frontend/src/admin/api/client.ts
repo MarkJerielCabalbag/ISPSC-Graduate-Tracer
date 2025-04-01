@@ -293,4 +293,19 @@ export const client = {
       return response;
     });
   },
+
+  async removeProgram(programId: number) {
+    return await fetch(`${baseUrl}/program/remove/${programId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };
