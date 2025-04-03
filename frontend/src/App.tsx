@@ -1,12 +1,7 @@
-import Form from "./Form";
-import { Toaster } from "react-hot-toast";
+import Home from "./components/Home";
+
 function App() {
-  return (
-    <div className="sm: w-[90%] md:w-1/2 mx-auto">
-      <Form />
-      {<Toaster />}
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;

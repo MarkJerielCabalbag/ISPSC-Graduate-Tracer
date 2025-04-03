@@ -12,6 +12,7 @@ import GraduateEmploymentInformation from "./components/form/GraduateEmploymentI
 import { useFormStore } from "./hooks/store";
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
+import { Toaster } from "react-hot-toast";
 
 const years = displayYears(2020, 2080);
 
@@ -23,38 +24,46 @@ const Form = () => {
     handleEmailChange(email);
   }, [email]);
   return (
-    <div>
+    <div className="w-[90%] max-w-[768px] mx-auto space-y-8">
       <Header />
+      {<Toaster />}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-4 border-t-8 border-[#800000] space-y-8">
+        <div className="mb-6">
+          <h1 className="text-xl mb-2">Email</h1>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="border-gray-300 focus:border-[#800000] focus:ring-[#800000]"
+          />
+        </div>
 
-      <div className="my-5">
-        <h1>Email</h1>
-        <Input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-        />
+        <div>
+          <h1 className="text-xl mb-2">Year of Survey</h1>
+          <Select onValueChange={(value) => handleSurveyChange(value)}>
+            <SelectTrigger className="w-full border-gray-300 focus:border-[#800000] focus:ring-[#800000]">
+              <SelectValue placeholder="Select Year of Survey" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((year: number) => (
+                <SelectItem key={year} value={String(year)}>
+                  {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div className="my-5">
-        <h1>Year of Survey</h1>
-        <Select onValueChange={(value) => handleSurveyChange(value)}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Year of Survey" />
-          </SelectTrigger>
-          <SelectContent>
-            {years.map((year: number) => (
-              <SelectItem key={year} value={String(year)}>
-                {year}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="bg-white rounded-lg shadow-md p-6 mb-4 border-t-8 border-[#800000]">
+        <GeneralInformation />
       </div>
 
-      <GeneralInformation />
-      <GraduateEmploymentInformation />
+      <div className="bg-white rounded-lg shadow-md p-6 border-t-8 border-[#800000]">
+        <GraduateEmploymentInformation />
+      </div>
     </div>
   );
 };

@@ -21,31 +21,36 @@ const GeneralInformation = () => {
   }, [name]);
 
   return (
-    <div>
-      <h1 className="bg-primary p-3 main-font rounded-md">
+    <div className="space-y-6">
+      <h1 className="bg-primary p-4 main-font rounded-lg text-white text-xl font-semibold shadow-md">
         I. General Information
       </h1>
 
-      <div className="flex items-center gap-5">
-        <div className="w-1/2 my-5">
-          <h1>Full Name</h1>
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">Full Name</label>
           <Input
             placeholder="Ex (Juan D. Cruz)"
             type="text"
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="w-full focus:ring-2 focus:ring-primary/50 transition-all"
           />
         </div>
-        <div className="w-1/2 my-5">
-          <h1>Year of Graduation</h1>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">
+            Year of Graduation
+          </label>
           <Select onValueChange={(value) => handleGraduationChange(value)}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full focus:ring-2 focus:ring-primary/50 transition-all">
               <SelectValue placeholder="Select Year of Survey" />
             </SelectTrigger>
             <SelectContent>
               {years.map((year: number) => (
-                <SelectItem value={String(year)}>{year}</SelectItem>
+                <SelectItem key={year} value={String(year)}>
+                  {year}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>

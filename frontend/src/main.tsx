@@ -12,17 +12,18 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import App from "./App";
+
 import Dashboard from "./admin/Dashboard.tsx";
 import OverviewRowGraduates from "./admin/components/OverviewRowGraduates.tsx";
 import OverviewDepartments from "./admin/components/OverviewDepartments.tsx";
 import Home from "./components/Home.tsx";
+import Form from "./Form.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/home" element={<Home />} />
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/form" element={<Form />} />
       <Route path="/admin" element={<Dashboard />} />
       <Route
         path="/graduates/:year/:program"
