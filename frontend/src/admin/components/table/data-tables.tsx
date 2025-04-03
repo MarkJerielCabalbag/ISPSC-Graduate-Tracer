@@ -88,9 +88,9 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="w-[100%] ">
+    <div className="w-full">
       <Card className="rounded-md">
-        <CardHeader>
+        <CardHeader className="flex flex-col sm:flex-row justify-between gap-4">
           <Headers
             title={tableHeader}
             content={
@@ -106,138 +106,142 @@ export function DataTable<TData, TValue>({
                     .getColumn(filterInputName)
                     ?.setFilterValue(event.target.value)
                 }
-                className="max-w-sm"
+                className="w-full sm:max-w-sm"
               />
             }
           />
         </CardHeader>
-        <CardContent className="overflow-auto">
-          <table className="w-full min-w-max table-auto text-left">
-            <thead className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-2">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-                    >
-                      <h1 className="font-normal flex items-center gap-2 leading-none opacity-70">
-                        {header.column.getCanSort() ? (
-                          <LucideArrowUpDown
-                            onClick={
-                              header.column.getCanSort()
-                                ? header.column.getToggleSortingHandler()
-                                : undefined
-                            }
-                          />
-                        ) : null}
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
+        <CardContent className="overflow-x-auto">
+          <div className="min-w-full inline-block align-middle">
+            <div className="overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
+                        >
+                          <div className="flex items-center gap-2">
+                            {header.column.getCanSort() && (
+                              <LucideArrowUpDown
+                                className="h-4 w-4 cursor-pointer"
+                                onClick={
+                                  header.column.getCanSort()
+                                    ? header.column.getToggleSortingHandler()
+                                    : undefined
+                                }
+                              />
                             )}
-                        {header.column.getCanSort() && (
-                          <>
-                            <>
-                              {header.column.getIsSorted() === "desc"
-                                ? " 🔼"
-                                : ""}
-
-                              {header.column.getIsSorted() === "asc"
-                                ? "  🔽"
-                                : ""}
-                            </>
-                          </>
-                        )}
-                      </h1>
-                    </th>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                            {header.column.getCanSort() && (
+                              <span className="ml-1">
+                                {header.column.getIsSorted() === "desc"
+                                  ? " 🔼"
+                                  : header.column.getIsSorted() === "asc"
+                                  ? " 🔽"
+                                  : ""}
+                              </span>
+                            )}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} onClick={() => onRowClick?.(row.original)}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="p-4 border-b border-blue-gray-50"
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {table.getRowModel().rows.map((row) => (
+                    <tr
+                      key={row.id}
+                      onClick={() => onRowClick?.(row.original)}
+                      className="hover:bg-gray-50 cursor-pointer"
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </CardContent>
-        <CardFooter>
-          <div className={`flex flex-col gap-2 md:flex-row`}>
-            <div className="flex flex-col gap-2 items-center md:flex-row">
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <ChevronsLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Button
-                className="w-full md:w-auto"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <ChevronsRight className="h-4 w-4" />
-              </Button>
-
-              <p>
+        <CardFooter className="mt-4">
+          <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="flex space-x-2">
+                <Button
+                  size="sm"
+                  onClick={() => table.setPageIndex(0)}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronsLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <ChevronsRight className="h-4 w-4" />
+                </Button>
+              </div>
+              <span className="text-sm text-gray-600">
                 Page {table.getState().pagination.pageIndex + 1} of{" "}
                 {table.getPageCount()}
-              </p>
+              </span>
             </div>
-            <div>
-              <Select
-                value={String(selectSize)}
-                onValueChange={handlePageSizeChange}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Theme" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[
-                    { value: "10", label: "10" },
-                    { value: "20", label: "20" },
-                    { value: "30", label: "30" },
-                    { value: "40", label: "40" },
-                    { value: rowCount, label: "All" },
-                  ].map((sizeOption) => (
-                    <SelectItem
-                      key={sizeOption.value}
-                      value={sizeOption.value as string}
-                    >
-                      Show {sizeOption.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select
+              value={String(selectSize)}
+              onValueChange={handlePageSizeChange}
+            >
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Rows per page" />
+              </SelectTrigger>
+              <SelectContent>
+                {[
+                  { value: "10", label: "10" },
+                  { value: "20", label: "20" },
+                  { value: "30", label: "30" },
+                  { value: "40", label: "40" },
+                  { value: rowCount, label: "All" },
+                ].map((sizeOption) => (
+                  <SelectItem
+                    key={sizeOption.value}
+                    value={sizeOption.value as string}
+                  >
+                    Show {sizeOption.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </CardFooter>
       </Card>

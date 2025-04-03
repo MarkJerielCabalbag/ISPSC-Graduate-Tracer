@@ -22,9 +22,6 @@ const OverviewDepartments = () => {
   const navigate = useNavigate();
 
   const [openDeleteProgram, setOpenDeleteProgram] = useState(false);
-  const [majorId, setMajorId] = useState(0);
-
-  console.log(departments, "departments");
 
   const handleBackClick = () => navigate("/admin");
   const handleDeleteProgram = () => setOpenDeleteProgram(!openDeleteProgram);
@@ -32,6 +29,8 @@ const OverviewDepartments = () => {
   if (isLoading || isFetching) {
     return (
       <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-[60vh]"></div>
         <Header />
         <div className="flex items-center justify-center h-[60vh]">
           <Loader2 className="animate-spin h-8 w-8 text-primary" />

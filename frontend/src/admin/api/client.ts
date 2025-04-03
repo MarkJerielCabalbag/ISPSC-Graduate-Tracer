@@ -279,8 +279,8 @@ export const client = {
   },
 
   //get department details
-  async getDepartmentDetails(departmentId: string) {
-    return await fetch(`${baseUrl}/admin/department/${departmentId}`, {
+  async getDepartmentDetails() {
+    return await fetch(`${baseUrl}/admin/department/details`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     }).then(async (res) => {

@@ -87,41 +87,50 @@ const OverviewRowGraduates = () => {
         />
       )}
 
-      <div className="w-[90%] mx-auto my-5">
+      <div className="w-[95%] md:w-[90%] mx-auto my-3 md:my-5">
         {isLoadingTotalGraduates ? (
-          <Card className="bg-primary/75 rounded-md mb-5 p-5">
-            <Skeleton className="w-[20%] h-10 bg-primary/50" />
-            <Skeleton className="w-[30%] h-10 bg-primary/50" />
+          <Card className="bg-primary/75 rounded-md mb-3 md:mb-5 p-3 md:p-5">
+            <Skeleton className="w-[20%] h-8 md:h-10 bg-primary/50" />
+            <Skeleton className="w-[30%] h-8 md:h-10 bg-primary/50" />
           </Card>
         ) : (
           <>
             {totalGraduates?.map((total: TotalGraduatesType) => (
               <div
                 key={total.id}
-                className="my-3 flex justify-between items-center bg-primary p-5 rounded-md"
+                className="my-2 md:my-3 flex flex-col md:flex-row justify-between items-start md:items-center bg-primary p-3 md:p-5 rounded-md space-y-2 md:space-y-0"
               >
                 <div>
-                  <h1 className="main-font">{total.department}</h1>
-                  <h2 className="text-white font-bold">{total.program}</h2>
+                  <h1 className="main-font text-sm md:text-base">
+                    {total.department}
+                  </h1>
+                  <h2 className="text-white font-bold text-sm md:text-base">
+                    {total.program}
+                  </h2>
                 </div>
-                <div className="">
-                  <h1 className="main-font font-bold text-xl text-end">
+                <div className="w-full md:w-auto">
+                  <h1 className="main-font font-bold text-lg md:text-xl text-start md:text-end">
                     {total.totalGraduates}
                   </h1>
-                  <p className="italic text-end text-white">Total Graduates</p>
+                  <p className="italic text-start md:text-end text-white text-sm">
+                    Total Graduates
+                  </p>
                   {total.totalGraduates === 0 ? (
                     <Button
                       variant="outline"
+                      className="w-full md:w-auto text-sm"
                       onClick={() => setOpenAddTotalGraduates(true)}
                     >
-                      <CirclePlus /> Add Total Graduates
+                      <CirclePlus className="w-4 h-4 mr-1" /> Add Total
+                      Graduates
                     </Button>
                   ) : (
                     <Button
                       variant="outline"
+                      className="w-full md:w-auto text-sm"
                       onClick={() => setOpenEditTotalGraduates(true)}
                     >
-                      <Edit3 /> Edit Total Graduates
+                      <Edit3 className="w-4 h-4 mr-1" /> Edit Total Graduates
                     </Button>
                   )}
                 </div>
@@ -131,8 +140,8 @@ const OverviewRowGraduates = () => {
         )}
 
         {isLoading || isFetching ? (
-          <Card className="w-full h-[50vh] bg-primary/10 rounded-md flex items-center justify-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          <Card className="w-full h-[40vh] md:h-[50vh] bg-primary/10 rounded-md flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-b-2 border-primary"></div>
           </Card>
         ) : (
           <DataTable
@@ -150,14 +159,16 @@ const OverviewRowGraduates = () => {
         )}
 
         {isLoadingTotalGraduates ? (
-          <Card className="bg-primary/75 text-center p-5 rounded-md my-5 h-[20%]">
-            <h1 className="main-font">Charts are generating...</h1>
+          <Card className="bg-primary/75 text-center p-3 md:p-5 rounded-md my-3 md:my-5 h-[20%]">
+            <h1 className="main-font text-sm md:text-base">
+              Charts are generating...
+            </h1>
           </Card>
         ) : (
           <div>
             {totalGraduates?.map((total: TotalGraduatesType) =>
               total.totalGraduates === 0 ? (
-                <div className="relative h-[50vh] w-full bg-primary my-5 rounded-md flex flex-col items-center justify-center overflow-hidden">
+                <div className="relative h-[40vh] md:h-[50vh] w-full bg-primary my-3 md:my-5 rounded-md flex flex-col items-center justify-center overflow-hidden">
                   <img
                     src={frontCover}
                     alt="Background"
@@ -166,20 +177,20 @@ const OverviewRowGraduates = () => {
 
                   <div className="absolute inset-0 bg-black/20"></div>
 
-                  <div className="relative z-10 flex flex-col items-center gap-2">
+                  <div className="relative z-10 flex flex-col items-center gap-2 px-4 text-center">
                     <img
                       src={logo}
                       alt="ISPSC Logo"
-                      className="w-16 h-16 object-contain"
+                      className="w-12 h-12 md:w-16 md:h-16 object-contain"
                     />
 
-                    <h1 className="main-font text-center text-white">
+                    <h1 className="main-font text-white text-sm md:text-base">
                       There are no Total Graduates indicated yet
                     </h1>
 
                     <Button
                       onClick={() => setOpenAddTotalGraduates(true)}
-                      className="bg-amber-300 text-primary hover:bg-amber-400"
+                      className="bg-amber-300 text-primary hover:bg-amber-400 text-sm md:text-base"
                     >
                       Add Total Graduates
                     </Button>
@@ -187,8 +198,8 @@ const OverviewRowGraduates = () => {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 gap-5 my-5">
-                    <div className="col-span-2 ">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 my-3 md:my-5">
+                    <div className="col-span-1 md:col-span-2">
                       <ChartBarhorizontal
                         chartData={jobLocation}
                         chartConfig={chartConfigBarHorizontal}
@@ -226,7 +237,6 @@ const OverviewRowGraduates = () => {
                         description="Traced Graduates by Major"
                       />
                     </div>
-
                     <div>
                       <ChartBar
                         chartData={organization}

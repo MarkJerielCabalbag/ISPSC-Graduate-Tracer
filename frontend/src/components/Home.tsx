@@ -141,7 +141,7 @@ const Home = () => {
           variants={secondConatinerVariants}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="py-8 md:py-16 px-4 md:px-0"
         >
           <motion.div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16 md:mb-24">
@@ -267,7 +267,7 @@ const Home = () => {
           variants={secondConatinerVariants}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="text-center px-4 md:px-8 lg:px-16"
         >
           <motion.h1
@@ -280,8 +280,8 @@ const Home = () => {
             onClick={() => setProceedtoForm(true)}
             variants={secondChildVariants}
             className="bg-white text-primary hover:bg-primary hover:text-white border-2 border-white 
-            px-8 py-4 rounded-full text-lg md:text-xl font-semibold 
-            transition-all duration-300 transform hover:scale-105"
+        px-8 py-4 rounded-full text-lg md:text-xl font-semibold 
+        transition-all duration-300 transform hover:scale-105"
           >
             Start Your Tracer Survey
           </motion.button>

@@ -154,10 +154,10 @@ export const useGetCurrentJobLocation = (
   });
 };
 
-export const useGetDepartmentDetails = (departmentId: string) => {
+export const useGetDepartmentDetails = () => {
   return useQuery({
     queryKey: ["departmentDetails"],
-    queryFn: () => client.getDepartmentDetails(departmentId),
+    queryFn: () => client.getDepartmentDetails(),
   });
 };
 

@@ -625,42 +625,28 @@ const getCurrentJobLocation = asyncHandler(async (req, res, next) => {
 });
 
 //@DESC     get department details
-//@ROUTE    /api/graduateTracer/admin/department/:departmentId
+//@ROUTE    /api/graduateTracer/admin/department/details
 //@ACCESS   GET
 const getDepartmentDetails = asyncHandler(async (req, res, next) => {
-  const { departmentId } = req.params;
-
-  if (!departmentId) {
-    return res.status(400).send({ message: "Please provide a department ID" });
-  }
-
   try {
-    const departmentDetails = await prisma.department.findUnique({
-      where: {
-        id: parseInt(departmentId),
-      },
-    });
-
-    if (!departmentDetails) {
-      return res.status(404).send({ message: "Department not found" });
-    }
-
-    const programsWithMajors = await prisma.program.findMany({
-      where: {
-        departmentId: parseInt(departmentId),
-      },
-      select: {
-        program: true,
-        listOfMajor: {
+    const departments = await prisma.department.findMany({
+      include: {
+        listOfProgram: {
           select: {
+            listOfMajor: {
+              select: {
+                id: true,
+                major: true,
+              },
+            },
+            program: true,
             id: true,
-            major: true,
           },
         },
       },
     });
 
-    return res.status(200).send(programsWithMajors);
+    return res.status(200).send(departments);
   } catch (error) {
     return res
       .status(500)

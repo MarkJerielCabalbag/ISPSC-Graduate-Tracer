@@ -122,11 +122,18 @@ export const chartConfigBarHorizontal = {
 } satisfies ChartConfig;
 
 export type Major = {
-  id: number;
-  major: string;
+  id?: number;
+  major?: string;
 };
 
-export type DepartmentDetails = {
-  program?: string;
-  listOfMajor?: Major[];
-};
+export interface DepartmentDetails {
+  id: number;
+  department: string;
+  listOfProgram: Program[];
+}
+
+export interface Program {
+  id: number;
+  program: string;
+  listOfMajor: Major[];
+}
