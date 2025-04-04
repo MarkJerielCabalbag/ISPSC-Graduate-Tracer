@@ -96,7 +96,7 @@ const removeDepartment = asyncHandler(async (req, res, next) => {
       },
     });
 
-    return res.status(400).json({
+    return res.status(200).json({
       message: `The ${removeDepartment.department} is successfully deleted!`,
     });
   } catch (error) {

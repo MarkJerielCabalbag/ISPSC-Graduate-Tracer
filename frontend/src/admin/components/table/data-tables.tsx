@@ -38,7 +38,7 @@ import { Button } from "../../../components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  tableHeader: React.ReactNode;
+  tableHeader?: React.ReactNode;
   filterInputName: string;
   serachFor?: string;
   onRowClick?: (row: any) => void;

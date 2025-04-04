@@ -49,7 +49,7 @@ model Department {
 model Program{
   id Int @id @default(autoincrement())
   program String
-  relatedToDepartment Department @relation(fields: [departmentId], references: [id])
+  relatedToDepartment Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
   departmentId Int
   listOfMajor Major[]
 }
@@ -57,7 +57,7 @@ model Program{
 model Major{
   id Int @id @default(autoincrement())
   major String
-  relatedToProgram Program @relation(fields: [programId], references: [id])
+  relatedToProgram Program @relation(fields: [programId], references: [id],  onDelete: Cascade)
   programId Int
 }
 

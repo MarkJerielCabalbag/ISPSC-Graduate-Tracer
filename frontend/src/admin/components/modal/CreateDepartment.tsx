@@ -42,14 +42,19 @@ const CreateDepartment = ({ isOpen, handleIsOpen }: ModalType) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => handleIsOpen(!isOpen)}>
+          <AlertDialogCancel
+            disabled={isCreateCollegeDepartmentPending}
+            onClick={() => handleIsOpen(!isOpen)}
+          >
             Cancel
           </AlertDialogCancel>
           <Button
+            disabled={isCreateCollegeDepartmentPending}
             onClick={async () => {
               try {
                 await createCollegeDepartment();
                 setCollegeDepartment("");
+                handleIsOpen(false);
               } catch (error) {
                 console.log(error);
                 setCollegeDepartment("");

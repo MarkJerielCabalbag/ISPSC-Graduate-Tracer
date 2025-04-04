@@ -108,12 +108,12 @@ const editProgram = asyncHandler(async (req, res, next) => {
 });
 
 //@DESC     remove program
-//@ROUTE    /api/graduateTracer/program/add/:departmentId
+//@ROUTE    /api/graduateTracer/program/remove/:programId
 //@ACCESS   public
 const removeProgram = asyncHandler(async (req, res, next) => {
   const { programId } = req.params;
 
-  const isProgramExist = await prisma.program.findUnique({
+  const isProgramExist = await prisma.program.findMany({
     where: {
       id: parseInt(programId),
     },
@@ -129,6 +129,9 @@ const removeProgram = asyncHandler(async (req, res, next) => {
     const deleteProgram = await prisma.program.delete({
       where: {
         id: parseInt(programId),
+      },
+      include: {
+        listOfMajor: true,
       },
     });
 

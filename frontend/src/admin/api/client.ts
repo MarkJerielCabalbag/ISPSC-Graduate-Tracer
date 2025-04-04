@@ -296,7 +296,69 @@ export const client = {
 
   async removeProgram(programId: number) {
     return await fetch(`${baseUrl}/program/remove/${programId}`, {
-      method: "DELETE",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async editProgram(programId: number, program: string) {
+    return await fetch(`${baseUrl}/program/edit/${programId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ program }),
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async removeMajor(majorId: number) {
+    return await fetch(`${baseUrl}/major/remove/${majorId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async editMajor(majorId: number, major: string) {
+    return await fetch(`${baseUrl}/major/edit/${majorId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ major }),
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
+
+  async removeDepartment(departmentId: number) {
+    return await fetch(`${baseUrl}/department/remove/${departmentId}`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then(async (res) => {
       const response = await res.json();

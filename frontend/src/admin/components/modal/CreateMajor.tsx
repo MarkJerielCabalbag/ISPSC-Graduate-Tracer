@@ -7,28 +7,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../../components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../components/ui/select";
 
 import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/label";
-import { collegeDepartment, ModalType } from "../../types/types";
-import { useCreateMajor, useGetPrograms } from "../../hooks/client";
+import { ModalType } from "../../types/types";
+import { useCreateMajor } from "../../hooks/client";
 import { useAdminStore } from "../../hooks/store";
 import { Input } from "../../../components/ui/input";
 
-const CreateMajor = ({ isOpen, handleIsOpen }: ModalType) => {
-  const { data: programs, isLoading } = useGetPrograms();
+type CreateMajorType = ModalType & {
+  id?: number;
+};
 
-  const { programId, setMajorProgram, major } = useAdminStore();
-  const { mutateAsync: createMajor, isError } = useCreateMajor(
+const CreateMajor = ({ isOpen, handleIsOpen, id }: CreateMajorType) => {
+  const { setMajorProgram, major } = useAdminStore();
+  const { mutateAsync: createMajor, isPending } = useCreateMajor(
     major,
-    programId
+    id as number
   );
 
   return (
@@ -37,64 +32,33 @@ const CreateMajor = ({ isOpen, handleIsOpen }: ModalType) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Create Major</AlertDialogTitle>
           <AlertDialogDescription>
-            <Label className="my-3">
-              Please select first where this program is related to.
-            </Label>
-
-            {isLoading ? (
-              <>loading</>
-            ) : (
-              <>
-                <Select
-                  onValueChange={(value) =>
-                    setMajorProgram(major, Number(value))
-                  }
-                >
-                  <SelectTrigger
-                    className={`w-[100%] ${isError ? "border-red-500" : ""}`}
-                  >
-                    <SelectValue placeholder="Select a program that is related to this new major" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {programs?.map((program: collegeDepartment) => (
-                      <SelectItem key={program.id} value={String(program.id)}>
-                        {program.program}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </>
-            )}
-
-            {programId !== 0 && (
-              <>
-                <Label className="my-3">Major Name</Label>
-                <Input
-                  type="text"
-                  value={major.toUpperCase()}
-                  onChange={(e) => setMajorProgram(e.target.value, programId)}
-                />
-              </>
-            )}
+            <Label className="my-3">Major Name</Label>
+            <Input
+              type="text"
+              value={major.toUpperCase()}
+              onChange={(e) => setMajorProgram(e.target.value)}
+            />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
+            disabled={isPending}
             onClick={() => {
               handleIsOpen(false);
-              setMajorProgram("", 0);
+              setMajorProgram("");
             }}
           >
             Cancel
           </AlertDialogCancel>
           <Button
+            disabled={isPending}
             onClick={async () => {
               try {
                 await createMajor();
                 handleIsOpen(false);
-                setMajorProgram("", 0);
+                setMajorProgram("");
               } catch (error) {
-                setMajorProgram("", 0);
+                setMajorProgram("");
                 handleIsOpen(true);
                 console.log(error);
               }

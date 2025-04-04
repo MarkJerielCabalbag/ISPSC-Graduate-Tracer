@@ -50,10 +50,14 @@ const TotalGraduates = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => handleIsOpen(!isOpen)}>
+          <AlertDialogCancel
+            disabled={isPending}
+            onClick={() => handleIsOpen(!isOpen)}
+          >
             Cancel
           </AlertDialogCancel>
           <Button
+            disabled={isPending}
             onClick={async () => {
               try {
                 await mutateAsync();

@@ -3,10 +3,13 @@ import { client } from "../api/client";
 import toast from "react-hot-toast";
 
 export const useCreateCollege = (department: string) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => client.createDepartmentCollege(department),
     onSuccess: (data) => {
       toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+      queryClient.invalidateQueries({ queryKey: ["overviewTracedGraduates"] });
     },
     onError: (error) => {
       toast.error(error?.message as string);
@@ -29,10 +32,12 @@ export const useGetPrograms = () => {
 };
 
 export const useCreateProgram = (program: string, departmentId: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => client.createProgram(program, departmentId),
     onSuccess: (data) => {
       toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
     },
     onError: (error) => {
       toast.error(error?.message as string);
@@ -41,10 +46,12 @@ export const useCreateProgram = (program: string, departmentId: number) => {
 };
 
 export const useCreateMajor = (major: string, programId: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => client.createMajor(major, programId),
     onSuccess: (data) => {
       toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
     },
     onError: (error) => {
       toast.error(error?.message as string);
@@ -167,7 +174,64 @@ export const useRemoveProgram = (programId: number) => {
     mutationFn: () => client.removeProgram(programId),
     onSuccess: (data) => {
       toast.success(data?.message as string);
-      queryClient.invalidateQueries({ queryKey: ["programs"] });
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
+
+export const useEditProgram = (programId: number, program: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.editProgram(programId, program),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
+
+export const useRemoveMajor = (majorId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.removeMajor(majorId),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
+
+export const useEditMajor = (majorId: number, major: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.editMajor(majorId, major),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
+
+export const useRemoveDepartment = (departmentId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.removeDepartment(departmentId),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["departmentDetails"] });
+      queryClient.invalidateQueries({ queryKey: ["overviewTracedGraduates"] });
     },
     onError: (error) => {
       toast.error(error?.message as string);

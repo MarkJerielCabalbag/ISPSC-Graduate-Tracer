@@ -1,4 +1,3 @@
-import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -14,24 +13,22 @@ import { ModalType } from "../../types/types";
 import { useRemoveProgram } from "../../hooks/client";
 
 type DeleteProgramProps = ModalType & {
-  majorId: number;
+  programId: number;
 };
 
 const DeleteProgram = ({
   isOpen,
-  majorId,
+  programId,
   handleIsOpen,
 }: DeleteProgramProps) => {
-  const { mutateAsync: removeProgram } = useRemoveProgram(majorId);
+  const { mutateAsync: removeProgram, isPending } = useRemoveProgram(programId);
 
-  console.log(majorId, "majorId");
+  console.log(programId, "programId");
   return (
     <AlertDialog open={isOpen} onOpenChange={handleIsOpen}>
       <AlertDialogContent className="max-w-[425px]">
         <AlertDialogHeader className="gap-2">
-          <AlertDialogTitle className="text-xl font-semibold text-primary flex gap-2 items">
-            <Trash2 /> Delete Program
-          </AlertDialogTitle>
+          <AlertDialogTitle>Delete Program</AlertDialogTitle>
           <AlertDialogDescription className="pt-2">
             <Label className="text-gray-600 leading-6">
               Are you willing to remove this program? This action cannot be
@@ -43,12 +40,14 @@ const DeleteProgram = ({
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2 pt-6">
           <AlertDialogCancel
+            disabled={isPending}
             onClick={() => handleIsOpen(!isOpen)}
             className="border-gray-200 hover:bg-gray-100"
           >
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
+            disabled={isPending}
             className="bg-red-600 hover:bg-red-700 text-white"
             onClick={() => {
               handleIsOpen(false);

@@ -7,102 +7,64 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../../components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../components/ui/select";
-import { Skeleton } from "../../../components/ui/skeleton";
-import { collegeDepartment, ModalType } from "../../types/types";
+
 import { Label } from "../../../components/ui/label";
-import { useCreateProgram, useGetCollegeDepartment } from "../../hooks/client";
+import { useCreateProgram } from "../../hooks/client";
 import { useAdminStore } from "../../hooks/store";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
+import { ModalType } from "../../types/types";
 
-const CreateProgram = ({ isOpen, handleIsOpen }: ModalType) => {
-  const { data: department, isLoading } = useGetCollegeDepartment();
-  const { setProgramDepartment, program, departmentId } = useAdminStore();
-  const { mutateAsync: createProgram, isError } = useCreateProgram(
+type CreateProgramType = ModalType & {
+  departmentId: number;
+};
+
+const CreateProgram = ({
+  isOpen,
+  handleIsOpen,
+  departmentId,
+}: CreateProgramType) => {
+  const { setProgramDepartment, program } = useAdminStore();
+  const { mutateAsync: createProgram, isPending } = useCreateProgram(
     program,
-    departmentId
+    departmentId as number
   );
+  console.log("departmentId", departmentId);
   return (
     <AlertDialog open={isOpen} onOpenChange={handleIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Create a program</AlertDialogTitle>
+          <AlertDialogTitle>Create Program</AlertDialogTitle>
           <AlertDialogDescription>
-            <Label className="my-3">
-              Please select first where this program is related to department /
-              college.
-            </Label>
-
-            {isLoading ? (
-              <div>
-                <Skeleton className="w-[100%] h-10" />
-                <Skeleton className="w-[10%] h-10" />
-              </div>
-            ) : (
-              <Select
-                onValueChange={(value) =>
-                  setProgramDepartment(program, Number(value))
-                }
-              >
-                <SelectTrigger
-                  className={`w-full ${isError ? "border-red-500" : ""}`}
-                >
-                  <SelectValue placeholder="Select a college / department that is related to this new program" />
-                </SelectTrigger>
-                <SelectContent>
-                  {department?.map((program: collegeDepartment) => (
-                    <SelectItem
-                      key={program.id}
-                      value={String(program.id)}
-                      className="flex justify-between items-center"
-                    >
-                      {program.department}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-
-            {departmentId !== 0 && (
-              <>
-                <Label className="my-3">Program Name</Label>
-                <Input
-                  placeholder="Please enter the program name"
-                  type="text"
-                  value={program.toUpperCase()}
-                  onChange={(e) =>
-                    setProgramDepartment(e.target.value, departmentId)
-                  }
-                />
-              </>
-            )}
+            <Label className="my-3">Program Name</Label>
+            <Input
+              placeholder="Please enter the program name"
+              type="text"
+              value={program.toUpperCase()}
+              onChange={(e) => setProgramDepartment(e.target.value)}
+            />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
+            disabled={isPending}
             onClick={() => {
               handleIsOpen(!isOpen);
-              setProgramDepartment("", 0);
+              setProgramDepartment("");
             }}
           >
             Cancel
           </AlertDialogCancel>
           <Button
+            disabled={isPending}
             onClick={async () => {
               try {
                 await createProgram();
-                setProgramDepartment("", 0);
+                setProgramDepartment("");
                 handleIsOpen(false);
               } catch (error) {
                 console.log(error);
-                setProgramDepartment("", 0);
+                setProgramDepartment("");
                 handleIsOpen(true);
               }
             }}
