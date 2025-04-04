@@ -7,12 +7,12 @@ const LocationOfEmployment = () => {
 
   return (
     <div className="my-5">
-      <h1 className="bg-primary p-3 main-font rounded-md">
+      <h1 className="bg-primary p-3 main-font rounded-md my-8">
         V. Location of Employment
       </h1>
 
       <div>
-        <h1 className="text-lg text-primary my-3 italic">
+        <h1 className="text-md font-bold text-gray-700 mb-3">
           Where is your current job located?
         </h1>
         <RadioGroup onValueChange={(value) => handleCurrentJobLocation(value)}>

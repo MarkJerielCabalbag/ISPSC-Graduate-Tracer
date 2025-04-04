@@ -29,7 +29,7 @@ const Form = () => {
       {<Toaster />}
       <div className="bg-white rounded-lg shadow-md p-6 mb-4 border-t-8 border-[#800000] space-y-8">
         <div className="mb-6">
-          <h1 className="text-xl mb-2">Email</h1>
+          <h1 className="text-md font-bold text-gray-700 mb-3">Email</h1>
           <Input
             type="email"
             name="email"
@@ -41,7 +41,9 @@ const Form = () => {
         </div>
 
         <div>
-          <h1 className="text-xl mb-2">Year of Survey</h1>
+          <h1 className="text-md font-bold text-gray-700 mb-3">
+            Year of Survey
+          </h1>
           <Select onValueChange={(value) => handleSurveyChange(value)}>
             <SelectTrigger className="w-full border-gray-300 focus:border-[#800000] focus:ring-[#800000]">
               <SelectValue placeholder="Select Year of Survey" />

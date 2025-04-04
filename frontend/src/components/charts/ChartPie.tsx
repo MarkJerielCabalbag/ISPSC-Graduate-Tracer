@@ -38,6 +38,7 @@ export function ChartPie({
               dataKey={dataKey}
               nameKey={nameKey}
               innerRadius={60}
+              fill="hsl(0, 100%, 21%)"
               strokeWidth={5}
               activeIndex={0}
               activeShape={({

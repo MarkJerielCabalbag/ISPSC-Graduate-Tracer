@@ -62,112 +62,143 @@ const GraduateEmploymentInformation = () => {
   } = hooks.useAddResponse();
 
   return (
-    <div>
-      <h1 className="bg-primary p-3 main-font rounded-md">
+    <div className="max-w-4xl mx-auto ">
+      <h1 className="bg-primary p-4 main-font rounded-lg mb-8">
         II. Graduate Employment Information
       </h1>
 
-      <div className="my-5">
-        <h1>College / Department</h1>
-        <Select
-          onValueChange={(value) =>
-            handleDepartmentChange(value, getDepartment)
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select College / Department" />
-          </SelectTrigger>
-          <SelectContent>
-            {department?.map((emInfo: EmploymentInformation) => (
-              <SelectItem key={emInfo.id} value={String(emInfo.id)}>
-                {emInfo.department}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {isProgramPending ? (
-        <div className="my-5 flex gap-2 items-center text-primary">
-          <Loader2Icon className="animate-spin" />
-          Program is loading...
-        </div>
-      ) : (
-        <div className={`w-full mb-5 ${isProgramOpen ? "" : "hidden"}`}>
-          <h1>Program</h1>
-          <Select onValueChange={(value) => handleMajorChange(value, getMajor)}>
-            <SelectTrigger
-              className={`w-full ${isError ? "border-red-500" : ""}`}
-            >
-              <SelectValue placeholder="Select Program" />
+      <div className="space-y-8">
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-md font-bold text-gray-700 mb-3">
+            College / Department
+          </h2>
+          <Select
+            onValueChange={(value) =>
+              handleDepartmentChange(value, getDepartment)
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select College / Department" />
             </SelectTrigger>
             <SelectContent>
-              {programs?.map((program: EmploymentInformation) => (
-                <SelectItem key={program.id} value={String(program.id)}>
-                  {program.program}
+              {department?.map((emInfo: EmploymentInformation) => (
+                <SelectItem key={emInfo.id} value={String(emInfo.id)}>
+                  {emInfo.department}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-      )}
 
-      {isMajorPending ? (
-        <div className="my-5 flex gap-2 items-center text-primary collapse">
-          <Loader2Icon className="animate-spin" />
-          Major is loading...
-        </div>
-      ) : (
-        <div className={`w-full mb-5 ${isMajorOpen ? "" : "hidden"}`}>
-          <h1>Major</h1>
-          <Select onValueChange={(value) => handleMajorSelect(value)}>
-            <SelectTrigger
-              className={`w-full ${isError ? "border-red-500" : ""}`}
+        {/* Program Section */}
+        {isProgramPending ? (
+          <div className="flex gap-2 items-center text-primary p-4 bg-primary/5 rounded-lg">
+            <Loader2Icon className="animate-spin" />
+            <span>Loading programs...</span>
+          </div>
+        ) : (
+          <div
+            className={`bg-white p-6 rounded-lg shadow-sm ${
+              isProgramOpen ? "" : "hidden"
+            }`}
+          >
+            <h2 className="text-lg font-medium mb-3">Program</h2>
+            <Select
+              onValueChange={(value) => handleMajorChange(value, getMajor)}
             >
-              <SelectValue placeholder="Select Major" />
-            </SelectTrigger>
-            <SelectContent>
-              {majors?.map((major: EmploymentInformation) => (
-                <SelectItem key={major.id} value={String(major.id)}>
-                  {major.major}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
-      <div>
-        <h1 className="text-lg text-primary mb-3 italic">
-          Are you currently employed?
-        </h1>
-        <RadioGroup onValueChange={(value) => handleEmployedChange(value)}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="yes" />
-            <Label htmlFor="yes">Yes</Label>
+              <SelectTrigger
+                className={`w-full ${isError ? "border-red-500" : ""}`}
+              >
+                <SelectValue placeholder="Select Program" />
+              </SelectTrigger>
+              <SelectContent>
+                {programs?.map((program: EmploymentInformation) => (
+                  <SelectItem key={program.id} value={String(program.id)}>
+                    {program.program}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="no" />
-            <Label htmlFor="no">No</Label>
-          </div>
-        </RadioGroup>
+        )}
 
+        {/* Major Section */}
         <>
-          <RelevanceOfEmployment />
-          <EmployementSector />
-          <LocationOfEmployment />
+          {majors?.length !== 0 && isMajorPending && (
+            <div className="flex gap-2 items-center text-primary p-4 bg-primary/5 rounded-lg">
+              <Loader2Icon className="animate-spin" />
+              <span>Loading majors...</span>
+            </div>
+          )}
 
-          <div className="my-5 flex justify-end items-center gap-5">
-            <Button className="bg-white text-primary shadow-md hover:text-white">
+          {majors?.length === 0 && (
+            <div className="p-4 bg-primary/5 rounded-lg text-gray-600">
+              Major is not available
+            </div>
+          )}
+
+          {majors?.length > 0 && (
+            <div
+              className={`bg-white p-6 rounded-lg shadow-sm ${
+                isMajorOpen ? "" : "hidden"
+              }`}
+            >
+              <h2 className="text-lg font-medium mb-3">Major</h2>
+              <Select onValueChange={(value) => handleMajorSelect(value)}>
+                <SelectTrigger
+                  className={`w-full ${isError ? "border-red-500" : ""}`}
+                >
+                  <SelectValue placeholder="Select Major" />
+                </SelectTrigger>
+                <SelectContent>
+                  {majors?.map((major: EmploymentInformation) => (
+                    <SelectItem key={major.id} value={String(major.id)}>
+                      {major.major}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </>
+
+        {/* Employment Status Section */}
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-md font-bold text-gray-700 mb-3">
+            Are you currently employed?
+          </h2>
+          <RadioGroup
+            onValueChange={(value) => handleEmployedChange(value)}
+            className="space-y-3"
+          >
+            <div className="flex items-center space-x-3">
+              <RadioGroupItem value="yes" id="yes" />
+              <Label htmlFor="yes">Yes</Label>
+            </div>
+            <div className="flex items-center space-x-3">
+              <RadioGroupItem value="no" id="no" />
+              <Label htmlFor="no">No</Label>
+            </div>
+          </RadioGroup>
+
+          <div className="space-y-6 mt-6">
+            <RelevanceOfEmployment />
+            <EmployementSector />
+            <LocationOfEmployment />
+          </div>
+
+          <div className="mt-8 flex justify-end items-center gap-4">
+            <Button className="bg-white text-primary border border-primary shadow-sm hover:bg-primary/10">
               Clear
             </Button>
 
             {isAddResponsePending ? (
-              <Button className="bg-primary text-white">
+              <Button className="bg-primary text-white min-w-[100px]">
                 <Loader2Icon className="animate-spin" />
               </Button>
             ) : (
               <Button
+                className="bg-primary text-white min-w-[100px] hover:bg-primary/90"
                 onClick={async () => {
                   try {
                     await addResponse({
@@ -194,7 +225,7 @@ const GraduateEmploymentInformation = () => {
               </Button>
             )}
           </div>
-        </>
+        </div>
       </div>
     </div>
   );

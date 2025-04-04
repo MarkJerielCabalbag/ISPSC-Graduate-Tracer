@@ -1,5 +1,5 @@
 import Header from "./Header";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetCurrentJobLocation,
   useGetEmploymentStatistics,
@@ -20,7 +20,7 @@ import {
   chartConfigQuestions,
   TotalGraduatesType,
 } from "../types/types";
-import { CirclePlus, Edit3 } from "lucide-react";
+import { ArrowLeft, CirclePlus, Edit3 } from "lucide-react";
 import { useState } from "react";
 import TotalGraduates from "./modal/TotalGraduates";
 import { Toaster } from "react-hot-toast";
@@ -39,6 +39,8 @@ const OverviewRowGraduates = () => {
     year ?? "",
     program ?? ""
   );
+
+  const navigate = useNavigate();
 
   const { data: totalGraduates, isLoading: isLoadingTotalGraduates } =
     useGetTotalGraduates(year ?? "", program ?? "");
@@ -68,6 +70,12 @@ const OverviewRowGraduates = () => {
   return (
     <div>
       <Header />
+      <h1 className="w-[90%] mx-auto my-5 flex items-center gap-2  font-bold ">
+        <ArrowLeft onClick={() => navigate("/admin")} />
+        <span className="ml-2 text-gray-500 font-bold text-lg md:text-xl">
+          Graduates Overview
+        </span>
+      </h1>
       {<Toaster />}
       {openAddTotalGraduates && (
         <TotalGraduates
@@ -146,6 +154,8 @@ const OverviewRowGraduates = () => {
         ) : (
           <DataTable
             data={data}
+            dataSheet={data}
+            excelFilename="Graduates.xlsx"
             columns={graduatesRowColumnDef}
             tableHeader={
               <GraduatesPerRow

@@ -10,7 +10,7 @@ import { displayYears } from "../../utils/utils";
 import { useFormStore } from "../../hooks/store";
 import { useEffect, useState } from "react";
 
-const years = displayYears(2020, 2030);
+const years = displayYears(2020, 2080);
 
 const GeneralInformation = () => {
   const [name, setName] = useState("");
@@ -22,13 +22,15 @@ const GeneralInformation = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="bg-primary p-4 main-font rounded-lg text-white text-xl font-semibold shadow-md">
+      <h1 className="bg-primary p-4 main-font rounded-lg mb-8">
         I. General Information
       </h1>
 
       <div className="grid md:grid-cols-2 gap-8">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Full Name</label>
+          <label className="text-md font-bold text-gray-700 mb-3">
+            Full Name
+          </label>
           <Input
             placeholder="Ex (Juan D. Cruz)"
             type="text"
@@ -39,7 +41,7 @@ const GeneralInformation = () => {
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-md font-bold text-gray-700 mb-3">
             Year of Graduation
           </label>
           <Select onValueChange={(value) => handleGraduationChange(value)}>

@@ -12,13 +12,8 @@ import { ChartTypes } from "../../types/type";
 
 // Define color palette
 const colorPalette = [
-  "hsl(0, 100%, 50%)", // Red
-  "hsl(51, 100%, 50%)", // Gold
-  "hsl(210, 100%, 50%)", // Blue
-  "hsl(120, 100%, 40%)", // Green
-  "hsl(280, 100%, 50%)", // Purple
-  "hsl(30, 100%, 50%)", // Orange
-  "hsl(190, 100%, 50%)", // Cyan
+  "hsl(0, 100%, 21%)", // Red
+  "hsl(63, 100%, 48%)", // Gold
 ];
 
 export function ChartMultipleBar({
@@ -46,7 +41,7 @@ export function ChartMultipleBar({
             {Object.keys(chartConfig).map((key, index) => (
               <Bar
                 key={key}
-                dataKey={key} // Ensure this matches "yes", "no"
+                dataKey={key}
                 fill={colorPalette[index % colorPalette.length]}
                 radius={[4, 4, 0, 0]}
               />

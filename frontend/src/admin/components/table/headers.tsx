@@ -6,7 +6,7 @@ interface HeadersTypes {
 }
 const Headers = ({ title, content }: HeadersTypes) => {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center w-full">
       {title}
       {content}
     </div>

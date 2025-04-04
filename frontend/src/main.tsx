@@ -15,7 +15,7 @@ import {
 
 import Dashboard from "./admin/Dashboard.tsx";
 import OverviewRowGraduates from "./admin/components/OverviewRowGraduates.tsx";
-import OverviewDepartments from "./admin/components/OverviewDepartments.tsx";
+
 import Home from "./components/Home.tsx";
 import Form from "./Form.tsx";
 
@@ -28,10 +28,6 @@ const router = createBrowserRouter(
       <Route
         path="/graduates/:year/:program"
         element={<OverviewRowGraduates />}
-      />
-      <Route
-        path="/department/:departmentId"
-        element={<OverviewDepartments />}
       />
     </>
   )

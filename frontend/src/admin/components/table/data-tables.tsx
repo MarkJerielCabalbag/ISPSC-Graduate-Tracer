@@ -14,6 +14,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  CloudDownload,
   LucideArrowUpDown,
 } from "lucide-react";
 import {
@@ -24,7 +25,7 @@ import {
 } from "../../../components/ui/card";
 import React from "react";
 import { Input } from "../../../components/ui/input";
-
+import * as XLSX from "xlsx";
 import Headers from "./headers";
 import {
   Select,
@@ -38,9 +39,11 @@ import { Button } from "../../../components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  dataSheet: TData[];
   tableHeader?: React.ReactNode;
   filterInputName: string;
   serachFor?: string;
+  excelFilename: string;
   onRowClick?: (row: any) => void;
 }
 
@@ -49,7 +52,9 @@ export function DataTable<TData, TValue>({
   data,
   tableHeader,
   filterInputName,
+  dataSheet,
   serachFor,
+  excelFilename,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -87,27 +92,41 @@ export function DataTable<TData, TValue>({
     table.setPageSize(Number(value));
   };
 
+  const handleOnExport = () => {
+    const workBook = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(dataSheet);
+
+    XLSX.utils.book_append_sheet(workBook, ws, "Sheet1");
+
+    XLSX.writeFile(workBook, excelFilename);
+  };
+
   return (
     <div className="w-full">
       <Card className="rounded-md">
-        <CardHeader className="flex flex-col sm:flex-row justify-between gap-4">
+        <CardHeader className="flex flex-col gap-4">
           <Headers
             title={tableHeader}
             content={
-              <Input
-                placeholder={`Search for ${serachFor}`}
-                value={
-                  (table
-                    .getColumn(filterInputName)
-                    ?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table
-                    .getColumn(filterInputName)
-                    ?.setFilterValue(event.target.value)
-                }
-                className="w-full sm:max-w-sm"
-              />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Button className="w-full sm:w-auto" onClick={handleOnExport}>
+                  <CloudDownload className="mr-2" /> Download Excel
+                </Button>
+                <Input
+                  placeholder={`Search for ${serachFor}`}
+                  value={
+                    (table
+                      .getColumn(filterInputName)
+                      ?.getFilterValue() as string) ?? ""
+                  }
+                  onChange={(event) =>
+                    table
+                      .getColumn(filterInputName)
+                      ?.setFilterValue(event.target.value)
+                  }
+                  className="w-full"
+                />
+              </div>
             }
           />
         </CardHeader>

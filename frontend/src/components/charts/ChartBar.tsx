@@ -48,7 +48,7 @@ export function ChartBar({
               <Bar
                 key={key}
                 dataKey={key}
-                fill={chartConfig[key]?.color}
+                fill={"hsl(0, 100%, 21%)"}
                 radius={[4, 4, 0, 0]}
               />
             ))}

@@ -7,12 +7,12 @@ const EmployementSector = () => {
 
   return (
     <div className="my-5">
-      <h1 className="bg-primary p-3 main-font rounded-md">
+      <h1 className="bg-primary p-3 main-font rounded-md mb-8">
         IV. Employment Sector
       </h1>
 
       <div>
-        <h1 className="text-lg text-primary my-3 italic">
+        <h1 className="text-md font-bold text-gray-700 mb-3">
           What type of organization do you work for?
         </h1>
         <RadioGroup onValueChange={(value) => handleTypeOfOrganization(value)}>

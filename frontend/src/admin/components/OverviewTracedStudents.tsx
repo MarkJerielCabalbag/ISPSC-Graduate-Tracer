@@ -1,7 +1,6 @@
 import { useGetOverviewTracedGraduates } from "../hooks/client";
 import { OverviewTracedGraduates } from "../types/types";
 import { Card } from "../../components/ui/card";
-import { useNavigate } from "react-router-dom";
 
 import { GraduationCap, Frown, PlusCircleIcon } from "lucide-react";
 import { Button } from "../../components/ui/button";
@@ -11,7 +10,7 @@ import { getAcronym } from "../../utils/utils";
 
 const OverviewTracedStudents = () => {
   const { data, isLoading } = useGetOverviewTracedGraduates();
-  const navigate = useNavigate();
+
   const [isOpenCollege, setIsOpenCollege] = useState(false);
 
   return (
@@ -29,7 +28,25 @@ const OverviewTracedStudents = () => {
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {isLoading && <p>loading</p>}
+        {isLoading && (
+          <>
+            {Array(5)
+              .fill(null)
+              .map((_, index) => (
+                <Card
+                  key={index}
+                  className="p-6 rounded-xl border-2 bg-primary/50"
+                >
+                  <div className="flex flex-col justify-between h-full">
+                    <div className="space-y-4">
+                      <div className="h-10 bg-gray-200 rounded animate-pulse" />
+                      <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4" />
+                    </div>
+                  </div>
+                </Card>
+              ))}
+          </>
+        )}
 
         {!isLoading && data?.length === 0 && (
           <div className="col-span-full text-center text-gray-500">
@@ -56,7 +73,6 @@ const OverviewTracedStudents = () => {
             <Card
               key={tracedOverview.id}
               className="p-6 rounded-xl transition-all duration-300 hover:cursor-pointer hover:bg-primary/5 hover:shadow-lg border-2"
-              onClick={() => navigate(`/department/${tracedOverview.id}`)}
               role="button"
               tabIndex={0}
             >

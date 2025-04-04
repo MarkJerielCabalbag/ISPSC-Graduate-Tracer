@@ -58,7 +58,7 @@ const Dashboard = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.5,
       },
     },
   };
@@ -90,13 +90,21 @@ const Dashboard = () => {
         ) : (
           <motion.div
             className="w-[100%]"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
           >
             <DataTable
+              dataSheet={data}
+              excelFilename="employability-data.xlsx"
               serachFor="Year of Graduation"
               filterInputName={"yearOfGraduation"}
+              tableHeader={
+                <div>
+                  <h1 className="text-primary font-bold">Employability Data</h1>
+                  <p className="text-sm">Overall Data</p>
+                </div>
+              }
               columns={columns}
               data={data}
               onRowClick={(row: any) =>
@@ -107,7 +115,12 @@ const Dashboard = () => {
         )}
       </motion.div>
 
-      <div className="w-[90%] mx-auto my-10 bg-primary rounded-md p-5">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="w-[90%] mx-auto my-5 bg-primary rounded-md p-3 sm:p-5"
+      >
         {isOpenCollege && (
           <CreateDepartment
             isOpen={isOpenCollege}
@@ -115,24 +128,40 @@ const Dashboard = () => {
           />
         )}
 
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-white font-bold">Overall Dashboard</h1>
-            <h2 className="text-white">Graduate Tracer</h2>
-          </div>
-          <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <h1 className="text-white font-bold text-xl sm:text-2xl">
+              Overall Dashboard
+            </h1>
+            <h2 className="text-white text-sm sm:text-base">Graduate Tracer</h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full sm:w-auto"
+          >
             <div className="flex gap-2 items-center">
               <Button
                 onClick={() => setIsOpenCollege(true)}
-                className="bg-white text-primary hover:bg-primary/10 hover:text-white transition-colors duration-300"
+                className="w-full sm:w-auto bg-white text-primary hover:bg-primary/10 hover:text-white transition-colors duration-300 text-xs sm:text-sm"
               >
-                <PlusCircleIcon />
-                Create College / Department
+                <PlusCircleIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="ml-1">Create College / Department</span>
               </Button>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       <main className="w-[90%] mx-auto my-5">
         <div>
@@ -142,12 +171,17 @@ const Dashboard = () => {
                 key={department.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
                 className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100"
               >
-                <div className="p-6 flex justify-between items-center">
+                <div className="p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                   <div>
-                    <p className="text-gray-500 font-bold">Department</p>
-                    <h3 className="">{department.department}</h3>
+                    <p className="text-gray-500 font-bold text-sm sm:text-base">
+                      Department
+                    </p>
+                    <h3 className="text-sm sm:text-base">
+                      {department.department}
+                    </h3>
                   </div>
 
                   {isOpenProgram && (
@@ -166,44 +200,45 @@ const Dashboard = () => {
                     />
                   )}
 
-                  <div className="flex gap-2 items-center">
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Button
                       onClick={() => {
                         setIsOpenProgram(true);
                         setSelectedId(department?.id as number);
                       }}
-                      className="bg-primary text-white"
+                      className="bg-primary text-white w-full sm:w-auto text-xs sm:text-sm"
                     >
-                      <PlusCircleIcon />
-                      Create Program
+                      <PlusCircleIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="ml-1">Create Program</span>
                     </Button>
                     <Button
                       onClick={() => {
                         setIsOpenRemoveDepartment(true);
                         setSelectedId(department?.id as number);
                       }}
-                      className="bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-300"
+                      className="bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors duration-300 w-full sm:w-auto text-xs sm:text-sm"
                     >
-                      <MinusCircleIcon />
-                      Remove Department
+                      <MinusCircleIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="ml-1">Remove Department</span>
                     </Button>
                   </div>
                 </div>
 
-                <div className="p-6 space-y-2">
+                <div className="p-4 sm:p-6 space-y-2">
                   {department.listOfProgram?.map((program: Program) => (
                     <motion.div
                       key={program.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
+                      transition={{ duration: 1 }}
                       className="border rounded-xl hover:shadow-md transition-all duration-300"
                     >
-                      <div className="flex items-center justify-between p-5 bg-gray-50/50">
-                        <div className="flex items-center gap-4">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-5 bg-gray-50/50 gap-4 sm:gap-0">
+                        <div className="flex items-center gap-4 w-full sm:w-auto">
                           <div className="p-2 bg-primary/10 rounded-lg">
-                            <BookCheck className="h-5 w-5 text-primary" />
+                            <BookCheck className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           </div>
-                          <h4 className="font-semibold text-gray-800">
+                          <h4 className="font-semibold text-gray-800 text-sm sm:text-base">
                             <p className="text-gray-500">Program</p>
                             {program.program}
                           </h4>
@@ -233,15 +268,15 @@ const Dashboard = () => {
                           />
                         )}
 
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 w-full sm:w-auto justify-end">
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="p-2 hover:bg-red-50 rounded-lg text-gray-500 transition-colors"
                             onClick={() => setIsOpenMajor(true)}
-                            title="Delete Program"
+                            title="Add Major"
                           >
-                            <PlusIcon className="h-5 w-5" />
+                            <PlusIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                           </motion.button>
                           <motion.button
                             whileHover={{ scale: 1.05 }}
@@ -250,7 +285,7 @@ const Dashboard = () => {
                             onClick={handleDeleteProgram}
                             title="Delete Program"
                           >
-                            <Trash2 className="h-5 w-5" />
+                            <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
                           </motion.button>
                           <motion.button
                             whileHover={{ scale: 1.05 }}
@@ -259,27 +294,27 @@ const Dashboard = () => {
                             title="Edit Program"
                             onClick={() => setOpenEditProgram(true)}
                           >
-                            <Edit2 className="h-5 w-5" />
+                            <Edit2 className="h-4 w-4 sm:h-5 sm:w-5" />
                           </motion.button>
                         </div>
                       </div>
 
                       <Accordion type="single" collapsible>
                         <AccordionItem value="majors">
-                          <AccordionTrigger className="px-5 py-4 hover:no-underline">
-                            <span className="text-primary font-medium">
+                          <AccordionTrigger className="px-3 sm:px-5 py-3 sm:py-4 hover:no-underline">
+                            <span className="text-primary font-medium text-sm sm:text-base">
                               Majors ({program.listOfMajor?.length ?? 0})
                             </span>
                           </AccordionTrigger>
                           <AccordionContent>
-                            <div className="p-5 space-y-3 bg-gray-50/30">
+                            <div className="p-3 sm:p-5 space-y-3 bg-gray-50/30">
                               {program.listOfMajor?.length ? (
                                 program.listOfMajor.map((major: Major) => (
                                   <motion.div
                                     key={major.id}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    className="flex items-center justify-between p-4 bg-white rounded-lg hover:shadow-sm transition-all duration-300"
+                                    className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-lg hover:shadow-sm transition-all duration-300"
                                   >
                                     {isOpenDeleteMajor && (
                                       <DeleteMajor
@@ -296,7 +331,7 @@ const Dashboard = () => {
                                         majorId={selectedId}
                                       />
                                     )}
-                                    <span className="text-gray-700 font-medium">
+                                    <span className="text-gray-700 font-medium text-sm sm:text-base">
                                       {major.major}
                                     </span>
                                     <div className="flex gap-2">
@@ -310,7 +345,7 @@ const Dashboard = () => {
                                           setSelectedId(major?.id as number);
                                         }}
                                       >
-                                        <Trash2 className="h-4 w-4" />
+                                        <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                                       </motion.button>
                                       <motion.button
                                         whileHover={{ scale: 1.05 }}
@@ -322,13 +357,13 @@ const Dashboard = () => {
                                           setIsOpenEditMajor(true);
                                         }}
                                       >
-                                        <Edit2 className="h-4 w-4" />
+                                        <Edit2 className="h-3 w-3 sm:h-4 sm:w-4" />
                                       </motion.button>
                                     </div>
                                   </motion.div>
                                 ))
                               ) : (
-                                <p className="text-gray-500 text-center py-3">
+                                <p className="text-gray-500 text-center py-3 text-sm sm:text-base">
                                   No majors available
                                 </p>
                               )}

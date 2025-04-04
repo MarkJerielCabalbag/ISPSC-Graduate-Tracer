@@ -10,16 +10,6 @@ import {
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
 import { ChartTypes } from "../../types/type";
 
-const colorPalette = [
-  "hsl(0, 100%, 50%)", // Red
-  "hsl(51, 100%, 50%)", // Gold
-  "hsl(210, 100%, 50%)", // Blue
-  "hsl(120, 100%, 40%)", // Green
-  "hsl(280, 100%, 50%)", // Purple
-  "hsl(30, 100%, 50%)", // Orange
-  "hsl(190, 100%, 50%)", // Cyan
-];
-
 export function ChartBarhorizontal({
   chartData,
   chartConfig,
@@ -49,11 +39,11 @@ export function ChartBarhorizontal({
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            {Object.keys(chartConfig).map((key, index) => (
+            {Object.keys(chartConfig).map((key, _) => (
               <Bar
                 key={key}
                 dataKey={key}
-                fill={colorPalette[index % colorPalette.length]}
+                fill={"hsl(0, 100%, 21%)"}
                 radius={[2, 2, 0, 0]}
                 barSize={100}
               />
