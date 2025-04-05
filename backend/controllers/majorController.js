@@ -22,16 +22,6 @@ const addMajor = asyncHandler(async (req, res, next) => {
     },
   });
 
-  const majorList = await prisma.major.findMany();
-
-  for (let majorExist of majorList) {
-    if (majorExist.major === major) {
-      return res
-        .status(400)
-        .json({ message: `${majorExist.major} is already exist` });
-    }
-  }
-
   if (!findProgram) {
     return res
       .status(400)

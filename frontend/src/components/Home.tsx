@@ -67,7 +67,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className="h-screen bg-primary">
+      <div className="h-max bg-primary">
         <motion.div
           className="pt-20 px-4 md:px-0"
           variants={containerVariants}

@@ -19,7 +19,8 @@ import LocationOfEmployment from "./LocationOfEmployment";
 import { useFormStore } from "../../hooks/store";
 
 const GraduateEmploymentInformation = () => {
-  const { data: department } = hooks.useGetCollegeDepartment();
+  const { data: department, isLoading: isDepartmentLoading } =
+    hooks.useGetCollegeDepartment();
 
   const {
     isProgramOpen,
@@ -68,27 +69,37 @@ const GraduateEmploymentInformation = () => {
       </h1>
 
       <div className="space-y-8">
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-md font-bold text-gray-700 mb-3">
-            College / Department
-          </h2>
-          <Select
-            onValueChange={(value) =>
-              handleDepartmentChange(value, getDepartment)
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select College / Department" />
-            </SelectTrigger>
-            <SelectContent>
-              {department?.map((emInfo: EmploymentInformation) => (
-                <SelectItem key={emInfo.id} value={String(emInfo.id)}>
-                  {emInfo.department}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Department Section */}
+        {isDepartmentLoading ? (
+          <div className="flex gap-2 items-center text-primary p-4 bg-primary/5 rounded-lg">
+            <Loader2Icon className="animate-spin" />
+            <span>Loading departments...</span>
+          </div>
+        ) : (
+          <>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h2 className="text-md font-bold text-gray-700 mb-3">
+                College / Department
+              </h2>
+              <Select
+                onValueChange={(value) =>
+                  handleDepartmentChange(value, getDepartment)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select College / Department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {department?.map((emInfo: EmploymentInformation) => (
+                    <SelectItem key={emInfo.id} value={String(emInfo.id)}>
+                      {emInfo.department}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
 
         {/* Program Section */}
         {isProgramPending ? (
@@ -124,20 +135,18 @@ const GraduateEmploymentInformation = () => {
 
         {/* Major Section */}
         <>
-          {majors?.length !== 0 && isMajorPending && (
-            <div className="flex gap-2 items-center text-primary p-4 bg-primary/5 rounded-lg">
-              <Loader2Icon className="animate-spin" />
-              <span>Loading majors...</span>
-            </div>
-          )}
-
           {majors?.length === 0 && (
             <div className="p-4 bg-primary/5 rounded-lg text-gray-600">
               Major is not available
             </div>
           )}
 
-          {majors?.length > 0 && (
+          {isMajorPending ? (
+            <div className="flex gap-2 items-center text-primary p-4 bg-primary/5 rounded-lg">
+              <Loader2Icon className="animate-spin" />
+              <span>Loading majors...</span>
+            </div>
+          ) : (
             <div
               className={`bg-white p-6 rounded-lg shadow-sm ${
                 isMajorOpen ? "" : "hidden"
@@ -188,7 +197,18 @@ const GraduateEmploymentInformation = () => {
           </div>
 
           <div className="mt-8 flex justify-end items-center gap-4">
-            <Button className="bg-white text-primary border border-primary shadow-sm hover:bg-primary/10">
+            <Button
+              className="bg-white text-primary border border-primary shadow-sm hover:bg-primary/10"
+              onClick={() => {
+                handleDepartmentChange("", getDepartment);
+                handleMajorChange("", getMajor);
+                handleMajorSelect("");
+                handleEmployedChange("");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 2000);
+              }}
+            >
               Clear
             </Button>
 
@@ -201,6 +221,8 @@ const GraduateEmploymentInformation = () => {
                 className="bg-primary text-white min-w-[100px] hover:bg-primary/90"
                 onClick={async () => {
                   try {
+                    if (majors?.length === 0) {
+                    }
                     await addResponse({
                       yearOfSurvey: parseInt(yearOfSurvey),
                       email: email,
@@ -216,6 +238,14 @@ const GraduateEmploymentInformation = () => {
                       currentJobLocated: currentJobLocated,
                       isEmployed: isEmployed,
                     });
+
+                    handleDepartmentChange("", getDepartment);
+                    handleMajorChange("", getMajor);
+                    handleMajorSelect("");
+                    handleEmployedChange("");
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 2000);
                   } catch (e) {
                     console.log("An error occured:", e);
                   }

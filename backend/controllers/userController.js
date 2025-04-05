@@ -33,7 +33,6 @@ const addResponse = asyncHandler(async (req, res, next) => {
     !yearOfGraduation ||
     !departmentId ||
     !programId ||
-    !majorId ||
     !isEmployed ||
     !isJobAligned ||
     !isSelfEmployed ||

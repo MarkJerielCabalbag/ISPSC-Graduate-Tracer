@@ -256,7 +256,7 @@ const Dashboard = () => {
                           <CreateMajor
                             isOpen={isOpenMajor}
                             handleIsOpen={setIsOpenMajor}
-                            id={program?.id as number}
+                            id={selectedId}
                           />
                         )}
 
@@ -273,7 +273,10 @@ const Dashboard = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="p-2 hover:bg-red-50 rounded-lg text-gray-500 transition-colors"
-                            onClick={() => setIsOpenMajor(true)}
+                            onClick={() => {
+                              setIsOpenMajor(true);
+                              setSelectedId(program?.id as number);
+                            }}
                             title="Add Major"
                           >
                             <PlusIcon className="h-4 w-4 sm:h-5 sm:w-5" />
