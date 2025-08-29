@@ -1,4 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
+import { Button } from "../../../components/ui/button";
+import { DeleteIcon, DownloadIcon, ViewIcon } from "lucide-react";
 
 export type AdminColumnDef = {
   yearOfGraduation: string;
@@ -22,7 +24,7 @@ const columnHelper = createColumnHelper();
 export const columns = [
   columnHelper.accessor("yearOfGraduation", {
     id: "yearOfGraduation",
-    header: () => "Year of Graduates",
+    header: () => "Year Graduated",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("program", {
@@ -84,6 +86,25 @@ export const columns = [
     id: "totalOfGraduatesEmployedAbroad",
     header: () => "Total of Graduates Employed Abroad",
     cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("actions", {
+    id: "actions",
+    header: () => "Actions",
+    cell: (info) => {
+      return (
+        <div className="flex gap-2 items-center">
+          <Button>
+            Delete <DeleteIcon />
+          </Button>
+          <Button>
+            View <ViewIcon />
+          </Button>
+          <Button>
+            Download Report <DownloadIcon />
+          </Button>
+        </div>
+      );
+    },
   }),
 ];
 

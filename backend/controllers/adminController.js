@@ -1,8 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { uid } from "uid";
-import { get } from "http";
+
 const prisma = new PrismaClient().$extends(withAccelerate());
 
 //@DESC     add department
