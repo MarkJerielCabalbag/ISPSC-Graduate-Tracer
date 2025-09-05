@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Button } from "../../../components/ui/button";
-import { DeleteIcon, DownloadIcon, ViewIcon } from "lucide-react";
-
+import DeleleStudentInfo from "../modal/DeleteStudentInfo";
+import { useState } from "react";
 export type AdminColumnDef = {
   yearOfGraduation: string;
   program: string;
@@ -86,25 +86,6 @@ export const columns = [
     id: "totalOfGraduatesEmployedAbroad",
     header: () => "Total of Graduates Employed Abroad",
     cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("actions", {
-    id: "actions",
-    header: () => "Actions",
-    cell: (info) => {
-      return (
-        <div className="flex gap-2 items-center">
-          <Button>
-            Delete <DeleteIcon />
-          </Button>
-          <Button>
-            View <ViewIcon />
-          </Button>
-          <Button>
-            Download Report <DownloadIcon />
-          </Button>
-        </div>
-      );
-    },
   }),
 ];
 
@@ -196,5 +177,30 @@ export const graduatesRowColumnDef = [
     header: () => "Where is your current job located?",
     cell: (info) => info.getValue(),
     enableSorting: false,
+  }),
+
+  columnHelper.accessor("actions", {
+    id: "actions",
+    header: "Actions",
+    cell: (info) => {
+      const [openDeleteStudentModal, setDeleteStudentModal] =
+        useState<boolean>(false);
+      return (
+        <div className="flex gap-2">
+          {openDeleteStudentModal && (
+            <DeleleStudentInfo
+              isOpen={openDeleteStudentModal}
+              handleIsOpen={setDeleteStudentModal}
+            />
+          )}
+          <Button
+            onClick={() => setDeleteStudentModal(!openDeleteStudentModal)}
+          >
+            Delete
+          </Button>
+          <Button>Update</Button>
+        </div>
+      );
+    },
   }),
 ];

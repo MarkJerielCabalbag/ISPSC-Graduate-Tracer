@@ -72,6 +72,7 @@ const addResponse = asyncHandler(async (req, res, next) => {
   }
 
   try {
+    let context;
     const [newResponse, emailResult] = await Promise.all([
       prisma.responses.create({
         data: {
@@ -90,7 +91,16 @@ const addResponse = asyncHandler(async (req, res, next) => {
           major: major?.major,
         },
       }),
-      sendGraduateTracerEmail(email, fullName),
+      (context = {
+        fullName: fullName?.toUpperCase(),
+        date: new Date().getFullYear(),
+      }),
+      sendGraduateTracerEmail(
+        email,
+        context,
+        "Thank you for being part of the tracer survey",
+        "student-completed-form"
+      ),
     ]);
 
     const yearAndProgramExist = await prisma.total.findMany({
