@@ -48,4 +48,6 @@ adminRouter.get(
   adminController.getCurrentJobLocation
 );
 adminRouter.get("/department/details", adminController.getDepartmentDetails);
+
+adminRouter.post("/student/response/:id", adminController.deleteStudentById);
 export default adminRouter;

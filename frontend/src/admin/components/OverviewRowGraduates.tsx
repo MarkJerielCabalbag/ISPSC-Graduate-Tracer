@@ -39,7 +39,7 @@ const OverviewRowGraduates = () => {
     year ?? "",
     program ?? ""
   );
-
+  console.log(data);
   const navigate = useNavigate();
 
   const { data: totalGraduates, isLoading: isLoadingTotalGraduates } =

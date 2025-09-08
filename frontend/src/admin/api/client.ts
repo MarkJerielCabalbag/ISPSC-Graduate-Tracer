@@ -370,4 +370,19 @@ export const client = {
       return response;
     });
   },
+
+  //delete student
+  async deleteStudentInfo(studentId: number) {
+    return await fetch(`${baseUrl}/admin/student/response/${studentId}`, {
+      method: "POST",
+    }).then(async (res) => {
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response?.message || "An Error Occured");
+      }
+
+      return response;
+    });
+  },
 };

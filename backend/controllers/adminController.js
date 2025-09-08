@@ -652,6 +652,34 @@ const getDepartmentDetails = asyncHandler(async (req, res, next) => {
       .send({ message: `An error occurred: ${error.message}` });
   }
 });
+
+//@DESC     get department details
+//@ROUTE    /api/graduateTracer/admin/student/response/:id
+//@ACCESS   GET
+const deleteStudentById = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!id) return res.status(400).json({ message: "Id does not exist" });
+
+  const student = await prisma.responses.findUnique({
+    where: { id: parseInt(id) },
+  });
+
+  if (!student)
+    return res.status(400).json({ message: "Student does not exist" });
+
+  try {
+    await prisma.responses.delete({
+      where: { id: parseInt(student.id) },
+    });
+    return res
+      .status(201)
+      .json({ message: "Successfully deleted student record" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: `An error occurred: ${error}` });
+  }
+});
 export default {
   getSummaryData,
   overviewTracedStudents,
@@ -665,4 +693,5 @@ export default {
   getTypeOfOrganisation,
   getCurrentJobLocation,
   getDepartmentDetails,
+  deleteStudentById,
 };

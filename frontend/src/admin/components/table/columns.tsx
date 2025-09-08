@@ -2,6 +2,8 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Button } from "../../../components/ui/button";
 import DeleleStudentInfo from "../modal/DeleteStudentInfo";
 import { useState } from "react";
+import UpdateStudentInfo from "../modal/UpdateStudentInfo";
+
 export type AdminColumnDef = {
   yearOfGraduation: string;
   program: string;
@@ -185,20 +187,50 @@ export const graduatesRowColumnDef = [
     cell: (info) => {
       const [openDeleteStudentModal, setDeleteStudentModal] =
         useState<boolean>(false);
+      const [openUpdateStudentModal, setUpdateStudentModal] =
+        useState<boolean>(false);
+      const [selectedStudentId, setSelectedId] = useState<number>(0);
+
+      // Define the expected type for the row data
+      type RowData = { id: number };
+
+      const rowOriginal = info?.row?.original as RowData;
+
       return (
         <div className="flex gap-2">
           {openDeleteStudentModal && (
             <DeleleStudentInfo
               isOpen={openDeleteStudentModal}
               handleIsOpen={setDeleteStudentModal}
+              selectedStudentId={selectedStudentId}
+            />
+          )}
+
+          {openUpdateStudentModal && (
+            <UpdateStudentInfo
+              isOpen={openUpdateStudentModal}
+              handleIsOpen={setUpdateStudentModal}
+              selectedStudentId={selectedStudentId}
             />
           )}
           <Button
-            onClick={() => setDeleteStudentModal(!openDeleteStudentModal)}
+            onClick={() => {
+              setDeleteStudentModal(!openDeleteStudentModal);
+              setSelectedId(rowOriginal.id);
+              console.log(selectedStudentId);
+            }}
           >
             Delete
           </Button>
-          <Button>Update</Button>
+          <Button
+            onClick={() => {
+              setUpdateStudentModal(!openUpdateStudentModal);
+              setSelectedId(rowOriginal.id);
+              console.log(selectedStudentId);
+            }}
+          >
+            Update
+          </Button>
         </div>
       );
     },

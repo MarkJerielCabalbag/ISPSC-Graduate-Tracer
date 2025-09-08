@@ -7,42 +7,45 @@ import {
   AlertDialogFooter,
 } from "../../../components/ui/alert-dialog";
 import { Button } from "../../../components/ui/button";
-import { useDeleteStudentRecord } from "../../hooks/client";
-
-type DeleteStudentProps = {
+import GeneralInformation from "../../../components/form/GeneralInformation";
+import GraduateEmploymentInformation from "../../../components/form/GraduateEmploymentInformation";
+import RelevanceOfEmployment from "../../../components/form/RelevanceOfEmployment";
+import EmployementSector from "../../../components/form/EmployementSector";
+import LocationOfEmployment from "../../../components/form/LocationOfEmployment";
+type UpdateStudentInfoProps = {
   selectedStudentId: number;
 } & ModalType;
 
-const DeleteStudentInfo = ({
+const UpdateStudentInfo = ({
   isOpen,
   handleIsOpen,
   selectedStudentId,
-}: DeleteStudentProps) => {
-  const { mutateAsync, isPending } = useDeleteStudentRecord(selectedStudentId);
+}: UpdateStudentInfoProps) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={handleIsOpen}>
-      <AlertDialogContent>
-        <AlertDialogHeader>Remove Student</AlertDialogHeader>
+      <AlertDialogContent className="max-w-11/12 sm:max-w-2xl">
+        <AlertDialogHeader>Update Student</AlertDialogHeader>
         <AlertDialogDescription>
-          Are you sure you want to delete this student information? This action
-          cannot be undone.
+          <GeneralInformation />
+          <GraduateEmploymentInformation />
+          <RelevanceOfEmployment />
+          <EmployementSector />
+          <LocationOfEmployment />
         </AlertDialogDescription>
         <AlertDialogFooter className="flex gap-2 items-center">
           <Button variant={"outline"} onClick={() => handleIsOpen(!isOpen)}>
             Cancel
           </Button>
           <Button
-            disabled={isPending}
             onClick={async () => {
               try {
-                await mutateAsync();
                 handleIsOpen(!isOpen);
               } catch (error) {
                 console.log(error);
               }
             }}
           >
-            {isPending ? "Deleting..." : "Delete"}
+            Update
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -50,4 +53,4 @@ const DeleteStudentInfo = ({
   );
 };
 
-export default DeleteStudentInfo;
+export default UpdateStudentInfo;

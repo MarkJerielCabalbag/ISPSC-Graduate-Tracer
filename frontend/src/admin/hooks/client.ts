@@ -238,3 +238,17 @@ export const useRemoveDepartment = (departmentId: number) => {
     },
   });
 };
+
+export const useDeleteStudentRecord = (studentId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.deleteStudentInfo(studentId),
+    onSuccess: (data) => {
+      toast.success(data?.message as string);
+      queryClient.invalidateQueries({ queryKey: ["graduatesPerRow"] });
+    },
+    onError: (error) => {
+      toast.error(error?.message as string);
+    },
+  });
+};
